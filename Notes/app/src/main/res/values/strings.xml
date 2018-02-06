@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Notes</string>
+    <string name="bt_create_note">Создать Заметку</string>
+    <string name="bt_cancel">Отмена</string>
+    <string name="bt_save">Сохранить</string>
+    <string name="edit_text_title">Введите заголовок</string>
+    <string name="edit_text_content">Введите записку</string>
+</resources>
