@@ -24,5 +24,10 @@
             android:layout_marginLeft="4dp"
             android:layout_below="@+id/linearLayout"
             android:layout_marginRight="4dp" />
+        <ListView
+            android:id="@+id/lvData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

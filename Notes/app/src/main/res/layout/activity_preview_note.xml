@@ -5,29 +5,18 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:orientation="horizontal">
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/linearLayoutButton">
             <Button
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/cancelBt"
-                android:text="@string/bt_cancel"
+                android:id="@+id/backBt"
+                android:text="@string/backBt"
                 android:textAlignment="center"
-                android:layout_weight="1"
-                android:layout_gravity="top"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/saveBt"
-                android:text="@string/bt_save"
-                android:textAlignment="center"
-                android:layout_weight="1"
                 android:layout_gravity="top"/>
         </LinearLayout>
         <View
@@ -40,36 +29,32 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_below="@+id/linearLayoutButton">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/linearLayoutEditTextTitle">
-                <EditText
+                android:id="@+id/linearLayoutTextTitle">
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editTextTitle"
-                    android:textAlignment="center"
-                    android:hint="@string/edit_text_title"/>
+                    android:id="@+id/TextPreView"
+                    android:textAlignment="center" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/linearLayoutEditTextTitle">
-
-                <EditText
+                android:orientation="vertical"
+                android:layout_below="@+id/linearLayoutTextTitle">
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="viewStart"
-                    android:inputType="textMultiLine"
-                    android:id="@+id/editTextContent"
-                    android:lines="10"
-                    android:maxLines="15"
-                    android:minLines="8"
+                    android:id="@+id/TextContent"
+                    android:lines="12"
+                    android:minLines="10"
+                    android:maxLines="20"
                     android:scrollbars="vertical"
-                    android:hint="@string/edit_text_content"
                     android:gravity="start" />
             </LinearLayout>
         </RelativeLayout>

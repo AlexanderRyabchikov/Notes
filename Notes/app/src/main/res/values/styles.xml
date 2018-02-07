@@ -8,4 +8,11 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MyDefaultTextAppearance" parent="@android:style/TextAppearance">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+        <item name="android:text">@string/text_not_found_entry</item>
+    </style>
 </resources>

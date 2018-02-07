@@ -16,9 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateEdit_activity">
-
-        </activity>
+        <activity android:name=".CreateEdit_activity"></activity>
+        <activity android:name=".PreviewNote"></activity>
     </application>
 
 </manifest>
