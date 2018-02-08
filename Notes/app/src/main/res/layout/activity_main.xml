@@ -25,6 +25,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
+            android:id="@+id/ViewLine"
             android:background="#7b7b7b"
             android:layout_marginLeft="4dp"
             android:layout_below="@+id/linearLayout"
@@ -32,6 +33,7 @@
             tools:ignore="UnknownId" />
         <ListView
             android:id="@+id/lvData"
+            android:layout_below="@+id/ViewLine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </ListView>

@@ -15,4 +15,16 @@
         <item name="android:gravity">center_horizontal|center_vertical</item>
         <item name="android:text">@string/text_not_found_entry</item>
     </style>
+    <style name="RadioButtonLowPriority" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#268A3A</item>
+        <item name="colorControlActivated">#1AE242</item>
+    </style>
+    <style name="RadioButtonMediumPriority" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#A9BA35</item>
+        <item name="colorControlActivated">#D9F715</item>
+    </style>
+    <style name="RadioButtonHighPriority" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">#9A0303</item>
+        <item name="colorControlActivated">#FF0000</item>
+    </style>
 </resources>

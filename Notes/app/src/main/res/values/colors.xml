@@ -5,5 +5,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="BackgroudWindow">#370903</color>
     <color name="textColor">#F0E68C</color>
+    <color name="RadioGroup">#333333</color>
+    <color name="textColorLowPriority">#1AE242</color>
+    <color name="textColorMediumPriority">#D9F715</color>
+    <color name="textColorHighPriority">#FF0000</color>
 </resources>
 

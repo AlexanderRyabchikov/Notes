@@ -9,4 +9,7 @@
     <string name="edit_menu">Правка</string>
     <string name="delete_menu">Удалить</string>
     <string name="text_not_found_entry">Не было создано записей</string>
+    <string name="low_priority">Низкий приоритет</string>
+    <string name="medium_priority">Средний приоритет</string>
+    <string name="high_priority">Высокий приоритет</string>
 </resources>

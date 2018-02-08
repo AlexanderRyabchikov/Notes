@@ -1,17 +1,14 @@
 package com.example.alexa.notes;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.textclassifier.TextClassifier;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -24,8 +21,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final int CM_DELETE_ID = 1;
     private static final int CM_EDIT_ID = 2;
+    public static final String intentCreateNote = "Create_note";
+    private static final String DeleteSuccessMsg = "Запись успешно удалена";
     ListView listView;
-    TextView textView;
     DataBase dataBase;
     SimpleCursorAdapter simpleCursorAdapter;
     Cursor cursor;
@@ -73,7 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()){
             case R.id.createNote:
                 Intent intentCreateEdit = new Intent(this, CreateEdit_activity.class);
-                startActivity(intentCreateEdit);
+                intentCreateEdit.putExtra(intentCreateNote, true);
+                startActivityForResult(intentCreateEdit, 1);
                 break;
             default:
                 break;
@@ -81,6 +80,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {return;}
+        boolean isUpdate = data.getBooleanExtra(CreateEdit_activity.intentUpdateMain, false);
+        if (isUpdate){
+            this.recreate();
+        }
+
+    }
 
     public void onCreateContextMenu(ContextMenu contextMenu,
                                     View view,
@@ -89,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         contextMenu.add(0, CM_EDIT_ID, 0, R.string.edit_menu);
         contextMenu.add(0, CM_DELETE_ID, 0, R.string.delete_menu);
     }
-
     public boolean onContextItemSelected(MenuItem item){
         switch (item.getItemId()){
             case CM_DELETE_ID:
@@ -99,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 cursor.requery();
                 this.recreate();
+                Toast.makeText(getBaseContext(), DeleteSuccessMsg, Toast.LENGTH_LONG);
                 break;
             case CM_EDIT_ID:
                 break;
@@ -108,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         return super.onContextItemSelected(item);
     }
+
 
     @Override
     protected void onDestroy() {
