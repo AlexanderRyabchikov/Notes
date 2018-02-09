@@ -56,7 +56,7 @@ public class DataBase {
                                     null,
                                     null,
                                     null ,
-                                    COLUMN_DATE_CREATE_EDIT);
+                                    COLUMN_DATE_CREATE_EDIT + " DESC");
     }
 
     public void addToDB(String title, String content, int priority, String date){
