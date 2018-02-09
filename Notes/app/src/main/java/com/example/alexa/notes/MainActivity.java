@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String DeleteSuccessMsg = "Запись успешно удалена";
     ListView listView;
     DataBase dataBase;
-    SimpleCursorAdapter simpleCursorAdapter;
+    CustomCursorAdapter simpleCursorAdapter;
     Cursor cursor;
     @SuppressLint({"WrongConstant", "ResourceAsColor"})
     @Override
@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startManagingCursor(cursor);
             String[] from = new String[] {DataBase.COLUMN_TITLE};
             int[] to = new int[] {R.id.tvText};
-            simpleCursorAdapter = new SimpleCursorAdapter(this,
+            simpleCursorAdapter = new CustomCursorAdapter(this,
                                                           R.layout.item_list_notes,
                                                           cursor,
                                                           from,
