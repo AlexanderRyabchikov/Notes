@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 cursor.requery();
                 this.recreate();
-                Toast.makeText(getBaseContext(), DeleteSuccessMsg, Toast.LENGTH_LONG);
+                Toast.makeText(getBaseContext(), DeleteSuccessMsg, Toast.LENGTH_SHORT).show();
                 break;
             case CM_EDIT_ID:
                 break;

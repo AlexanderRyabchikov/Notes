@@ -53,7 +53,7 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.saveBt:
                 SaveToDB();
-                Toast.makeText(getBaseContext(), SuccessMsgDB, Toast.LENGTH_SHORT);
+                Toast.makeText(getBaseContext(), SuccessMsgDB, Toast.LENGTH_SHORT).show();
                 cleanAllForm();
             default:
                 break;
