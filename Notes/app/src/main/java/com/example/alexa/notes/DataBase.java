@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by alexa on 07.02.2018.
@@ -47,6 +48,17 @@ public class DataBase {
         if (dbHelper != null){
             dbHelper.close();
         }
+    }
+
+    public Cursor getEntry(long id){
+        return dbSqLiteDatabase.query(   DB_TABLE,
+                                        null,
+                                        COLUMN_ID + " = " + id,
+                                        null,
+                                        null,
+                                        null,
+                                        null
+                                      );
     }
 
     public Cursor getEntries(){

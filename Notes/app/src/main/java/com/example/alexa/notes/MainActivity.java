@@ -17,12 +17,16 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+import java.text.SimpleDateFormat;
 
-    private static final int CM_DELETE_ID = 1;
-    private static final int CM_EDIT_ID = 2;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+
+    public static final int CM_DELETE_ID = 1;
+    public static final int CM_EDIT_ID = 2;
     public static final String intentCreateNote = "Create_note";
-    private static final String DeleteSuccessMsg = "Запись успешно удалена";
+    public static final String intentEditNote = "edit_note";
+    public static final String intentPreviewNote = "Preview_note";
+    public static final String DeleteSuccessMsg = "Запись успешно удалена";
     ListView listView;
     DataBase dataBase;
     CustomCursorAdapter simpleCursorAdapter;
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             listView = findViewById(R.id.lvData);
             listView.setAdapter(simpleCursorAdapter);
+            listView.setOnItemClickListener(this);
 
             registerForContextMenu(listView);
         }
@@ -109,6 +114,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(getBaseContext(), DeleteSuccessMsg, Toast.LENGTH_SHORT).show();
                 break;
             case CM_EDIT_ID:
+                AdapterView.AdapterContextMenuInfo adapterContextMenuInfoEdit =
+                        (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                Intent intentCreateEdit = new Intent(this, CreateEdit_activity.class);
+                intentCreateEdit.putExtra(intentCreateNote, false);
+                intentCreateEdit.putExtra(intentEditNote, adapterContextMenuInfoEdit.id);
+                startActivityForResult(intentCreateEdit, 1);
                 break;
             default:
                 break;
@@ -132,5 +143,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         stopManagingCursor(cursor);
         cursor.close();
         dataBase.close_connection();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        cursor.moveToPosition(position);
+        long positionId = cursor.getLong(cursor.getColumnIndex(DataBase.COLUMN_ID));
+        Intent intentPreviewNote = new Intent(this, PreviewNote.class);
+        intentPreviewNote.putExtra(MainActivity.intentPreviewNote, positionId);
+        startActivityForResult(intentPreviewNote, 2);
     }
 }

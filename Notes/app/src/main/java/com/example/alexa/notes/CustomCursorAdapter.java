@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 public class CustomCursorAdapter extends SimpleCursorAdapter {
 
-    private static final int LOW_PRIORITY = 2131165263;
-    private static final int MEDIUM_PRIORITY = 2131165266;
-    private static final int HIGH_PRIORITY = 2131165245;
+    private static final int LOW_PRIORITY = 2131165265;
+    private static final int MEDIUM_PRIORITY = 2131165268;
+    private static final int HIGH_PRIORITY = 2131165246;
     public CustomCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
         super(context, layout, c, from, to, flags);
     }
