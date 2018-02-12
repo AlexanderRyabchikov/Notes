@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -25,6 +26,8 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     private int id_edit_note = -1;
     private TextView textViewTitle;
     private TextView textViewContent;
+    private CheckBox checkBoxAuto;
+    private CheckBox checkBoxManual;
     private RadioGroup radioGroup;
     public static final String intentUpdateMain = "update_main";
     private static final String SuccessMsgDB = "Запись успешно сохранена";
@@ -40,6 +43,11 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         textViewTitle = findViewById(R.id.editTextTitle);
         textViewContent = findViewById(R.id.editTextContent);
         radioGroup = findViewById(R.id.radioGroup);
+
+        checkBoxAuto = findViewById(R.id.gpsCheckedAuto);
+        checkBoxManual = findViewById(R.id.gpsCheckedMaps);
+        checkBoxManual.setOnClickListener(this);
+        checkBoxAuto.setOnClickListener(this);
 
         Button cancelButton = findViewById(R.id.cancelBt);
         cancelButton.setOnClickListener(this);
@@ -88,6 +96,18 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                 SaveToDB();
                 Toast.makeText(getBaseContext(), SuccessMsgDB, Toast.LENGTH_SHORT).show();
                 cleanAllForm();
+            case R.id.gpsCheckedAuto:
+                if (checkBoxAuto.isChecked()){
+                    checkBoxManual.setChecked(false);
+                    checkBoxManual.setSelected(false);
+                }
+                break;
+            case R.id.gpsCheckedMaps:
+                if (checkBoxManual.isChecked()){
+                    checkBoxAuto.setChecked(false);
+                    checkBoxAuto.setSelected(false);
+                }
+                break;
             default:
                 break;
         }
