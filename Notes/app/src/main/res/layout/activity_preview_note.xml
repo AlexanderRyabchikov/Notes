@@ -30,14 +30,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:id="@+id/relativeLayPreView"
             android:layout_below="@+id/linearLayoutButton">
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_margin="4dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/linearLayoutTextTitle">
                 <TextView
                     android:layout_width="match_parent"
+                    android:background="@drawable/text_view_border"
                     android:layout_height="wrap_content"
+                    android:textSize="25sp"
                     android:id="@+id/TextPreView"
                     android:textAlignment="center" />
             </LinearLayout>
@@ -45,13 +49,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:layout_margin="4dp"
                 android:layout_below="@+id/linearLayoutTextTitle">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="viewStart"
+                    android:background="@drawable/text_view_border"
                     android:id="@+id/TextContent"
                     android:lines="12"
+                    android:textSize="25sp"
                     android:minLines="10"
                     android:maxLines="20"
                     android:scrollbars="vertical"
