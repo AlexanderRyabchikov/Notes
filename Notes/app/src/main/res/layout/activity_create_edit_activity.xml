@@ -81,6 +81,7 @@
                 android:layout_below="@+id/linearLayoutCreateContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/layoutRadioGroup"
                 android:orientation="horizontal">
                 <RadioGroup
                     android:id="@+id/radioGroup"
@@ -116,6 +117,44 @@
                 </RadioGroup>
 
             </LinearLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#7b7b7b"
+            android:layout_below="@+id/relativeLayout"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="4dp"
+            android:id="@+id/viewCheckBox" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/viewCheckBox"
+            android:id="@+id/gpsCheckedBlock">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/gpsCheckedView"
+                android:orientation="horizontal">
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:textColor="@color/textColor"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/gpsCheckedAuto"
+                    android:text="@string/checked_auto"
+                    android:layout_weight="1"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:textColor="@color/textColor"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/gpsCheckedMaps"
+                    android:layout_weight="1"
+                    android:text="@string/maps_checked"/>
+            </LinearLayout>
+
         </RelativeLayout>
 
     </RelativeLayout>
