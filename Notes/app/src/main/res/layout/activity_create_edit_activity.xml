@@ -154,16 +154,24 @@
                     android:layout_weight="1"
                     android:text="@string/maps_checked"/>
             </LinearLayout>
-            <LinearLayout
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                android:indeterminateDrawable="@drawable/progress" >
+            </ProgressBar>
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/gpsCheckedView">
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:id="@+id/progressBar1"
-                    android:layout_height="wrap_content">
-                </ProgressBar>
-            </LinearLayout>
+                android:background="@drawable/text_view_border"
+                android:textSize="25sp"
+                android:lines="4"
+                android:id="@+id/TextGps"
+                android:textAlignment="center"/>
 
         </RelativeLayout>
 
