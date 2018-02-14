@@ -1,23 +1,16 @@
 package com.example.alexa.notes;
 
-import android.annotation.SuppressLint;
-import android.content.ContentResolver;
+
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,9 +29,6 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     private CheckBox checkBoxAuto;
     private CheckBox checkBoxManual;
     private RadioGroup radioGroup;
-    private LocationManager locationManager;
-    private LocationListener locationListener;
-    public static ProgressBar progressBar;
     public static Context context;
     public static final String intentUpdateMain = "update_main";
     private static final String SuccessMsgDB = "Запись успешно сохранена";
@@ -47,21 +37,29 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_activity);
         getSupportActionBar().hide();
+
         dataBase = new DataBase(this);
+
         context = getBaseContext();
         intent = getIntent();
 
+        GpsTask.bar = findViewById(R.id.progressBar);
+        GpsTask.textView = findViewById(R.id.TextGps);
+        GpsTask.textView.setVisibility(View.INVISIBLE);
+
         textViewTitle = findViewById(R.id.editTextTitle);
         textViewContent = findViewById(R.id.editTextContent);
+
         radioGroup = findViewById(R.id.radioGroup);
-        progressBar = findViewById(R.id.progressBar1);
-        progressBar.setVisibility(View.INVISIBLE);
+
         checkBoxAuto = findViewById(R.id.gpsCheckedAuto);
         checkBoxManual = findViewById(R.id.gpsCheckedMaps);
+
         checkBoxManual.setOnClickListener(this);
         checkBoxAuto.setOnClickListener(this);
-        locationManager = (LocationManager)
-                getSystemService(Context.LOCATION_SERVICE);
+
+        GpsTask.locationManager =
+                (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
         Button cancelButton = findViewById(R.id.cancelBt);
         cancelButton.setOnClickListener(this);
@@ -114,10 +112,7 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                 if (checkBoxAuto.isChecked()){
                     checkBoxManual.setChecked(false);
                     checkBoxManual.setSelected(false);
-                    GpsStart();
-                    if (progressBar.getVisibility() == View.INVISIBLE){
-                        Toast.makeText(getBaseContext(), Gps.address, Toast.LENGTH_SHORT).show();
-                    }
+                    new GpsTask().execute();
                 }
                 break;
             case R.id.gpsCheckedMaps:
@@ -128,35 +123,6 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                 break;
             default:
                 break;
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private void GpsStart() {
-        if(displayGpsStatus()) {
-            progressBar.setVisibility(View.VISIBLE);
-            locationListener = new Gps();
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    5000, 10, locationListener);
-            Toast.makeText(getBaseContext(), Gps.address, Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(getBaseContext(), "Gps is disable", Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    private Boolean displayGpsStatus() {
-        ContentResolver contentResolver = getBaseContext()
-                .getContentResolver();
-        boolean gpsStatus = Settings.Secure
-                .isLocationProviderEnabled(contentResolver,
-                        LocationManager.GPS_PROVIDER);
-        if (gpsStatus) {
-            return true;
-
-        } else {
-            return false;
         }
     }
 
