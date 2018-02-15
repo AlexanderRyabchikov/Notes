@@ -18,6 +18,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by alexander on 14.02.18.
@@ -39,12 +40,13 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
             public void onLocationChanged(Location location) {
                 Geocoder geocoder = new Geocoder(CreateEdit_activity.context, Locale.getDefault());
                 List<Address> addresses;
-                try{
+                try {
                     addresses = geocoder.
                             getFromLocation(location.getLatitude(),
                                     location.getLongitude(), 1);
-                    address = addresses.get(0).getAddressLine(0);
-
+                    address = addresses.get(0).getAddressLine(0) +
+                            "\n" + addresses.get(0).getAddressLine(1) +
+                            "\n" + addresses.get(0).getAddressLine(2);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -70,11 +72,12 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
         };
 
         try {
-            if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER))
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-
-            if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER))
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+             if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
+                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
+             }
+            if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
+            }
         }catch (SecurityException e){
             Toast.makeText(CreateEdit_activity.context,
                     "Ошибка GSP модуля",
@@ -85,9 +88,21 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... arg0) {
         Log.d("String", "task start");
-        while(address == null){
+        for (int i = 0; i < 100000; i++){
 
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (address != null){
+                break;
+            }
         }
+        if (address == null){
+            address = "местонахождение не определено";
+        }
+
         return null;
     }
 
@@ -97,5 +112,9 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
         locationManager.removeUpdates(locationListener);
         textView.setVisibility(View.VISIBLE);
         textView.setText(address);
+    }
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
     }
 }

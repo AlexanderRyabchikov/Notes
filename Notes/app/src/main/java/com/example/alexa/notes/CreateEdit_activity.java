@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,8 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     private CheckBox checkBoxManual;
     private RadioGroup radioGroup;
     public static Context context;
+    private int rdSelectId = -1;
+    private GpsTask gpsTask;
     public static final String intentUpdateMain = "update_main";
     private static final String SuccessMsgDB = "Запись успешно сохранена";
     @Override
@@ -42,7 +45,6 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
 
         context = getBaseContext();
         intent = getIntent();
-
         GpsTask.bar = findViewById(R.id.progressBar);
         GpsTask.textView = findViewById(R.id.TextGps);
         GpsTask.textView.setVisibility(View.INVISIBLE);
@@ -51,7 +53,7 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         textViewContent = findViewById(R.id.editTextContent);
 
         radioGroup = findViewById(R.id.radioGroup);
-
+        GetSelectedRadioButton();
         checkBoxAuto = findViewById(R.id.gpsCheckedAuto);
         checkBoxManual = findViewById(R.id.gpsCheckedMaps);
 
@@ -97,6 +99,29 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    private void GetSelectedRadioButton() {
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (radioGroup.getCheckedRadioButtonId()){
+                    case R.id.lowPriority:
+                        rdSelectId = CustomCursorAdapter.LOW_PRIORITY;
+                        break;
+                    case R.id.mediumPriority:
+                        rdSelectId = CustomCursorAdapter.MEDIUM_PRIORITY;
+                        break;
+                    case R.id.highPriority:
+                        rdSelectId = CustomCursorAdapter.HIGH_PRIORITY;
+                        break;
+                    default:
+                            break;
+
+
+                }
+            }
+        });
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -108,14 +133,20 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                 SaveToDB();
                 Toast.makeText(getBaseContext(), SuccessMsgDB, Toast.LENGTH_SHORT).show();
                 cleanAllForm();
+                break;
             case R.id.gpsCheckedAuto:
                 if (checkBoxAuto.isChecked()){
                     checkBoxManual.setChecked(false);
                     checkBoxManual.setSelected(false);
-                    new GpsTask().execute();
+                    gpsTask = new GpsTask();
+                    gpsTask.execute();
+                }else{
+                    cancelTask();
                 }
+
                 break;
             case R.id.gpsCheckedMaps:
+                cancelTask();
                 if (checkBoxManual.isChecked()){
                     checkBoxAuto.setChecked(false);
                     checkBoxAuto.setSelected(false);
@@ -124,6 +155,14 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
             default:
                 break;
         }
+    }
+
+    private void cancelTask(){
+        GpsTask.textView.setText("");
+        if(!gpsTask.isCancelled()) {
+            gpsTask.cancel(false);
+        }
+        GpsTask.bar.setVisibility(View.GONE);
     }
 
     private void SaveToDB(){
@@ -135,13 +174,13 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         if (bFlagCheckCreate){
             dataBase.addToDB(   textViewTitle.getText().toString(),
                                 textViewContent.getText().toString(),
-                                radioGroup.getCheckedRadioButtonId(),
+                                rdSelectId,
                                 date);
         }else{
             dataBase.updateDB(  id_edit_note,
                                 textViewTitle.getText().toString(),
                                 textViewContent.getText().toString(),
-                                radioGroup.getCheckedRadioButtonId(),
+                                rdSelectId,
                                 date);
         }
         dataBase.close_connection();
@@ -149,12 +188,11 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     }
     private void cleanAllForm(){
 
-        TextView textView = findViewById(R.id.editTextTitle);
-        textView.setText("");
-        textView = findViewById(R.id.editTextContent);
-        textView.setText("");
+        EditText editView = findViewById(R.id.editTextTitle);
+        editView.setText("");
+        editView = findViewById(R.id.editTextContent);
+        editView.setText("");
 
-        RadioGroup radioGroup = findViewById(R.id.radioGroup);
         radioGroup.clearCheck();
     }
 

@@ -55,6 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/editTextTitle"
+                    android:maxLength="15"
                     android:textAlignment="center"
                     android:hint="@string/edit_text_title" />
             </LinearLayout>
@@ -71,9 +72,10 @@
                     android:textAlignment="viewStart"
                     android:hint="@string/edit_text_content"
                     android:id="@+id/editTextContent"
-                    android:lines="12"
-                    android:minLines="10"
-                    android:maxLines="20"
+                    android:lines="6"
+                    android:maxLength="256"
+                    android:minLines="3"
+                    android:maxLines="9"
                     android:scrollbars="vertical"
                     android:gravity="start" />
             </LinearLayout>
@@ -131,12 +133,12 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/viewCheckBox"
             android:id="@+id/gpsCheckedBlock">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/gpsCheckedView"
                 android:orientation="horizontal">
                 <CheckBox
@@ -159,21 +161,33 @@
                 style="?android:attr/progressBarStyleLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/gpsCheckedView"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:visibility="gone"
-                android:indeterminateDrawable="@drawable/progress" >
-            </ProgressBar>
-            <TextView
+                android:layout_gravity="end"
+                android:gravity="bottom"
+                android:layout_alignParentBottom="true"
+                android:indeterminateDrawable="@drawable/progress"
+                android:visibility="gone"></ProgressBar>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/text_view_border"
-                android:textSize="25sp"
-                android:lines="4"
-                android:id="@+id/TextGps"
-                android:textAlignment="center"/>
-
+                android:layout_gravity="bottom"
+                android:layout_below="@id/gpsCheckedView"
+                android:layout_alignParentBottom="true"
+                android:gravity="bottom">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/BackgroudWindow"
+                    android:visibility="gone"
+                    android:gravity="bottom"
+                    android:layout_gravity="bottom"
+                    android:textColor="@color/textColor"
+                    android:textSize="15sp"
+                    android:id="@+id/TextGps"
+                    android:textAlignment="center" />
+            </LinearLayout>
         </RelativeLayout>
-
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>
