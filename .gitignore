@@ -1,0 +1,11 @@
+
+*.json
+*.json
+*.rawproto
+Notes/.gradle/4.1/fileHashes/fileHashes.bin
+Notes/.gradle/4.1/fileHashes/fileHashes.lock
+Notes/.gradle/4.1/javaCompile/classAnalysis.bin
+Notes/.gradle/4.1/javaCompile/javaCompile.lock
+Notes/.gradle/4.1/taskHistory/fileSnapshots.bin
+Notes/.gradle/4.1/taskHistory/taskHistory.lock
+Notes/.idea/workspace.xml
