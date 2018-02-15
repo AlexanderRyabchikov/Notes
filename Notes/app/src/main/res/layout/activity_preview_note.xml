@@ -18,6 +18,33 @@
                 android:text="@string/backBt"
                 android:textAlignment="center"
                 android:layout_gravity="top"/>
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right">
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imgButtonVK"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:background="@null"
+                android:src="@drawable/vk"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imgButtonFB"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:background="@null"
+                android:src="@drawable/facebook"/>
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:id="@+id/imgButtonTW"
+                android:background="@null"
+                android:src="@drawable/twitter"/>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
