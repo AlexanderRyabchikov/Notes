@@ -83,6 +83,8 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                     title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
                     content = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_CONTENT));
                     radioButtonId = cursor.getInt(cursor.getColumnIndex(DataBase.COLUMN_PRIORITY));
+                    lintitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LINTITIDE));
+                    longtitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LONGTITUDE));
 
                 }while(cursor.moveToNext());
 
