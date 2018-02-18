@@ -15,4 +15,6 @@
     <string name="high_priority">Высокий приоритет</string>
     <string name="checked_auto">Автоопределение места</string>
     <string name="maps_checked">Определить место на карте</string>
+    <string name="gsp_place">Местонахождение: </string>
+    <string name="title_activity_maps">Map</string>
 </resources>

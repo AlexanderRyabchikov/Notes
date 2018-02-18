@@ -41,6 +41,7 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
     }
 
     private static String title;
+    private static String gps;
     private static String content;
     private long positionId;
     private static final int SAVE_TO_FILE = 3;
@@ -55,6 +56,7 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
         backButton.setOnClickListener(this);
         TextView textViewTitle = findViewById(R.id.TextPreView);
         TextView textViewContent = findViewById(R.id.TextContent);
+        TextView textViewGps = findViewById(R.id.placeGsp);
 
         intent = getIntent();
         positionId = intent.getLongExtra(MainActivity.intentPreviewNote, -1);
@@ -67,12 +69,14 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
             do{
                 title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
                 content = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_CONTENT));
+                gps = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_GSP));
 
             }while(cursor.moveToNext());
         }
 
         textViewTitle.setText(title);
         textViewContent.setText(content);
+        textViewGps.setText(gps);
         registerForContextMenu(relativeLayout);
     }
 

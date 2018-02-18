@@ -146,10 +146,15 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
 
                 break;
             case R.id.gpsCheckedMaps:
-                cancelTask();
                 if (checkBoxManual.isChecked()){
                     checkBoxAuto.setChecked(false);
                     checkBoxAuto.setSelected(false);
+                    Intent intentMaps = new Intent(this, MapsActivity.class);
+                    startActivity(intentMaps);
+                }else{
+                    if (gpsTask != null){
+                        cancelTask();
+                    }
                 }
                 break;
             default:
@@ -175,12 +180,14 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
             dataBase.addToDB(   textViewTitle.getText().toString(),
                                 textViewContent.getText().toString(),
                                 rdSelectId,
+                                GpsTask.textView.getText().toString(),
                                 date);
         }else{
             dataBase.updateDB(  id_edit_note,
                                 textViewTitle.getText().toString(),
                                 textViewContent.getText().toString(),
                                 rdSelectId,
+                                GpsTask.textView.getText().toString(),
                                 date);
         }
         dataBase.close_connection();
@@ -192,6 +199,12 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         editView.setText("");
         editView = findViewById(R.id.editTextContent);
         editView.setText("");
+        GpsTask.textView.setText("");
+        checkBoxManual.setChecked(false);
+        checkBoxManual.setSelected(false);
+        checkBoxAuto.setChecked(false);
+        checkBoxAuto.setSelected(false);
+
 
         radioGroup.clearCheck();
     }

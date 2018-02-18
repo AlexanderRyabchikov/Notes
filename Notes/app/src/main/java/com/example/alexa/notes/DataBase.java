@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Created by alexa on 07.02.2018.
@@ -21,6 +20,7 @@ public class DataBase {
     final static String COLUMN_TITLE = "title";
     final static String COLUMN_CONTENT = "content";
     final static String COLUMN_PRIORITY = "priority";
+    final static String COLUMN_GSP = "gps_detect";
     final static String COLUMN_DATE_CREATE_EDIT = "date";
 
     private final static String DB_CREATE =
@@ -29,6 +29,7 @@ public class DataBase {
                     COLUMN_TITLE + " text, " +
                     COLUMN_CONTENT + " char(255), " +
                     COLUMN_PRIORITY + " integer, " +
+                    COLUMN_GSP + " char (255), " +
                     COLUMN_DATE_CREATE_EDIT + " text" +
             ");";
 
@@ -71,20 +72,22 @@ public class DataBase {
                                     COLUMN_DATE_CREATE_EDIT + " DESC");
     }
 
-    public void addToDB(String title, String content, int priority, String date){
+    public void addToDB(String title, String content, int priority, String gps, String date){
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_TITLE, title);
         contentValues.put(COLUMN_CONTENT, content);
         contentValues.put(COLUMN_PRIORITY, priority);
+        contentValues.put(COLUMN_GSP, gps);
         contentValues.put(COLUMN_DATE_CREATE_EDIT, date);
         dbSqLiteDatabase.insert(DB_TABLE, null, contentValues);
     }
 
-    public void updateDB(int id, String title, String content, int priority, String date){
+    public void updateDB(int id, String title, String content, int priority, String gps, String date){
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_TITLE, title);
         contentValues.put(COLUMN_CONTENT, content);
         contentValues.put(COLUMN_PRIORITY, priority);
+        contentValues.put(COLUMN_GSP, gps);
         contentValues.put(COLUMN_DATE_CREATE_EDIT, date);
         dbSqLiteDatabase.update(DB_TABLE,
                                 contentValues,
