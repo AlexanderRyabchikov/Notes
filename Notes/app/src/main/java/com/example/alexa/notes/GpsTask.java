@@ -26,30 +26,17 @@ import java.util.concurrent.TimeUnit;
 
 public class GpsTask extends AsyncTask<Void, Void, Void> {
     public static ProgressBar bar;
-    public static TextView textView;
-    String address = null;
     public static LocationManager locationManager;
     private LocationListener locationListener;
+    private Location gpsLocation = null;
 
     @Override
     protected void onPreExecute() {
-        Log.d("String", "start");
         bar.setVisibility(View.VISIBLE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Geocoder geocoder = new Geocoder(CreateEdit_activity.context, Locale.getDefault());
-                List<Address> addresses;
-                try {
-                    addresses = geocoder.
-                            getFromLocation(location.getLatitude(),
-                                    location.getLongitude(), 1);
-                    address = addresses.get(0).getAddressLine(0) +
-                            "\n" + addresses.get(0).getAddressLine(1) +
-                            "\n" + addresses.get(0).getAddressLine(2);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                gpsLocation = location;
             }
 
             @Override
@@ -65,6 +52,7 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
             @Override
             public void onProviderDisabled(String s) {
                 Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
                 CreateEdit_activity.context.startActivity(intent);
                 Toast.makeText(CreateEdit_activity.context, "Gps is turned off!! ",
                         Toast.LENGTH_SHORT).show();
@@ -87,22 +75,26 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... arg0) {
-        Log.d("String", "task start");
-        for (int i = 0; i < 100000; i++){
+        for (int i = 0; i < 100000; i++) {
 
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (address != null){
+
+            if (gpsLocation != null){
                 break;
             }
         }
-        if (address == null){
-            address = "местонахождение не определено";
-        }
 
+        if (gpsLocation == null){
+            gpsLocation.setLatitude(0.0);
+            gpsLocation.setLongitude(0.0);
+            Toast.makeText(CreateEdit_activity.context,
+                    "Не могу определить местонахождение",
+                    Toast.LENGTH_SHORT).show();
+        }
         return null;
     }
 
@@ -110,8 +102,11 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void result) {
         bar.setVisibility(View.GONE);
         locationManager.removeUpdates(locationListener);
-        textView.setVisibility(View.VISIBLE);
-        textView.setText(address);
+        CreateEdit_activity.lintitude = gpsLocation.getLatitude();
+        CreateEdit_activity.longtitude = gpsLocation.getLongitude();
+        Toast.makeText(CreateEdit_activity.context,
+                "Координаты определены",
+                Toast.LENGTH_SHORT).show();
     }
     @Override
     protected void onCancelled() {

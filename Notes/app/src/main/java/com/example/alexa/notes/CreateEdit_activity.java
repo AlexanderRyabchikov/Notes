@@ -31,6 +31,8 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     private CheckBox checkBoxManual;
     private RadioGroup radioGroup;
     public static Context context;
+    public static double  lintitude;
+    public static double longtitude;
     private int rdSelectId = -1;
     private GpsTask gpsTask;
     public static final String intentUpdateMain = "update_main";
@@ -46,9 +48,6 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         context = getBaseContext();
         intent = getIntent();
         GpsTask.bar = findViewById(R.id.progressBar);
-        GpsTask.textView = findViewById(R.id.TextGps);
-        GpsTask.textView.setVisibility(View.INVISIBLE);
-
         textViewTitle = findViewById(R.id.editTextTitle);
         textViewContent = findViewById(R.id.editTextContent);
 
@@ -149,8 +148,8 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                 if (checkBoxManual.isChecked()){
                     checkBoxAuto.setChecked(false);
                     checkBoxAuto.setSelected(false);
-                    Intent intentMaps = new Intent(this, MapsActivity.class);
-                    startActivity(intentMaps);
+                    /*Intent intentMaps = new Intent(this, MapsActivity.class);
+                    startActivity(intentMaps);*/
                 }else{
                     if (gpsTask != null){
                         cancelTask();
@@ -163,7 +162,6 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     }
 
     private void cancelTask(){
-        GpsTask.textView.setText("");
         if(!gpsTask.isCancelled()) {
             gpsTask.cancel(false);
         }
@@ -180,14 +178,16 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
             dataBase.addToDB(   textViewTitle.getText().toString(),
                                 textViewContent.getText().toString(),
                                 rdSelectId,
-                                GpsTask.textView.getText().toString(),
+                                lintitude,
+                                longtitude,
                                 date);
         }else{
             dataBase.updateDB(  id_edit_note,
                                 textViewTitle.getText().toString(),
                                 textViewContent.getText().toString(),
                                 rdSelectId,
-                                GpsTask.textView.getText().toString(),
+                                lintitude,
+                                longtitude,
                                 date);
         }
         dataBase.close_connection();
@@ -199,7 +199,6 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         editView.setText("");
         editView = findViewById(R.id.editTextContent);
         editView.setText("");
-        GpsTask.textView.setText("");
         checkBoxManual.setChecked(false);
         checkBoxManual.setSelected(false);
         checkBoxAuto.setChecked(false);
