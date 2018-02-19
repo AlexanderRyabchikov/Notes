@@ -1,21 +1,12 @@
 package com.example.alexa.notes;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -23,9 +14,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
 
@@ -36,6 +24,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String title;
     private double lintitude;
     private double longtitude;
+    private Intent intentFlag;
+    private boolean ctrlFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        intentFlag = getIntent();
     }
 
 
@@ -52,17 +43,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopManagingCursor(cursor);
-        cursor.close();
-        dataBase.close_connection();
+        if (ctrlFlag) {
+            stopManagingCursor(cursor);
+            cursor.close();
+            dataBase.close_connection();
+        }
     }
 
     @Override
     protected void onStop(){
         super.onStop();
-        stopManagingCursor(cursor);
-        cursor.close();
-        dataBase.close_connection();
+        if(ctrlFlag) {
+            stopManagingCursor(cursor);
+            cursor.close();
+            dataBase.close_connection();
+        }
     }
 
     /**
@@ -80,25 +75,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
 
-        dataBase = new DataBase(getBaseContext());
 
-        dataBase.open_connection();
+        if (intentFlag.getBooleanExtra(MainActivity.map, false)) {
+            dataBase = new DataBase(getBaseContext());
+            ctrlFlag = true;
+            dataBase.open_connection();
 
-        cursor = dataBase.getEntries();
-        if (cursor.getCount() >= 0){
-            if (cursor.moveToFirst()){
-                do{
-                    id_note = cursor.getInt(cursor.getColumnIndex(DataBase.COLUMN_ID));
-                    title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
-                    lintitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LINTITIDE));
-                    longtitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LONGTITUDE));
-                    mMap.addMarker(new MarkerOptions()
-                    .title(title)
-                    .position(new LatLng(lintitude, longtitude))
-                    .alpha(id_note));
+            cursor = dataBase.getEntries();
+            if (cursor.getCount() >= 0) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        id_note = cursor.getInt(cursor.getColumnIndex(DataBase.COLUMN_ID));
+                        title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
+                        lintitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LINTITIDE));
+                        longtitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LONGTITUDE));
+                        mMap.addMarker(new MarkerOptions()
+                                .title(title)
+                                .position(new LatLng(lintitude, longtitude))
+                                .alpha(id_note));
 
 
-                }while (cursor.moveToNext());
+                    } while (cursor.moveToNext());
+                }
             }
         }
 
@@ -106,12 +104,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapClick(LatLng latLng) {
 
-        mMap.addMarker(new MarkerOptions()
-        .position(latLng));
+        if (!ctrlFlag) {
+            mMap.clear();
+            mMap.addMarker(new MarkerOptions()
+                    .position(latLng));
 
-        CreateEdit_activity.longtitude = latLng.longitude;
-        CreateEdit_activity.lintitude = latLng.latitude;
-        Toast.makeText(getBaseContext(), "Координаты выбраны", Toast.LENGTH_SHORT).show();
+            CreateEdit_activity.longtitude = latLng.longitude;
+            CreateEdit_activity.lintitude = latLng.latitude;
+            Toast.makeText(getBaseContext(), "Координаты выбраны", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -138,16 +139,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         intent.putExtra(CreateEdit_activity.intentUpdateMain, true);
         setResult(RESULT_OK, intent);
         finish();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) {return;}
-        boolean isUpdate = data.getBooleanExtra(CreateEdit_activity.intentUpdateMain, false);
-        if (isUpdate){
-            this.recreate();
-        }
-
     }
 }
 

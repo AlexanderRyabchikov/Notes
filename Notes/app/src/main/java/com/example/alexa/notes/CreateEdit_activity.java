@@ -1,6 +1,7 @@
 package com.example.alexa.notes;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -33,7 +36,8 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     public static Context context;
     public static double  lintitude;
     public static double longtitude;
-    private int rdSelectId = -1;
+    private InputMethodManager inputMethodManager;
+    private int rdSelectId;
     private GpsTask gpsTask;
     public static final String intentUpdateMain = "update_main";
     private static final String SuccessMsgDB = "Запись успешно сохранена";
@@ -44,7 +48,7 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         getSupportActionBar().hide();
 
         dataBase = new DataBase(this);
-
+        rdSelectId = -100;
         context = getBaseContext();
         intent = getIntent();
         GpsTask.bar = findViewById(R.id.progressBar);
@@ -73,7 +77,6 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
             long positionId = intent.getLongExtra(MainActivity.intentEditNote, -1);
             String title;
             String content;
-            int radioButtonId;
             dataBase.open_connection();
             Cursor cursor = dataBase.getEntry(positionId);
 
@@ -82,7 +85,6 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                     id_edit_note = cursor.getInt(cursor.getColumnIndex(DataBase.COLUMN_ID));
                     title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
                     content = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_CONTENT));
-                    radioButtonId = cursor.getInt(cursor.getColumnIndex(DataBase.COLUMN_PRIORITY));
                     lintitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LINTITIDE));
                     longtitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LONGTITUDE));
 
@@ -90,7 +92,6 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
 
                 textViewTitle.setText(title);
                 textViewContent.setText(content);
-                radioGroup.check(radioButtonId);
 
             }
             stopManagingCursor(cursor);
@@ -104,22 +105,23 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (radioGroup.getCheckedRadioButtonId()){
-                    case R.id.lowPriority:
-                        rdSelectId = CustomCursorAdapter.LOW_PRIORITY;
-                        break;
-                    case R.id.mediumPriority:
-                        rdSelectId = CustomCursorAdapter.MEDIUM_PRIORITY;
-                        break;
-                    case R.id.highPriority:
-                        rdSelectId = CustomCursorAdapter.HIGH_PRIORITY;
-                        break;
-                    default:
+                   switch (radioGroup.getCheckedRadioButtonId()) {
+                        case R.id.lowPriority:
+                            rdSelectId = CustomCursorAdapter.LOW_PRIORITY;
+                            break;
+                        case R.id.mediumPriority:
+                            rdSelectId = CustomCursorAdapter.MEDIUM_PRIORITY;
+                            break;
+                        case R.id.highPriority:
+                            rdSelectId = CustomCursorAdapter.HIGH_PRIORITY;
+                            break;
+                        default:
+                            rdSelectId = -100;
                             break;
 
 
+                    }
                 }
-            }
         });
     }
 
@@ -136,6 +138,10 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                 cleanAllForm();
                 break;
             case R.id.gpsCheckedAuto:
+                inputMethodManager = (InputMethodManager)
+                        CreateEdit_activity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow
+                        (CreateEdit_activity.this.getCurrentFocus().getWindowToken(), 0);
                 if (checkBoxAuto.isChecked()){
                     checkBoxManual.setChecked(false);
                     checkBoxManual.setSelected(false);
@@ -147,11 +153,15 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
 
                 break;
             case R.id.gpsCheckedMaps:
+                inputMethodManager = (InputMethodManager)
+                        CreateEdit_activity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow
+                        (CreateEdit_activity.this.getCurrentFocus().getWindowToken(), 0);
                 if (checkBoxManual.isChecked()){
                     checkBoxAuto.setChecked(false);
                     checkBoxAuto.setSelected(false);
-                    /*Intent intentMaps = new Intent(this, MapsActivity.class);
-                    startActivity(intentMaps);*/
+                    Intent intentMaps = new Intent(this, MapsActivity.class);
+                    startActivityForResult(intentMaps, 11);
                 }else{
                     if (gpsTask != null){
                         cancelTask();
@@ -208,6 +218,7 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
 
 
         radioGroup.clearCheck();
+        rdSelectId = -100;
     }
 
     @Override
