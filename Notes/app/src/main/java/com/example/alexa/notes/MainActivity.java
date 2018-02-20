@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String intentCreateNote = "Create_note";
     public static final String intentEditNote = "edit_note";
     public static final String intentPreviewNote = "Preview_note";
+    public static final String map = "googleMaps";
     public static final String DeleteSuccessMsg = "Запись успешно удалена";
     ListView listView;
     DataBase dataBase;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button createNote = findViewById(R.id.createNote);
         createNote.setOnClickListener(this);
+        Button mapButton = findViewById(R.id.runMap);
+        mapButton.setOnClickListener(this);
 
         dataBase = new DataBase(this);
         dataBase.open_connection();
@@ -78,6 +81,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intentCreateEdit = new Intent(this, CreateEdit_activity.class);
                 intentCreateEdit.putExtra(intentCreateNote, true);
                 startActivityForResult(intentCreateEdit, 1);
+                break;
+            case R.id.runMap:
+                Intent intentMaps = new Intent(this, MapsActivity.class);
+                intentMaps.putExtra(map, true);
+                startActivityForResult(intentMaps, 10);
                 break;
             default:
                 break;

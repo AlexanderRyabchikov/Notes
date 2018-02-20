@@ -41,6 +41,7 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
     }
 
     private static String title;
+    private static String gps;
     private static String content;
     private long positionId;
     private static final int SAVE_TO_FILE = 3;

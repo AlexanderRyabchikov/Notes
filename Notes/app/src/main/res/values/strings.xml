@@ -13,4 +13,8 @@
     <string name="low_priority">Низкий приоритет</string>
     <string name="medium_priority">Средний приоритет</string>
     <string name="high_priority">Высокий приоритет</string>
+    <string name="checked_auto">Автоопределение места</string>
+    <string name="maps_checked">Определить место на карте</string>
+    <string name="runMap">Карта</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

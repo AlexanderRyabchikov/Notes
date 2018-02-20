@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -57,10 +59,11 @@
                     android:textAlignment="viewStart"
                     android:background="@drawable/text_view_border"
                     android:id="@+id/TextContent"
-                    android:lines="12"
+                    android:lines="6"
+                    android:maxLength="256"
                     android:textSize="25sp"
-                    android:minLines="10"
-                    android:maxLines="20"
+                    android:minLines="3"
+                    android:maxLines="9"
                     android:scrollbars="vertical"
                     android:gravity="start" />
             </LinearLayout>
