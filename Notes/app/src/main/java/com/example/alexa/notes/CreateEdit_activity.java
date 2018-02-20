@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -70,6 +69,8 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         cancelButton.setOnClickListener(this);
         Button saveButton = findViewById(R.id.saveBt);
         saveButton.setOnClickListener(this);
+
+        findViewById(R.id.addImageButton).setOnClickListener(this);
 
         if(!intent.getBooleanExtra(MainActivity.intentCreateNote, false)){
             // Здесь заполнение данными если был вызван для правки
@@ -136,6 +137,9 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                 SaveToDB();
                 Toast.makeText(getBaseContext(), SuccessMsgDB, Toast.LENGTH_SHORT).show();
                 cleanAllForm();
+                break;
+            case R.id.addImageButton:
+                new DialogInputImage(this, "Выбор изображения", CreateEdit_activity.this).createDialog();
                 break;
             case R.id.gpsCheckedAuto:
                 inputMethodManager = (InputMethodManager)

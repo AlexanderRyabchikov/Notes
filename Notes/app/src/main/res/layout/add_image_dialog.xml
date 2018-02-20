@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:background="@color/BackgroudWindow"
+    android:layout_height="fill_parent">
+
+    <Button
+        android:id="@+id/btnChoosePath"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:width="200dp"
+        android:text="From Gallery"/>
+
+    <Button
+        android:id="@+id/btnTakePhoto"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/btnChoosePath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:width="200dp"
+        android:text="Take Photo"/>
+
+    <Button
+        android:id="@+id/btnExit"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/btnTakePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:text="Exit"/>
+</RelativeLayout>
