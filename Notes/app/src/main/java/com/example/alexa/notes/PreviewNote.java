@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
@@ -18,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +44,7 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
     }
 
     private static String title;
-    private static String gps;
+    private static Bitmap btm;
     private static String content;
     private long positionId;
     private static final int SAVE_TO_FILE = 3;
@@ -56,6 +59,7 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
         backButton.setOnClickListener(this);
         TextView textViewTitle = findViewById(R.id.TextPreView);
         TextView textViewContent = findViewById(R.id.TextContent);
+        ImageView imageView = findViewById(R.id.imageView);
 
         intent = getIntent();
         positionId = intent.getLongExtra(MainActivity.intentPreviewNote, -1);
@@ -68,12 +72,15 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
             do{
                 title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
                 content = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_CONTENT));
+                btm = getImage(cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE)));
+
 
             }while(cursor.moveToNext());
         }
 
         textViewTitle.setText(title);
         textViewContent.setText(content);
+        imageView.setImageBitmap(btm);
         registerForContextMenu(relativeLayout);
     }
 
@@ -171,5 +178,9 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
             this.recreate();
         }
 
+    }
+
+    public static Bitmap getImage(byte[] image){
+        return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 }

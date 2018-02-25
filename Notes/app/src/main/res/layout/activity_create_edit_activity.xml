@@ -83,6 +83,19 @@
                 android:layout_below="@+id/linearLayoutCreateContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/addImageLayout"
+                android:orientation="horizontal">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/addImageButton"
+                    android:text="@string/add_image_btn"
+                    android:textAlignment="center" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_below="@+id/addImageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/layoutRadioGroup"
                 android:orientation="horizontal">
                 <RadioGroup

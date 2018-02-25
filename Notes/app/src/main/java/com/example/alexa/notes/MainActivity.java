@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static final String DeleteSuccessMsg = "Запись успешно удалена";
     ListView listView;
     DataBase dataBase;
-    CustomCursorAdapter simpleCursorAdapter;
+    SimpleCursorAdapter simpleCursorAdapter;
     Cursor cursor;
     @SuppressLint({"WrongConstant", "ResourceAsColor"})
     @Override
@@ -59,13 +59,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         else{
             startManagingCursor(cursor);
-            String[] from = new String[] {DataBase.COLUMN_TITLE};
-            int[] to = new int[] {R.id.tvText};
-            simpleCursorAdapter = new CustomCursorAdapter(this,
+            String[] from = new String[] {DataBase.COLUMN_IMAGE, DataBase.COLUMN_TITLE};
+            int[] to = new int[] {R.id.ivImg, R.id.tvText};
+            simpleCursorAdapter = new SimpleCursorAdapter(this,
                                                           R.layout.item_list_notes,
                                                           cursor,
                                                           from,
                                                           to);
+            simpleCursorAdapter.setViewBinder(new CustomCursorAdapter());
 
             listView = findViewById(R.id.lvData);
             listView.setAdapter(simpleCursorAdapter);

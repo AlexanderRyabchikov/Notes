@@ -17,4 +17,6 @@
     <string name="maps_checked">Определить место на карте</string>
     <string name="runMap">Карта</string>
     <string name="title_activity_maps">Map</string>
+    <string name="add_image">Добавить изображение</string>
+    <string name="add_image_btn">Добавить изображение</string>
 </resources>
