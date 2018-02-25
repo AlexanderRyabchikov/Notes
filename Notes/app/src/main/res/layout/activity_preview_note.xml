@@ -51,6 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:id="@+id/TextContentPreview"
                 android:layout_margin="4dp"
                 android:layout_below="@+id/linearLayoutTextTitle">
                 <TextView
@@ -66,6 +67,24 @@
                     android:maxLines="9"
                     android:scrollbars="vertical"
                     android:gravity="start" />
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:id="@+id/viewLineAfterTextContent"
+                android:layout_height="2dp"
+                android:background="#7b7b7b"
+                android:layout_below="@+id/TextContentPreview"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_below="@+id/viewLineAfterTextContent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView"
+                    />
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>

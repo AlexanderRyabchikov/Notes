@@ -107,6 +107,7 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
         Toast.makeText(CreateEdit_activity.context,
                 "Координаты определены",
                 Toast.LENGTH_SHORT).show();
+        CreateEdit_activity.saveButton.setEnabled(true);
     }
     @Override
     protected void onCancelled() {
