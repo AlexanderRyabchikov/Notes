@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -25,7 +24,6 @@ public class DialogInputFile {
     private String Title;
     private String namePositiveButton;
     private String nameNegativeButton;
-    private Editable fileName;
 
     public DialogInputFile(Context context,
                            String Title,
@@ -90,17 +88,17 @@ public class DialogInputFile {
 
             try(FileOutputStream outputStream = new FileOutputStream(file)){
 
-                outputStream.write(PreviewNote.getTitleNote().getBytes());
+                outputStream.write(PreviewNote.getTitlePreview().getBytes());
                 outputStream.write("\n".getBytes());
-                outputStream.write(PreviewNote.getContentNote().getBytes());
+                outputStream.write(PreviewNote.getContentPreview().getBytes());
                 outputStream.flush();
-                Toast.makeText(context, "File saved", Toast.LENGTH_SHORT).show();
+                C.ToastMakeText(context, C.FILE_SAVE);
             } catch (IOException e) {
-                Toast.makeText(context, "File not saved", Toast.LENGTH_SHORT).show();
+                C.ToastMakeText(context, C.FILE_NOT_SAVE);
             }
         }
         else{
-            Toast.makeText(context, "Flash not installed", Toast.LENGTH_SHORT).show();
+            C.ToastMakeText(context, C.FLASH_ERROR);
         }
     }
 

@@ -18,11 +18,7 @@ import java.util.Random;
 public class DialogInputImage implements View.OnClickListener {
     private String title;
     private Context context;
-    public static Dialog dialogImage;
-    public static Uri mCapturedImageURI;
     private Activity activity;
-    public static final int RESULT_LOAD_IMAGE = 1;
-    public static final int REQUEST_IMAGE_CAPTURE = 2;
 
 
     public DialogInputImage(Context ctx, String title, Activity activity){
@@ -33,15 +29,15 @@ public class DialogInputImage implements View.OnClickListener {
 
     void createDialog(){
 
-        dialogImage = new Dialog(context);
-        dialogImage.setContentView(R.layout.add_image_dialog);
-        dialogImage.setTitle(title);
+        C.dialogImage = new Dialog(context);
+        C.dialogImage.setContentView(R.layout.add_image_dialog);
+        C.dialogImage.setTitle(title);
 
-        dialogImage.findViewById(R.id.btnExit).setOnClickListener(this);
-        dialogImage.findViewById(R.id.btnChoosePath).setOnClickListener(this);
-        dialogImage.findViewById(R.id.btnTakePhoto).setOnClickListener(this);
+        C.dialogImage.findViewById(R.id.btnExit).setOnClickListener(this);
+        C.dialogImage.findViewById(R.id.btnChoosePath).setOnClickListener(this);
+        C.dialogImage.findViewById(R.id.btnTakePhoto).setOnClickListener(this);
 
-        dialogImage.show();
+        C.dialogImage.show();
 
 
     }
@@ -56,7 +52,7 @@ public class DialogInputImage implements View.OnClickListener {
                 activeTakePhoto();
                 break;
             case R.id.btnExit:
-                dialogImage.dismiss();
+                C.dialogImage.dismiss();
                 break;
         }
 
@@ -68,18 +64,18 @@ public class DialogInputImage implements View.OnClickListener {
             String fileName = "notes_" + new Random().nextInt() + ".jpg";
             ContentValues values = new ContentValues();
             values.put(MediaStore.Images.Media.TITLE, fileName);
-            mCapturedImageURI = context.getContentResolver()
+            C.mCapturedImageURI = context.getContentResolver()
                     .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                             values);
             takePictureIntent
-                    .putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
-            activity.startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    .putExtra(MediaStore.EXTRA_OUTPUT, C.mCapturedImageURI);
+            activity.startActivityForResult(takePictureIntent, C.REQUEST_IMAGE_CAPTURE);
         }
     }
 
     private void activeGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        activity.startActivityForResult(intent, RESULT_LOAD_IMAGE);
+        activity.startActivityForResult(intent, C.RESULT_LOAD_IMAGE);
     }
 }

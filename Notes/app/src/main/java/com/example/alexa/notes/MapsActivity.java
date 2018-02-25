@@ -76,7 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMarkerClickListener(this);
 
 
-        if (intentFlag.getBooleanExtra(MainActivity.map, false)) {
+        if (intentFlag.getBooleanExtra(C.map, false)) {
             dataBase = new DataBase(getBaseContext());
             ctrlFlag = true;
             dataBase.open_connection();
@@ -109,9 +109,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.addMarker(new MarkerOptions()
                     .position(latLng));
 
-            CreateEdit_activity.longtitude = latLng.longitude;
-            CreateEdit_activity.lintitude = latLng.latitude;
-            Toast.makeText(getBaseContext(), "Координаты выбраны", Toast.LENGTH_SHORT).show();
+            C.longtitude = latLng.longitude;
+            C.lintitude = latLng.latitude;
+            C.ToastMakeText(getBaseContext(), C.COORDINATE_SELECT);
         }
     }
 
@@ -120,7 +120,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         long positionId = (long)marker.getAlpha();
         Intent intentPreviewNote = new Intent(this, PreviewNote.class);
-        intentPreviewNote.putExtra(MainActivity.intentPreviewNote, positionId);
+        intentPreviewNote.putExtra(C.INTENT_PREVIEW_NOTE, positionId);
         startActivityForResult(intentPreviewNote, 2);
         return false;
     }
@@ -136,7 +136,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void sendResultWithClose(){
         setResult(RESULT_OK);
         Intent intent = new Intent();
-        intent.putExtra(CreateEdit_activity.intentUpdateMain, true);
+        intent.putExtra(C.INTENT_UPDATE_MAIN, true);
         setResult(RESULT_OK, intent);
         finish();
     }
