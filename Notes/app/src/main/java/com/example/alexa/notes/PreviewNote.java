@@ -1,33 +1,19 @@
 package com.example.alexa.notes;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Editable;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class PreviewNote extends AppCompatActivity implements View.OnClickListener {
 
@@ -35,11 +21,11 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
     private Intent intent;
     private Cursor cursor;
 
-    public static String getTitleNote() {
+    public static String getTitlePreview() {
         return title;
     }
 
-    public static String getContentNote() {
+    public static String getContentPreview() {
         return content;
     }
 
@@ -47,7 +33,8 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
     private static Bitmap btm;
     private static String content;
     private long positionId;
-    private static final int SAVE_TO_FILE = 3;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,14 +42,13 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
         getSupportActionBar().hide();
 
         RelativeLayout relativeLayout = findViewById(R.id.relativeLayPreView);
-        Button backButton = findViewById(R.id.backBt);
-        backButton.setOnClickListener(this);
+        findViewById(R.id.backBt).setOnClickListener(this);
         TextView textViewTitle = findViewById(R.id.TextPreView);
         TextView textViewContent = findViewById(R.id.TextContent);
         ImageView imageView = findViewById(R.id.imageView);
 
         intent = getIntent();
-        positionId = intent.getLongExtra(MainActivity.intentPreviewNote, -1);
+        positionId = intent.getLongExtra(C.INTENT_PREVIEW_NOTE, -1);
 
         dataBase = new DataBase(this);
         dataBase.open_connection();
@@ -72,7 +58,7 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
             do{
                 title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
                 content = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_CONTENT));
-                btm = getImage(cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE)));
+                btm = C.getImage(cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE)));
 
 
             }while(cursor.moveToNext());
@@ -96,7 +82,7 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
     private void sendResultWithClose(){
         setResult(RESULT_OK);
         Intent intent = new Intent();
-        intent.putExtra(CreateEdit_activity.intentUpdateMain, true);
+        intent.putExtra(C.INTENT_UPDATE_MAIN, true);
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -114,27 +100,27 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
                                     View view,
                                     ContextMenu.ContextMenuInfo contextMenuInfo){
         super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
-        contextMenu.add(0, MainActivity.CM_EDIT_ID, 0, R.string.edit_menu);
-        contextMenu.add(0, MainActivity.CM_DELETE_ID, 0, R.string.delete_menu);
-        contextMenu.add(0, SAVE_TO_FILE, 0, R.string.save_to_file);
+        contextMenu.add(0, C.CM_EDIT_ID, 0, R.string.edit_menu);
+        contextMenu.add(0, C.CM_DELETE_ID, 0, R.string.delete_menu);
+        contextMenu.add(0, C.SAVE_TO_FILE, 0, R.string.save_to_file);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public boolean onContextItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case MainActivity.CM_DELETE_ID:
+            case C.CM_DELETE_ID:
                 dataBase.deleteDB(positionId);
                 cursor.requery();
-                Toast.makeText(getBaseContext(), MainActivity.DeleteSuccessMsg, Toast.LENGTH_SHORT).show();
+                C.ToastMakeText(getBaseContext(), C.DELETE_SUCCESS_MSG);
                 sendResultWithClose();
                 break;
-            case MainActivity.CM_EDIT_ID:
+            case C.CM_EDIT_ID:
                 Intent intentCreateEdit = new Intent(this, CreateEdit_activity.class);
-                intentCreateEdit.putExtra(MainActivity.intentCreateNote, false);
-                intentCreateEdit.putExtra(MainActivity.intentEditNote, positionId);
+                intentCreateEdit.putExtra(C.INTENT_CREATE_NOTE, false);
+                intentCreateEdit.putExtra(C.INTENT_EDIT_NOTE, positionId);
                 startActivityForResult(intentCreateEdit, 1);
                 break;
-            case SAVE_TO_FILE:
+            case C.SAVE_TO_FILE:
                 save_to_file();
                 break;
             default:
@@ -149,9 +135,9 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
 
         DialogInputFile dialogInputFile =
                 new DialogInputFile(this,
-                "Name file to save...",
-                        "OK",
-                        "Cancel");
+                        C.TITLE_DIALOG_SAVE_FILE,
+                        C.NAME_POSITIVE_BUTTON,
+                        C.NAME_NEGATIVE_BUTTON);
         dialogInputFile.createDialog();
     }
 
@@ -173,14 +159,10 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {return;}
-        boolean isUpdate = data.getBooleanExtra(CreateEdit_activity.intentUpdateMain, false);
+        boolean isUpdate = data.getBooleanExtra(C.INTENT_UPDATE_MAIN, false);
         if (isUpdate){
             this.recreate();
         }
 
-    }
-
-    public static Bitmap getImage(byte[] image){
-        return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 }

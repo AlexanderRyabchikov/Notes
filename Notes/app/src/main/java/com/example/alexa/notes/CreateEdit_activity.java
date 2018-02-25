@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
@@ -21,16 +20,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class CreateEdit_activity extends AppCompatActivity implements View.OnClickListener {
 
-    public static final int SIZE_IMAGE_PREVIEW = 52;
     private Intent intent;
     private DataBase dataBase;
     private boolean bFlagCheckCreate = true;
@@ -41,51 +36,24 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     private CheckBox checkBoxManual;
     public static Button saveButton;
     private RadioGroup radioGroup;
-    public static Context context;
-    public static double  lintitude;
-    public static double longtitude;
     private String picturePath;
     private InputMethodManager inputMethodManager;
-    private int rdSelectId;
+    private byte[] image;
+    private byte[] imageSmall;
+
     private GpsTask gpsTask;
-    public static final String intentUpdateMain = "update_main";
-    private static final String SuccessMsgDB = "Запись успешно сохранена";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_activity);
         getSupportActionBar().hide();
 
-        dataBase = new DataBase(this);
-        rdSelectId = -100;
-        context = getBaseContext();
-        intent = getIntent();
-        GpsTask.bar = findViewById(R.id.progressBar);
-        textViewTitle = findViewById(R.id.editTextTitle);
-        textViewContent = findViewById(R.id.editTextContent);
+        initActivity();
 
-        radioGroup = findViewById(R.id.radioGroup);
-        GetSelectedRadioButton();
-        checkBoxAuto = findViewById(R.id.gpsCheckedAuto);
-        checkBoxManual = findViewById(R.id.gpsCheckedMaps);
-
-        checkBoxManual.setOnClickListener(this);
-        checkBoxAuto.setOnClickListener(this);
-
-        GpsTask.locationManager =
-                (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-
-        Button cancelButton = findViewById(R.id.cancelBt);
-        cancelButton.setOnClickListener(this);
-        saveButton = findViewById(R.id.saveBt);
-        saveButton.setOnClickListener(this);
-
-        findViewById(R.id.addImageButton).setOnClickListener(this);
-
-        if(!intent.getBooleanExtra(MainActivity.intentCreateNote, false)){
+        if(!intent.getBooleanExtra(C.INTENT_CREATE_NOTE, false)){
             // Здесь заполнение данными если был вызван для правки
             bFlagCheckCreate = false;
-            long positionId = intent.getLongExtra(MainActivity.intentEditNote, -1);
+            long positionId = intent.getLongExtra(C.INTENT_EDIT_NOTE, -1);
             String title;
             String content;
             dataBase.open_connection();
@@ -96,8 +64,10 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                     id_edit_note = cursor.getInt(cursor.getColumnIndex(DataBase.COLUMN_ID));
                     title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
                     content = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_CONTENT));
-                    lintitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LINTITIDE));
-                    longtitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LONGTITUDE));
+                    C.lintitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LINTITIDE));
+                    C.longtitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LONGTITUDE));
+                    image = cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE));
+                    imageSmall = cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE_SMALL));
 
                 }while(cursor.moveToNext());
 
@@ -112,22 +82,46 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    private void initActivity(){
+        dataBase = new DataBase(this);
+        C.context = getBaseContext();
+        intent = getIntent();
+
+        C.bar = findViewById(R.id.progressBar);
+        textViewTitle = findViewById(R.id.editTextTitle);
+        textViewContent = findViewById(R.id.editTextContent);
+        radioGroup = findViewById(R.id.radioGroup);
+        GetSelectedRadioButton();
+        checkBoxAuto = findViewById(R.id.gpsCheckedAuto);
+        checkBoxManual = findViewById(R.id.gpsCheckedMaps);
+        saveButton = findViewById(R.id.saveBt);
+
+        checkBoxManual.setOnClickListener(this);
+        checkBoxAuto.setOnClickListener(this);
+        findViewById(R.id.cancelBt).setOnClickListener(this);
+        saveButton.setOnClickListener(this);
+        findViewById(R.id.addImageButton).setOnClickListener(this);
+
+        C.locationManager =
+                (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+    }
+
     private void GetSelectedRadioButton() {
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                    switch (radioGroup.getCheckedRadioButtonId()) {
                         case R.id.lowPriority:
-                            rdSelectId = CustomCursorAdapter.LOW_PRIORITY;
+                            C.RADIO_SELECT_ID = C.LOW_PRIORITY;
                             break;
                         case R.id.mediumPriority:
-                            rdSelectId = CustomCursorAdapter.MEDIUM_PRIORITY;
+                            C.RADIO_SELECT_ID = C.MEDIUM_PRIORITY;
                             break;
                         case R.id.highPriority:
-                            rdSelectId = CustomCursorAdapter.HIGH_PRIORITY;
+                            C.RADIO_SELECT_ID = C.HIGH_PRIORITY;
                             break;
                         default:
-                            rdSelectId = -100;
+                            C.RADIO_SELECT_ID = -100;
                             break;
 
 
@@ -142,21 +136,22 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         switch (view.getId()){
             case R.id.cancelBt:
                 sendResultWithClose();
-
                 break;
             case R.id.saveBt:
                 SaveToDB();
-                Toast.makeText(getBaseContext(), SuccessMsgDB, Toast.LENGTH_SHORT).show();
+                C.ToastMakeText(getBaseContext(), C.SUCCESS_MSG_DB);
                 cleanAllForm();
                 break;
             case R.id.addImageButton:
-                new DialogInputImage(this, "Выбор изображения", CreateEdit_activity.this).createDialog();
+                new DialogInputImage(this, C.TITLE_DIALOG_IMAGE, CreateEdit_activity.this).createDialog();
                 break;
             case R.id.gpsCheckedAuto:
                 inputMethodManager = (InputMethodManager)
                         CreateEdit_activity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+
                 inputMethodManager.hideSoftInputFromWindow
                         (CreateEdit_activity.this.getCurrentFocus().getWindowToken(), 0);
+
                 if (checkBoxAuto.isChecked()){
                     saveButton.setEnabled(false);
                     checkBoxManual.setChecked(false);
@@ -172,8 +167,10 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
             case R.id.gpsCheckedMaps:
                 inputMethodManager = (InputMethodManager)
                         CreateEdit_activity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+
                 inputMethodManager.hideSoftInputFromWindow
                         (CreateEdit_activity.this.getCurrentFocus().getWindowToken(), 0);
+
                 if (checkBoxManual.isChecked()){
                     checkBoxAuto.setChecked(false);
                     checkBoxAuto.setSelected(false);
@@ -194,7 +191,7 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         if(!gpsTask.isCancelled()) {
             gpsTask.cancel(false);
         }
-        GpsTask.bar.setVisibility(View.GONE);
+        C.bar.setVisibility(View.GONE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -203,15 +200,15 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy GGG hh:mm:ss aaa");
         String date = simpleDateFormat.format(calendar.getTime());
-        byte[] image = saveImage(picturePath);
-        byte[] imageSmall = convertToSmallImage(image, SIZE_IMAGE_PREVIEW);
+        image = saveImage(picturePath);
+        imageSmall = C.convertToSmallImage(image, C.SIZE_IMAGE_PREVIEW);
         dataBase.open_connection();
         if (bFlagCheckCreate){
             dataBase.addToDB(   textViewTitle.getText().toString(),
                                 textViewContent.getText().toString(),
-                                rdSelectId,
-                                lintitude,
-                                longtitude,
+                                C.RADIO_SELECT_ID,
+                                C.lintitude,
+                                C.longtitude,
                                 image,
                                 imageSmall,
                                 date);
@@ -219,9 +216,9 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
             dataBase.updateDB(  id_edit_note,
                                 textViewTitle.getText().toString(),
                                 textViewContent.getText().toString(),
-                                rdSelectId,
-                                lintitude,
-                                longtitude,
+                                C.RADIO_SELECT_ID,
+                                C.lintitude,
+                                C.longtitude,
                                 image,
                                 imageSmall,
                                 date);
@@ -242,7 +239,7 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
 
 
         radioGroup.clearCheck();
-        rdSelectId = -100;
+        C.RADIO_SELECT_ID = -100;
     }
 
     @Override
@@ -256,13 +253,16 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     private void sendResultWithClose(){
         setResult(RESULT_OK);
         Intent intent = new Intent();
-        intent.putExtra(intentUpdateMain, true);
+        intent.putExtra(C.INTENT_UPDATE_MAIN, true);
         setResult(RESULT_OK, intent);
         finish();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private byte[] saveImage(String path) {
+        if (path == ""){
+            return null;
+        }
         byte[] image = new byte[0];
         try (FileInputStream fileInputStream = new FileInputStream(path)) {
             image = new byte[fileInputStream.available()];
@@ -279,8 +279,8 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case DialogInputImage.RESULT_LOAD_IMAGE:
-                if (requestCode == DialogInputImage.RESULT_LOAD_IMAGE &&
+            case C.RESULT_LOAD_IMAGE:
+                if (requestCode == C.RESULT_LOAD_IMAGE &&
                         resultCode == RESULT_OK && null != data) {
                     Uri selectedImage = data.getData();
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -297,45 +297,24 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
 
                     picturePath = cursor.getString(columnIndex);
                     cursor.close();
-                    DialogInputImage.dialogImage.dismiss();
+                    C.dialogImage.dismiss();
                     break;
                 }
-            case DialogInputImage.REQUEST_IMAGE_CAPTURE:
-                if (requestCode == DialogInputImage.REQUEST_IMAGE_CAPTURE &&
+            case C.REQUEST_IMAGE_CAPTURE:
+                if (requestCode == C.REQUEST_IMAGE_CAPTURE &&
                         resultCode == RESULT_OK) {
                     String[] projection = {MediaStore.Images.Media.DATA};
                     Cursor cursor =
-                            managedQuery(DialogInputImage.mCapturedImageURI, projection, null,
+                            managedQuery(C.mCapturedImageURI, projection, null,
                                     null, null);
                     int column_index_data = cursor.getColumnIndexOrThrow(
                             MediaStore.Images.Media.DATA);
                     cursor.moveToFirst();
                     picturePath = cursor.getString(column_index_data);
-                    DialogInputImage.dialogImage.dismiss();
+                    C.dialogImage.dismiss();
                 }
                 break;
         }
-    }
-    private byte[] convertToSmallImage(final byte[]imageOriginal, final int size){
-        final byte[][] imageCompress = new byte[1][1];
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                Bitmap bitmap = PreviewNote.getImage(imageOriginal);
-                bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG,100, byteArrayOutputStream);
-                imageCompress[0] = byteArrayOutputStream.toByteArray();
-            }
-        };
-        Thread trThread = new Thread(runnable);
-        trThread.start();
-        try {
-            trThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return imageCompress[0];
     }
 }
 

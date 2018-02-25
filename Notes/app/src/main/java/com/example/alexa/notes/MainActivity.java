@@ -10,24 +10,13 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.text.SimpleDateFormat;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-    public static final int CM_DELETE_ID = 1;
-    public static final int CM_EDIT_ID = 2;
-    public static final String intentCreateNote = "Create_note";
-    public static final String intentEditNote = "edit_note";
-    public static final String intentPreviewNote = "Preview_note";
-    public static final String map = "googleMaps";
-    public static final String DeleteSuccessMsg = "Запись успешно удалена";
     ListView listView;
     DataBase dataBase;
     SimpleCursorAdapter simpleCursorAdapter;
@@ -39,10 +28,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
 
-        Button createNote = findViewById(R.id.createNote);
-        createNote.setOnClickListener(this);
-        Button mapButton = findViewById(R.id.runMap);
-        mapButton.setOnClickListener(this);
+        findViewById(R.id.createNote).setOnClickListener(this);
+        findViewById(R.id.runMap).setOnClickListener(this);
 
         dataBase = new DataBase(this);
         dataBase.open_connection();
@@ -80,12 +67,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()){
             case R.id.createNote:
                 Intent intentCreateEdit = new Intent(this, CreateEdit_activity.class);
-                intentCreateEdit.putExtra(intentCreateNote, true);
+                intentCreateEdit.putExtra(C.INTENT_CREATE_NOTE, true);
                 startActivityForResult(intentCreateEdit, 1);
                 break;
             case R.id.runMap:
                 Intent intentMaps = new Intent(this, MapsActivity.class);
-                intentMaps.putExtra(map, true);
+                intentMaps.putExtra(C.map, true);
                 startActivityForResult(intentMaps, 10);
                 break;
             default:
@@ -97,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {return;}
-        boolean isUpdate = data.getBooleanExtra(CreateEdit_activity.intentUpdateMain, false);
+        boolean isUpdate = data.getBooleanExtra(C.INTENT_UPDATE_MAIN, false);
         if (isUpdate){
             this.recreate();
         }
@@ -108,26 +95,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     View view,
                                     ContextMenu.ContextMenuInfo contextMenuInfo){
         super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
-        contextMenu.add(0, CM_EDIT_ID, 0, R.string.edit_menu);
-        contextMenu.add(0, CM_DELETE_ID, 0, R.string.delete_menu);
+        contextMenu.add(0, C.CM_EDIT_ID, 0, R.string.edit_menu);
+        contextMenu.add(0, C.CM_DELETE_ID, 0, R.string.delete_menu);
     }
     public boolean onContextItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case CM_DELETE_ID:
+            case C.CM_DELETE_ID:
                 AdapterView.AdapterContextMenuInfo adapterContextMenuInfo =
                         (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 dataBase.deleteDB(adapterContextMenuInfo.id);
 
                 cursor.requery();
                 this.recreate();
-                Toast.makeText(getBaseContext(), DeleteSuccessMsg, Toast.LENGTH_SHORT).show();
+                C.ToastMakeText(getBaseContext(), C.DELETE_SUCCESS_MSG);
                 break;
-            case CM_EDIT_ID:
+            case C.CM_EDIT_ID:
                 AdapterView.AdapterContextMenuInfo adapterContextMenuInfoEdit =
                         (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 Intent intentCreateEdit = new Intent(this, CreateEdit_activity.class);
-                intentCreateEdit.putExtra(intentCreateNote, false);
-                intentCreateEdit.putExtra(intentEditNote, adapterContextMenuInfoEdit.id);
+                intentCreateEdit.putExtra(C.INTENT_CREATE_NOTE, false);
+                intentCreateEdit.putExtra(C.INTENT_EDIT_NOTE, adapterContextMenuInfoEdit.id);
                 startActivityForResult(intentCreateEdit, 1);
                 break;
             default:
@@ -159,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cursor.moveToPosition(position);
         long positionId = cursor.getLong(cursor.getColumnIndex(DataBase.COLUMN_ID));
         Intent intentPreviewNote = new Intent(this, PreviewNote.class);
-        intentPreviewNote.putExtra(MainActivity.intentPreviewNote, positionId);
+        intentPreviewNote.putExtra(C.INTENT_PREVIEW_NOTE, positionId);
         startActivityForResult(intentPreviewNote, 2);
     }
 }
