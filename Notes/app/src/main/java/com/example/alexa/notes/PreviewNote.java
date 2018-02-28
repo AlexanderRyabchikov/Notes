@@ -75,6 +75,7 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
         switch (view.getId()){
             case R.id.backBt:
                 sendResultWithClose();
+                break;
             default:
                 break;
         }
