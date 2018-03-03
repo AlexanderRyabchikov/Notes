@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -36,10 +38,10 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     private CheckBox checkBoxManual;
     public static Button saveButton;
     private RadioGroup radioGroup;
-    private String picturePath;
+    private String picturePath = null;
     private InputMethodManager inputMethodManager;
-    private byte[] image;
-    private byte[] imageSmall;
+    private byte[] image = null;
+    private byte[] imageSmall = null;
 
     private GpsTask gpsTask;
     @Override
@@ -47,7 +49,7 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_activity);
         getSupportActionBar().hide();
-
+        C.setupLocale();
         initActivity();
 
         if(!intent.getBooleanExtra(C.INTENT_CREATE_NOTE, false)){
@@ -96,6 +98,8 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         checkBoxManual = findViewById(R.id.gpsCheckedMaps);
         saveButton = findViewById(R.id.saveBt);
 
+        textViewTitle.addTextChangedListener(new CustomTextWatcher(textViewTitle));
+        textViewContent.addTextChangedListener(new CustomTextWatcher(textViewContent));
         checkBoxManual.setOnClickListener(this);
         checkBoxAuto.setOnClickListener(this);
         findViewById(R.id.cancelBt).setOnClickListener(this);
@@ -107,27 +111,24 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     }
 
     private void GetSelectedRadioButton() {
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                   switch (radioGroup.getCheckedRadioButtonId()) {
-                        case R.id.lowPriority:
-                            C.RADIO_SELECT_ID = C.LOW_PRIORITY;
-                            break;
-                        case R.id.mediumPriority:
-                            C.RADIO_SELECT_ID = C.MEDIUM_PRIORITY;
-                            break;
-                        case R.id.highPriority:
-                            C.RADIO_SELECT_ID = C.HIGH_PRIORITY;
-                            break;
-                        default:
-                            C.RADIO_SELECT_ID = -100;
-                            break;
+        radioGroup.setOnCheckedChangeListener((radioGroup, i) -> {
+               switch (radioGroup.getCheckedRadioButtonId()) {
+                    case R.id.lowPriority:
+                        C.RADIO_SELECT_ID = C.LOW_PRIORITY;
+                        break;
+                    case R.id.mediumPriority:
+                        C.RADIO_SELECT_ID = C.MEDIUM_PRIORITY;
+                        break;
+                    case R.id.highPriority:
+                        C.RADIO_SELECT_ID = C.HIGH_PRIORITY;
+                        break;
+                    default:
+                        C.RADIO_SELECT_ID = -100;
+                        break;
 
 
-                    }
                 }
-        });
+            });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -138,9 +139,10 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                 sendResultWithClose();
                 break;
             case R.id.saveBt:
-                SaveToDB();
-                C.ToastMakeText(getBaseContext(), C.SUCCESS_MSG_DB);
-                cleanAllForm();
+                if(SaveToDB()){
+                    C.ToastMakeText(getBaseContext(), C.SUCCESS_MSG_DB);
+                    cleanAllForm();
+                }
                 break;
             case R.id.addImageButton:
                 new DialogInputImage(this, C.TITLE_DIALOG_IMAGE, CreateEdit_activity.this).createDialog();
@@ -195,17 +197,30 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void SaveToDB(){
+    private boolean SaveToDB(){
 
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy GGG hh:mm:ss aaa");
         String date = simpleDateFormat.format(calendar.getTime());
-        image = saveImage(picturePath);
-        imageSmall = C.convertToSmallImage(image, C.SIZE_IMAGE_PREVIEW);
+        String textTitle = textViewTitle.getText().toString();
+        String textContent = textViewContent.getText().toString();
+        if(TextUtils.isEmpty(textTitle)){
+            textViewTitle.setError(C.ERROR_TEXT_EMPTY);
+            return false;
+        }
+        if (TextUtils.isEmpty(textContent)){
+            textViewContent.setError(C.ERROR_TEXT_EMPTY);
+            return false;
+        }
+        if (image == null) {
+            if ((image = saveImage(picturePath)) != null) {
+                imageSmall = C.convertToSmallImage(image, C.SIZE_IMAGE_PREVIEW);
+            }
+        }
         dataBase.open_connection();
         if (bFlagCheckCreate){
-            dataBase.addToDB(   textViewTitle.getText().toString(),
-                                textViewContent.getText().toString(),
+            dataBase.addToDB(   textTitle,
+                                textContent,
                                 C.RADIO_SELECT_ID,
                                 C.lintitude,
                                 C.longtitude,
@@ -224,6 +239,7 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                                 date);
         }
         dataBase.close_connection();
+        return true;
 
     }
     private void cleanAllForm(){
@@ -260,7 +276,7 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private byte[] saveImage(String path) {
-        if (path == ""){
+        if (TextUtils.isEmpty(path)){
             return null;
         }
         byte[] image = new byte[0];

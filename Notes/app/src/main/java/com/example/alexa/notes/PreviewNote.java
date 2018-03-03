@@ -40,7 +40,7 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_note);
         getSupportActionBar().hide();
-
+        C.setupLocale();
         RelativeLayout relativeLayout = findViewById(R.id.relativeLayPreView);
         findViewById(R.id.backBt).setOnClickListener(this);
         TextView textViewTitle = findViewById(R.id.TextPreView);
@@ -66,7 +66,9 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
 
         textViewTitle.setText(title);
         textViewContent.setText(content);
-        imageView.setImageBitmap(btm);
+        if(btm != null) {
+            imageView.setImageBitmap(btm);
+        }
         registerForContextMenu(relativeLayout);
     }
 

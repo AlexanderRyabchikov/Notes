@@ -1,6 +1,7 @@
 package com.example.alexa.notes;
 
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -41,8 +42,10 @@ public class CustomCursorAdapter implements SimpleCursorAdapter.ViewBinder{
                 break;
             case R.id.ivImg:
                 ImageView imageView = (ImageView)view;
-                imageView.setImageBitmap(
-                        C.getImage(cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE_SMALL))));
+                Bitmap bitmap = C.getImage(cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE_SMALL)));
+                if(bitmap != null) {
+                    imageView.setImageBitmap(bitmap);
+                }
                 break;
         }
         return true;

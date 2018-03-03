@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Locale;
 
 /**
  * Created by alexa on 25.02.2018.
@@ -49,6 +50,7 @@ public final class C {
     public static final String TITLE_DIALOG_SAVE_FILE = "Name file to save...";
     public static final String NAME_POSITIVE_BUTTON = "OK";
     public static final String NAME_NEGATIVE_BUTTON = "Cancel";
+    public static final String ERROR_TEXT_EMPTY = "Это поле не должно быть пустым";
 /*Constants*/
 
 /*Global variable*/
@@ -65,6 +67,9 @@ public final class C {
 
 /*Functions*/
     public static Bitmap getImage(byte[] image){
+        if (image == null){
+            return null;
+        }
         return BitmapFactory.decodeByteArray(image, 0, image.length);
     }
 
@@ -73,16 +78,13 @@ public final class C {
             return null;
         }
         final byte[][] imageCompress = new byte[1][1];
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
+        Runnable runnable = ()->{
                 Bitmap bitmap = C.getImage(imageOriginal);
                 bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG,100, byteArrayOutputStream);
                 imageCompress[0] = byteArrayOutputStream.toByteArray();
-            }
-        };
+            };
         Thread trThread = new Thread(runnable);
         trThread.start();
         try {
@@ -94,6 +96,11 @@ public final class C {
     }
     public static void ToastMakeText(Context context, String msg){
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public static void setupLocale(){
+        Locale locale = new Locale("ru");
+        Locale.setDefault(locale);
     }
 /*Functions*/
 }
