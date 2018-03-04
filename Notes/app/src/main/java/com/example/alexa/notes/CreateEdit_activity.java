@@ -211,6 +211,7 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
 
                 if (checkBoxManual.isChecked()){
                     C.bar.setVisibility(View.INVISIBLE);
+                    saveButton.setEnabled(true);
                     checkBoxAuto.setChecked(false);
                     checkBoxAuto.setSelected(false);
                     if (gpsTask != null){
