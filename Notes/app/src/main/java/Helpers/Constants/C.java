@@ -23,6 +23,7 @@ public final class C {
     public static final int SIZE_IMAGE_PREVIEW = 52;
     public static final String INTENT_UPDATE_MAIN = "update_main";
     public static final String SUCCESS_MSG_DB = "Запись успешно сохранена";
+    public static final String SUCCESS_IMAGE_SELECT = "Изображение выбрано";
     public static int RADIO_SELECT_ID = -100;
     public static final String TITLE_DIALOG_IMAGE = "Выбор изображения";
     public static final int CM_DELETE_ID = 1;
@@ -33,7 +34,7 @@ public final class C {
     public static final String map = "googleMaps";
     public static final String DELETE_SUCCESS_MSG = "Запись успешно удалена";
     public static final String COORDINATE_SELECT = "Координаты выбраны";
-    public static final String TITLE_DIALOG_SAVE_FILE = "Name file to save...";
+    public static final String TITLE_DIALOG_SAVE_FILE = "Default name file defaultName";
     public static final String NAME_POSITIVE_BUTTON = "OK";
     public static final String NAME_NEGATIVE_BUTTON = "Cancel";
     public static final String ERROR_TEXT_EMPTY = "Это поле не должно быть пустым";
@@ -49,6 +50,7 @@ public final class C {
     public static final String GPS_PLACE_FOUND = "Координаты определены";
     public static final String FILE_SAVE = "File saved";
     public static final String FILE_NOT_SAVE = "File saved";
+    public static final String FILENAME_NOT_FOUND = "Нужно указать имя файла";
     public static final String FLASH_ERROR = "Flash not installed";
     /*Constants*/
 

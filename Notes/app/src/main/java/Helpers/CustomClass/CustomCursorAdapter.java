@@ -50,6 +50,8 @@ public class CustomCursorAdapter implements SimpleCursorAdapter.ViewBinder{
                 Bitmap bitmap = C.getImage(cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE_SMALL)));
                 if(bitmap != null) {
                     imageView.setImageBitmap(bitmap);
+                }else{
+                    imageView.setImageBitmap(null);
                 }
                 break;
         }

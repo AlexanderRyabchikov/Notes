@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -62,7 +63,11 @@ public class DialogInputFile {
                         (dialog, id) -> {
                             // get user input and set it to etOutput
                             // edit text
-                            saveToFile(userInput.getText().toString());
+                            String nameFile = userInput.getText().toString();
+                            if (TextUtils.isEmpty(nameFile)){
+                                nameFile = "defaultName";
+                            }
+                            saveToFile(nameFile);
                         })
                 .setNegativeButton(nameNegativeButton,
                         (dialog, id) -> dialog.cancel());
@@ -89,7 +94,7 @@ public class DialogInputFile {
                 outputStream.write("\n".getBytes());
                 outputStream.write(PreviewNote.getContentPreview().getBytes());
                 outputStream.flush();
-                C.ToastMakeText(context, C.FILE_SAVE);
+                C.ToastMakeText(context, C.FILE_SAVE + file.getAbsolutePath());
             } catch (IOException e) {
                 C.ToastMakeText(context, C.FILE_NOT_SAVE);
             }

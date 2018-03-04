@@ -98,7 +98,7 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        C.bar.setVisibility(View.GONE);
+        C.bar.setVisibility(View.INVISIBLE);
         C.locationManager.removeUpdates(locationListener);
         C.lintitude = gpsLocation.getLatitude();
         C.longtitude = gpsLocation.getLongitude();

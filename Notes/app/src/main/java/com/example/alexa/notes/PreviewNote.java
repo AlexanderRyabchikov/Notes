@@ -94,7 +94,11 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
         setResult(RESULT_OK);
         Intent intent = new Intent();
         intent.putExtra(C.INTENT_UPDATE_MAIN, true);
+        intent.putExtra(C.map, true);
         setResult(RESULT_OK, intent);
+        dataBase.close_connection();
+        stopManagingCursor(cursor);
+        cursor.close();
         finish();
     }
 

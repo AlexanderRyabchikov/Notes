@@ -42,7 +42,14 @@ public class MapsActivity  extends FragmentActivity
         intentFlag = getIntent();
     }
 
-
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(mMap != null){
+            mMap.clear();
+            addMarkerFromDataBase();
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -78,8 +85,10 @@ public class MapsActivity  extends FragmentActivity
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
+        addMarkerFromDataBase();
+    }
 
-
+    private void addMarkerFromDataBase() {
         if (intentFlag.getBooleanExtra(C.map, false)) {
             dataBase = new DataBase(getBaseContext());
             ctrlFlag = true;
@@ -103,8 +112,8 @@ public class MapsActivity  extends FragmentActivity
                 }
             }
         }
-
     }
+
     @Override
     public void onMapClick(LatLng latLng) {
 
