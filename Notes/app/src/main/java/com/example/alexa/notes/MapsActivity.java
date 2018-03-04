@@ -114,6 +114,9 @@ public class MapsActivity  extends FragmentActivity
         }
     }
 
+    /**
+    * Получение координат с карты через маркер
+     */
     @Override
     public void onMapClick(LatLng latLng) {
 
@@ -128,6 +131,9 @@ public class MapsActivity  extends FragmentActivity
         }
     }
 
+    /**
+    * Переход к по маркеру к просмотру записки
+     */
     @Override
     public boolean onMarkerClick(Marker marker) {
 

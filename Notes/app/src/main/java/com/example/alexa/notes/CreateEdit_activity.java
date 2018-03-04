@@ -90,10 +90,13 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
             dataBase.close_connection();
 
         }
-        editTextTitle.requestFocus();
+        editTextTitle.requestFocus(); // выставляем фокус на заголовок
 
     }
-
+    /**
+    *   Метод для выставление ранее выбранного приоритета
+    *   при редактировании заметки
+    */
     private void setCheckedRadioButton(int radioButtonSelectId) {
         switch (radioButtonSelectId){
             case C.LOW_PRIORITY:
@@ -136,6 +139,10 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                 (LocationManager)getSystemService(Context.LOCATION_SERVICE);
     }
 
+    /**
+    *  Метод для получения Ид выбранного приоритета
+    *  в блоке radioGroup
+    */
     private void GetSelectedRadioButton() {
         radioGroup.setOnCheckedChangeListener((radioGroup, i) -> {
                switch (radioGroup.getCheckedRadioButtonId()) {
@@ -174,10 +181,10 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                 new DialogInputImage(this, C.TITLE_DIALOG_IMAGE, CreateEdit_activity.this).createDialog();
                 break;
             case R.id.gpsCheckedAuto:
+                /* Используется для скрытия клавиатуры по завершению ввода*/
                 InputMethodManager inputMethodManager = (InputMethodManager)
                         CreateEdit_activity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
 
-                assert inputMethodManager != null;
                 inputMethodManager.hideSoftInputFromWindow
                         (CreateEdit_activity.this.getCurrentFocus().getWindowToken(), 0);
 
@@ -323,6 +330,9 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         return image;
     }
 
+    /**
+    * Метод получения картинки после выбора ее в галерее или же после фото
+    */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
