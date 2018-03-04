@@ -178,7 +178,7 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
         if (data == null) {return;}
         boolean isUpdate = data.getBooleanExtra(C.INTENT_UPDATE_MAIN, false);
         if (isUpdate){
-            PreviewActivity_create();
+            this.recreate();
         }
 
     }

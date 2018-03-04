@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (data == null) {return;}
         boolean isUpdate = data.getBooleanExtra(C.INTENT_UPDATE_MAIN, false);
         if (isUpdate) {
-            MainActivity_create();
+            this.recreate();
         }
 
     }
