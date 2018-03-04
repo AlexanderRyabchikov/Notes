@@ -41,6 +41,11 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
         setContentView(R.layout.activity_preview_note);
         getSupportActionBar().hide();
         C.setupLocale();
+        PreviewActivity_create();
+
+    }
+
+    private void PreviewActivity_create(){
         RelativeLayout relativeLayout = findViewById(R.id.relativeLayPreView);
         findViewById(R.id.backBt).setOnClickListener(this);
         TextView textViewTitle = findViewById(R.id.TextPreView);
@@ -71,7 +76,6 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
         }
         registerForContextMenu(relativeLayout);
     }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -159,12 +163,18 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
         cursor.close();
         dataBase.close_connection();
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        PreviewActivity_create();
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {return;}
         boolean isUpdate = data.getBooleanExtra(C.INTENT_UPDATE_MAIN, false);
         if (isUpdate){
-            this.recreate();
+            PreviewActivity_create();
         }
 
     }

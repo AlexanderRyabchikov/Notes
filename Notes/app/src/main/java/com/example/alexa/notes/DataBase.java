@@ -6,13 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * Created by alexa on 07.02.2018.
  */
 
-public class DataBase {
+class DataBase {
     private final static String DB_NAME = "NotesDB";
     private final static String DB_TABLE = "Notes";
     private final static int DB_VERSION = 1;
@@ -44,21 +43,21 @@ public class DataBase {
     private SQLiteDatabase dbSqLiteDatabase;
     private DBHelper dbHelper;
 
-    public DataBase(Context contextDB) {
+    DataBase(Context contextDB) {
         this.contextDB = contextDB;
     }
 
-    public void open_connection(){
+    void open_connection(){
         dbHelper = new DBHelper(contextDB, DB_NAME, null, DB_VERSION);
         dbSqLiteDatabase = dbHelper.getWritableDatabase();
     }
-    public void close_connection(){
+    void close_connection(){
         if (dbHelper != null){
             dbHelper.close();
         }
     }
 
-    public Cursor getEntry(long id){
+    Cursor getEntry(long id){
         return dbSqLiteDatabase.query(   DB_TABLE,
                                         null,
                                         COLUMN_ID + " = " + id,
@@ -69,7 +68,7 @@ public class DataBase {
                                       );
     }
 
-    public Cursor getEntries(){
+    Cursor getEntries(){
         return dbSqLiteDatabase.query(DB_TABLE,
                                     null,
                                     null,
@@ -79,7 +78,7 @@ public class DataBase {
                                     COLUMN_DATE_CREATE_EDIT + " DESC");
     }
 
-    public void addToDB(String title,
+    void addToDB(String title,
                         String content,
                         int priority,
                         double lintitude,
@@ -100,7 +99,7 @@ public class DataBase {
         dbSqLiteDatabase.insert(DB_TABLE, null, contentValues);
     }
 
-    public void updateDB(int id,
+    void updateDB(int id,
                          String title,
                          String content,
                          int priority,
@@ -125,14 +124,14 @@ public class DataBase {
                                 null);
     }
 
-    public void deleteDB(long id){
+    void deleteDB(long id){
         dbSqLiteDatabase.delete(DB_TABLE, COLUMN_ID + " = " + id, null);
     }
 
     // класс по созданию и управлению БД
     class DBHelper extends SQLiteOpenHelper {
 
-        public DBHelper(Context context, String name, CursorFactory factory,
+        DBHelper(Context context, String name, CursorFactory factory,
                         int version) {
             super(context, name, factory, version);
         }

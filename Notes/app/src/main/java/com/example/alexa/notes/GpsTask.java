@@ -9,13 +9,14 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
+
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by alexander on 14.02.18.
  */
 
-public class GpsTask extends AsyncTask<Void, Void, Void> {
+class GpsTask extends AsyncTask<Void, Void, Void> {
 
 
     private LocationListener locationListener;
@@ -43,7 +44,7 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
             @Override
             public void onProviderDisabled(String s) {
                 Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 C.context.startActivity(intent);
                 Toast.makeText(C.context, C.MESSAGE_GPS_OFF,
                         Toast.LENGTH_SHORT).show();
@@ -51,13 +52,13 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
         };
 
         try {
-             if (C.locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
-                 C.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
-             }
+            if (C.locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
+                C.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
+            }
             if (C.locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
                 C.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
             }
-        }catch (SecurityException e){
+        } catch (SecurityException e) {
             Toast.makeText(C.context,
                     C.GPS_ERROR,
                     Toast.LENGTH_SHORT).show();
@@ -74,14 +75,16 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
                 e.printStackTrace();
             }
 
-            if (gpsLocation != null){
+            if (gpsLocation != null) {
                 break;
             }
         }
 
-        if (gpsLocation == null){
-            gpsLocation.setLatitude(0.0);
-            gpsLocation.setLongitude(0.0);
+        if (null == gpsLocation) {
+            Location targetLocation = new Location("");
+            targetLocation.setLatitude(0.0d);
+            targetLocation.setLongitude(0.0d);
+            gpsLocation = targetLocation;
             Toast.makeText(C.context,
                     C.GPS_PLACE_NOT_FOUND,
                     Toast.LENGTH_SHORT).show();
@@ -99,6 +102,7 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
                 C.GPS_PLACE_FOUND);
         CreateEdit_activity.saveButton.setEnabled(true);
     }
+
     @Override
     protected void onCancelled() {
         super.onCancelled();

@@ -1,5 +1,6 @@
 package com.example.alexa.notes;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -19,13 +20,13 @@ import java.io.IOException;
  * Created by alexa on 11.02.2018.
  */
 
-public class DialogInputFile {
+class DialogInputFile {
     private Context context;
     private String Title;
     private String namePositiveButton;
     private String nameNegativeButton;
 
-    public DialogInputFile(Context context,
+    DialogInputFile(Context context,
                            String Title,
                            String namePositiveButton,
                            String nameNegativeButton){
@@ -35,9 +36,11 @@ public class DialogInputFile {
         this.namePositiveButton = namePositiveButton;
     }
 
-    public void createDialog(){
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    void createDialog(){
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
+        @SuppressLint("InflateParams")
         View dialogView = layoutInflater.inflate(R.layout.save_file_input_name, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -53,22 +56,13 @@ public class DialogInputFile {
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton(namePositiveButton,
-                        new DialogInterface.OnClickListener() {
-                            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                            public void onClick(DialogInterface dialog,
-                                                int id) {
-                                // get user input and set it to etOutput
-                                // edit text
-                                saveToFile(userInput.getText().toString());
-                            }
+                        (dialog, id) -> {
+                            // get user input and set it to etOutput
+                            // edit text
+                            saveToFile(userInput.getText().toString());
                         })
                 .setNegativeButton(nameNegativeButton,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,
-                                                int id) {
-                                dialog.cancel();
-                            }
-                        });
+                        (dialog, id) -> dialog.cancel());
 
         AlertDialog alertDialog = alertDialogBuilder.create();
 
@@ -102,11 +96,7 @@ public class DialogInputFile {
         }
     }
 
-    public boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
+    private boolean isExternalStorageWritable() {
+        return Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState());
     }
 }

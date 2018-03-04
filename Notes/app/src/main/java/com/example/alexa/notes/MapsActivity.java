@@ -14,7 +14,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
+public class MapsActivity  extends FragmentActivity
+                    implements  OnMapReadyCallback,
+                                GoogleMap.OnMapClickListener,
+                                GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private Cursor cursor;

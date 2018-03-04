@@ -1,19 +1,17 @@
 package com.example.alexa.notes;
 
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.widget.EditText;
 import android.widget.TextView;
 
 /**
  * Created by alexa on 04.03.2018.
  */
 
-public class CustomTextWatcher implements TextWatcher {
+class CustomTextWatcher implements TextWatcher {
     private TextView editText;
 
-    public CustomTextWatcher(TextView editText){
+    CustomTextWatcher(TextView editText){
 
         this.editText = editText;
     }

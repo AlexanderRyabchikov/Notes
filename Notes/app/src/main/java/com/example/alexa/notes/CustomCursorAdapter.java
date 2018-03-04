@@ -14,7 +14,7 @@ import android.widget.TextView;
  * Created by alexander on 09.02.18.
  */
 
-public class CustomCursorAdapter implements SimpleCursorAdapter.ViewBinder{
+class CustomCursorAdapter implements SimpleCursorAdapter.ViewBinder{
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)

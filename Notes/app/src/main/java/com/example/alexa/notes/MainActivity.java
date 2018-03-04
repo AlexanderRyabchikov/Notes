@@ -3,7 +3,6 @@ package com.example.alexa.notes;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -18,15 +17,14 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-    private ListView listView;
     private DataBase dataBase;
-    private SimpleCursorAdapter simpleCursorAdapter;
     private Cursor cursor;
+
     @SuppressLint({"WrongConstant", "ResourceAsColor"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivityEngine();
+        MainActivity_create();
 
     }
     @Override
@@ -52,8 +50,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {return;}
         boolean isUpdate = data.getBooleanExtra(C.INTENT_UPDATE_MAIN, false);
-        if (isUpdate){
-            this.recreate();
+        if (isUpdate) {
+            MainActivity_create();
         }
 
     }
@@ -119,22 +117,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume(){
         super.onResume();
-        MainActivityEngine();
+        MainActivity_create();
     }
 
 
-    private void MainActivityEngine(){
+    private void MainActivity_create() {
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
         C.setupLocale();
         findViewById(R.id.createNote).setOnClickListener(this);
         findViewById(R.id.runMap).setOnClickListener(this);
+        ListView listView = findViewById(R.id.lvData);
+        listView.setOnItemClickListener(this);
 
         dataBase = new DataBase(this);
         dataBase.open_connection();
 
         cursor = dataBase.getEntries();
-        if (cursor.getCount() <= 0){
+        if (cursor.getCount() <= 0) {
             RelativeLayout relativeLayout = findViewById(R.id.relativeLayMain);
             TextView textView = new TextView(this);
             textView.setText(R.string.text_not_found_entry);
@@ -142,22 +142,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             textView.setTextSize(20);
             textView.setLayoutParams(relativeLayout.getLayoutParams());
             relativeLayout.addView(textView);
-        }
-        else{
+        } else {
             startManagingCursor(cursor);
-            String[] from = new String[] {DataBase.COLUMN_IMAGE, DataBase.COLUMN_TITLE};
-            int[] to = new int[] {R.id.ivImg, R.id.tvText};
-            simpleCursorAdapter = new SimpleCursorAdapter(this,
+            String[] from = new String[]{DataBase.COLUMN_IMAGE, DataBase.COLUMN_TITLE};
+            int[] to = new int[]{R.id.ivImg, R.id.tvText};
+            SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this,
                     R.layout.item_list_notes,
                     cursor,
                     from,
                     to);
             simpleCursorAdapter.setViewBinder(new CustomCursorAdapter());
 
-            listView = findViewById(R.id.lvData);
-            listView.setAdapter(simpleCursorAdapter);
-            listView.setOnItemClickListener(this);
 
+            listView.setAdapter(simpleCursorAdapter);
             registerForContextMenu(listView);
         }
     }

@@ -1,11 +1,9 @@
 package com.example.alexa.notes;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
@@ -39,7 +37,6 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     public static Button saveButton;
     private RadioGroup radioGroup;
     private String picturePath = null;
-    private InputMethodManager inputMethodManager;
     private byte[] image = null;
     private byte[] imageSmall = null;
 
@@ -51,7 +48,11 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         getSupportActionBar().hide();
         C.setupLocale();
         initActivity();
+        EditActivity_create();
+    }
 
+
+    private void EditActivity_create(){
         if(!intent.getBooleanExtra(C.INTENT_CREATE_NOTE, false)){
             // Здесь заполнение данными если был вызван для правки
             bFlagCheckCreate = false;
@@ -83,7 +84,6 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
 
         }
     }
-
     private void initActivity(){
         dataBase = new DataBase(this);
         C.context = getBaseContext();
@@ -148,9 +148,10 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                 new DialogInputImage(this, C.TITLE_DIALOG_IMAGE, CreateEdit_activity.this).createDialog();
                 break;
             case R.id.gpsCheckedAuto:
-                inputMethodManager = (InputMethodManager)
+                InputMethodManager inputMethodManager = (InputMethodManager)
                         CreateEdit_activity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
 
+                assert inputMethodManager != null;
                 inputMethodManager.hideSoftInputFromWindow
                         (CreateEdit_activity.this.getCurrentFocus().getWindowToken(), 0);
 
@@ -170,6 +171,7 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                 inputMethodManager = (InputMethodManager)
                         CreateEdit_activity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
 
+                assert inputMethodManager != null;
                 inputMethodManager.hideSoftInputFromWindow
                         (CreateEdit_activity.this.getCurrentFocus().getWindowToken(), 0);
 
@@ -200,7 +202,7 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     private boolean SaveToDB(){
 
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy GGG hh:mm:ss aaa");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMM-yyyy GGG HH:mm:ss aaa");
         String date = simpleDateFormat.format(calendar.getTime());
         String textTitle = textViewTitle.getText().toString();
         String textContent = textViewContent.getText().toString();
@@ -296,11 +298,11 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case C.RESULT_LOAD_IMAGE:
-                if (requestCode == C.RESULT_LOAD_IMAGE &&
-                        resultCode == RESULT_OK && null != data) {
+                if (resultCode == RESULT_OK && null != data) {
                     Uri selectedImage = data.getData();
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
+                    assert selectedImage != null;
                     Cursor cursor = getContentResolver().query(
                             selectedImage,
                             filePathColumn,
@@ -308,6 +310,7 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
                             null,
                             null);
 
+                    assert cursor != null;
                     cursor.moveToFirst();
                     int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 

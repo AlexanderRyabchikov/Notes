@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.View;
 
@@ -15,13 +14,13 @@ import java.util.Random;
  * Created by alexa on 20.02.2018.
  */
 
-public class DialogInputImage implements View.OnClickListener {
+class DialogInputImage implements View.OnClickListener {
     private String title;
     private Context context;
     private Activity activity;
 
 
-    public DialogInputImage(Context ctx, String title, Activity activity){
+    DialogInputImage(Context ctx, String title, Activity activity){
         this.context = ctx;
         this.title = title;
         this.activity = activity;
