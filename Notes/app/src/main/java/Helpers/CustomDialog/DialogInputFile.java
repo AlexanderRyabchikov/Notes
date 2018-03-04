@@ -1,8 +1,7 @@
-package com.example.alexa.notes;
+package Helpers.CustomDialog;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
@@ -10,23 +9,27 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import com.example.alexa.notes.PreviewNote;
+import com.example.alexa.notes.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import Helpers.Constants.C;
+
 /**
  * Created by alexa on 11.02.2018.
  */
 
-class DialogInputFile {
+public class DialogInputFile {
     private Context context;
     private String Title;
     private String namePositiveButton;
     private String nameNegativeButton;
 
-    DialogInputFile(Context context,
+    public DialogInputFile(Context context,
                            String Title,
                            String namePositiveButton,
                            String nameNegativeButton){
@@ -37,7 +40,7 @@ class DialogInputFile {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    void createDialog(){
+    public void createDialog(){
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
         @SuppressLint("InflateParams")

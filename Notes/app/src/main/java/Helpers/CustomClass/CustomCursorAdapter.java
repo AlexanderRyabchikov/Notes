@@ -1,4 +1,4 @@
-package com.example.alexa.notes;
+package Helpers.CustomClass;
 
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -10,11 +10,16 @@ import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import com.example.alexa.notes.R;
+
+import Helpers.Constants.C;
+import Helpers.DataBase.DataBase;
+
 /**
  * Created by alexander on 09.02.18.
  */
 
-class CustomCursorAdapter implements SimpleCursorAdapter.ViewBinder{
+public class CustomCursorAdapter implements SimpleCursorAdapter.ViewBinder{
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)

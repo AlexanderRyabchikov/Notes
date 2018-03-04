@@ -15,6 +15,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import Helpers.Constants.C;
+import Helpers.DataBase.DataBase;
+import Helpers.CustomDialog.DialogInputFile;
+
 public class PreviewNote extends AppCompatActivity implements View.OnClickListener {
 
     private DataBase dataBase;

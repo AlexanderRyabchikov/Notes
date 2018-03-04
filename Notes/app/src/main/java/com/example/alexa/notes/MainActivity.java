@@ -15,6 +15,10 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import Helpers.Constants.C;
+import Helpers.CustomClass.CustomCursorAdapter;
+import Helpers.DataBase.DataBase;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private DataBase dataBase;

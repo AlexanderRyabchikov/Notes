@@ -1,4 +1,4 @@
-package com.example.alexa.notes;
+package Helpers.AsyncTasks;
 
 import android.content.Intent;
 import android.location.Location;
@@ -10,13 +10,17 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.alexa.notes.CreateEdit_activity;
+
 import java.util.concurrent.TimeUnit;
+
+import Helpers.Constants.C;
 
 /**
  * Created by alexander on 14.02.18.
  */
 
-class GpsTask extends AsyncTask<Void, Void, Void> {
+public class GpsTask extends AsyncTask<Void, Void, Void> {
 
 
     private LocationListener locationListener;

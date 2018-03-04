@@ -1,4 +1,4 @@
-package com.example.alexa.notes;
+package Helpers.CustomDialog;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -8,25 +8,29 @@ import android.content.Intent;
 import android.provider.MediaStore;
 import android.view.View;
 
+import com.example.alexa.notes.R;
+
 import java.util.Random;
+
+import Helpers.Constants.C;
 
 /**
  * Created by alexa on 20.02.2018.
  */
 
-class DialogInputImage implements View.OnClickListener {
+public class DialogInputImage implements View.OnClickListener {
     private String title;
     private Context context;
     private Activity activity;
 
 
-    DialogInputImage(Context ctx, String title, Activity activity){
+    public DialogInputImage(Context ctx, String title, Activity activity){
         this.context = ctx;
         this.title = title;
         this.activity = activity;
     }
 
-    void createDialog(){
+    public void createDialog(){
 
         C.dialogImage = new Dialog(context);
         C.dialogImage.setContentView(R.layout.add_image_dialog);

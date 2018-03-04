@@ -1,4 +1,4 @@
-package com.example.alexa.notes;
+package Helpers.DataBase;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,20 +11,20 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by alexa on 07.02.2018.
  */
 
-class DataBase {
+public class DataBase {
     private final static String DB_NAME = "NotesDB";
     private final static String DB_TABLE = "Notes";
     private final static int DB_VERSION = 1;
 
-    final static String COLUMN_ID = "_id";
-    final static String COLUMN_TITLE = "title";
-    final static String COLUMN_CONTENT = "content";
-    final static String COLUMN_PRIORITY = "priority";
-    final static String COLUMN_LONGTITUDE = "gps_longtitude";
-    final static String COLUMN_LINTITIDE = "gps_lintitude";
-    final static String COLUMN_DATE_CREATE_EDIT = "date";
-    final static String COLUMN_IMAGE = "image";
-    final static String COLUMN_IMAGE_SMALL = "image_small";
+    public final static String COLUMN_ID = "_id";
+    public final static String COLUMN_TITLE = "title";
+    public final static String COLUMN_CONTENT = "content";
+    public final static String COLUMN_PRIORITY = "priority";
+    public final static String COLUMN_LONGTITUDE = "gps_longtitude";
+    public final static String COLUMN_LINTITIDE = "gps_lintitude";
+    public final static String COLUMN_DATE_CREATE_EDIT = "date";
+    public final static String COLUMN_IMAGE = "image";
+    public final static String COLUMN_IMAGE_SMALL = "image_small";
 
     private final static String DB_CREATE =
             "create table " + DB_TABLE + "(" +
@@ -43,21 +43,21 @@ class DataBase {
     private SQLiteDatabase dbSqLiteDatabase;
     private DBHelper dbHelper;
 
-    DataBase(Context contextDB) {
+    public DataBase(Context contextDB) {
         this.contextDB = contextDB;
     }
 
-    void open_connection(){
+    public void open_connection(){
         dbHelper = new DBHelper(contextDB, DB_NAME, null, DB_VERSION);
         dbSqLiteDatabase = dbHelper.getWritableDatabase();
     }
-    void close_connection(){
+    public void close_connection(){
         if (dbHelper != null){
             dbHelper.close();
         }
     }
 
-    Cursor getEntry(long id){
+    public Cursor getEntry(long id){
         return dbSqLiteDatabase.query(   DB_TABLE,
                                         null,
                                         COLUMN_ID + " = " + id,
@@ -68,7 +68,7 @@ class DataBase {
                                       );
     }
 
-    Cursor getEntries(){
+    public Cursor getEntries(){
         return dbSqLiteDatabase.query(DB_TABLE,
                                     null,
                                     null,
@@ -78,7 +78,7 @@ class DataBase {
                                     COLUMN_DATE_CREATE_EDIT + " DESC");
     }
 
-    void addToDB(String title,
+    public void addToDB(String title,
                         String content,
                         int priority,
                         double lintitude,
@@ -99,7 +99,7 @@ class DataBase {
         dbSqLiteDatabase.insert(DB_TABLE, null, contentValues);
     }
 
-    void updateDB(int id,
+    public void updateDB(int id,
                          String title,
                          String content,
                          int priority,
@@ -124,7 +124,7 @@ class DataBase {
                                 null);
     }
 
-    void deleteDB(long id){
+    public void deleteDB(long id){
         dbSqLiteDatabase.delete(DB_TABLE, COLUMN_ID + " = " + id, null);
     }
 
