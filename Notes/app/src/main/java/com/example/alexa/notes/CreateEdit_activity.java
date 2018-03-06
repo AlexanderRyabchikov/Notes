@@ -30,7 +30,7 @@ import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class CreateEdit_activity extends AppCompatActivity implements View.OnClickListener {
+public class CreateEdit_activity extends Activity implements View.OnClickListener {
 
     private Intent intent;
     private DataBase dataBase;
@@ -51,7 +51,6 @@ public class CreateEdit_activity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_activity);
-        getSupportActionBar().hide();
         C.setupLocale();
         initActivity();
         EditActivity_create();

@@ -1,29 +1,29 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="HabraTheme" parent="android:Theme.Material.NoActionBar">
+        <item name="android:textColor">@color/textColor</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="MyDefaultTextAppearance" parent="@android:style/TextAppearance">
+    <style name="MyDefaultTextAppearance" parent="android:Theme.Material">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textStyle">italic</item>
         <item name="android:gravity">center_horizontal|center_vertical</item>
         <item name="android:text">@string/text_not_found_entry</item>
     </style>
-    <style name="RadioButtonLowPriority" parent="Theme.AppCompat.Light">
+    <style name="RadioButtonLowPriority" parent="android:Theme.Material">
         <item name="colorControlNormal">#268A3A</item>
         <item name="colorControlActivated">#1AE242</item>
     </style>
-    <style name="RadioButtonMediumPriority" parent="Theme.AppCompat.Light">
+    <style name="RadioButtonMediumPriority" parent="android:Theme.Material">
         <item name="colorControlNormal">#A9BA35</item>
         <item name="colorControlActivated">#D9F715</item>
     </style>
-    <style name="RadioButtonHighPriority" parent="Theme.AppCompat.Light">
+    <style name="RadioButtonHighPriority" parent="android:Theme.Material">
         <item name="colorControlNormal">#9A0303</item>
         <item name="colorControlActivated">#FF0000</item>
     </style>

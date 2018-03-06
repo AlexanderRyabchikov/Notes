@@ -22,7 +22,7 @@
             <TextView
                 android:id="@+id/tvText"
                 android:layout_marginTop="2dp"
-                android:background="@drawable/text_view_border"
+                android:background="@drawable/border_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
@@ -38,7 +38,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="#7b7b7b"
+                android:background="@drawable/separator"
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="4dp"

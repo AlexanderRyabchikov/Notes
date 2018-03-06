@@ -5,45 +5,45 @@
     android:layout_height="match_parent"
     tools:context="com.example.alexa.notes.MainActivity">
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:id="@+id/relativeLayMain">
-        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/linearLayout">
-            <Button
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/relativeLayMain">
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/createNote"
-                android:layout_weight="1"
-                android:text="@string/bt_create_note"
-                android:textAlignment="center" />
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/runMap"
-                android:layout_weight="3"
-                android:text="@string/runMap"
-                android:textAlignment="center" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:id="@+id/linearLayout">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/createNote"
+                    android:layout_weight="1"
+                    android:text="@string/bt_create_note"
+                    android:textAlignment="center" />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/runMap"
+                    android:layout_weight="3"
+                    android:text="@string/runMap"
+                    android:textAlignment="center" />
+            </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:id="@+id/ViewLine"
-            android:background="#7b7b7b"
-            android:layout_marginLeft="4dp"
-            android:layout_below="@+id/linearLayout"
-            android:layout_marginRight="4dp"
-            tools:ignore="UnknownId" />
-        <ListView
-            android:id="@+id/lvData"
-            android:layout_below="@+id/ViewLine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </ListView>
-    </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:id="@+id/ViewLine"
+                android:background="@drawable/separator"
+                android:layout_marginLeft="4dp"
+                android:layout_below="@+id/linearLayout"
+                android:layout_marginRight="4dp"
+                tools:ignore="UnknownId" />
+            <ListView
+                android:id="@+id/lvData"
+                android:layout_below="@+id/ViewLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </ListView>
+     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

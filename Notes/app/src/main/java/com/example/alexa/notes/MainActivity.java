@@ -1,9 +1,9 @@
 package com.example.alexa.notes;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -20,7 +20,7 @@ import Helpers.Constants.C;
 import Helpers.CustomClass.CustomCursorAdapter;
 import Helpers.DataBase.DataBase;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private DataBase dataBase;
     private Cursor cursor;
@@ -130,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void MainActivity_create() {
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
         C.setupLocale();
         findViewById(R.id.createNote).setOnClickListener(this);
         findViewById(R.id.runMap).setOnClickListener(this);

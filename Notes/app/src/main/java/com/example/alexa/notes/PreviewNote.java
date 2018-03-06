@@ -1,5 +1,6 @@
 package com.example.alexa.notes;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -19,7 +20,7 @@ import Helpers.Constants.C;
 import Helpers.DataBase.DataBase;
 import Helpers.CustomDialog.DialogInputFile;
 
-public class PreviewNote extends AppCompatActivity implements View.OnClickListener {
+public class PreviewNote extends Activity implements View.OnClickListener {
 
     private DataBase dataBase;
     private Intent intent;
@@ -43,7 +44,6 @@ public class PreviewNote extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_note);
-        getSupportActionBar().hide();
         C.setupLocale();
         PreviewActivity_create();
 

@@ -41,7 +41,7 @@ public class CustomCursorAdapter implements SimpleCursorAdapter.ViewBinder{
                         textView.setBackgroundColor(Color.RED);
                         break;
                     default:
-                        textView.setBackgroundResource(R.drawable.text_view_border);
+                        textView.setBackgroundResource(R.drawable.border_edit_text);
                         break;
                 }
                 break;
