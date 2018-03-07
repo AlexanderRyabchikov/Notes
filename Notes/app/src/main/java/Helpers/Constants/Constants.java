@@ -50,15 +50,12 @@ public final class Constants {
     public static final String GPS_PLACE_FOUND = "Координаты определены";
     public static final String FILE_SAVE = "File saved";
     public static final String FILE_NOT_SAVE = "File saved";
-    public static final String FILENAME_NOT_FOUND = "Нужно указать имя файла";
     public static final String FLASH_ERROR = "Flash not installed";
     /*Constants*/
 
     /*Global variable*/
     public static double lintitude;
     public static double longtitude;
-    public static Dialog dialogImage;
-    public static Uri mCapturedImageURI;
     /*Global variable*/
 
 

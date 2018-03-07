@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.view.View;
 
@@ -22,25 +23,36 @@ public class DialogInputImage implements View.OnClickListener {
     private String title;
     private Context context;
     private Activity activity;
+    private Dialog dialogImage;
+    private Uri mCapturedImageURI;
 
 
     public DialogInputImage(Context ctx, String title, Activity activity){
         this.context = ctx;
         this.title = title;
         this.activity = activity;
+
     }
 
+
+
+    public Uri getmCapturedImageURI() {
+        return mCapturedImageURI;
+    }
+    public Dialog getDialogImage() {
+        return dialogImage;
+    }
     public void createDialog(){
 
-        Constants.dialogImage = new Dialog(context);
-        Constants.dialogImage.setContentView(R.layout.add_image_dialog);
-        Constants.dialogImage.setTitle(title);
+        dialogImage = new Dialog(context);
+        dialogImage.setContentView(R.layout.add_image_dialog);
+        dialogImage.setTitle(title);
 
-        Constants.dialogImage.findViewById(R.id.btnExit).setOnClickListener(this);
-        Constants.dialogImage.findViewById(R.id.btnChoosePath).setOnClickListener(this);
-        Constants.dialogImage.findViewById(R.id.btnTakePhoto).setOnClickListener(this);
+        dialogImage.findViewById(R.id.btnExit).setOnClickListener(this);
+        dialogImage.findViewById(R.id.btnChoosePath).setOnClickListener(this);
+        dialogImage.findViewById(R.id.btnTakePhoto).setOnClickListener(this);
 
-        Constants.dialogImage.show();
+        dialogImage.show();
 
 
     }
@@ -55,7 +67,7 @@ public class DialogInputImage implements View.OnClickListener {
                 activeTakePhoto();
                 break;
             case R.id.btnExit:
-                Constants.dialogImage.dismiss();
+                dialogImage.dismiss();
                 break;
         }
 
@@ -67,11 +79,11 @@ public class DialogInputImage implements View.OnClickListener {
             String fileName = "notes_" + new Random().nextInt() + ".jpg";
             ContentValues values = new ContentValues();
             values.put(MediaStore.Images.Media.TITLE, fileName);
-            Constants.mCapturedImageURI = context.getContentResolver()
+            mCapturedImageURI = context.getContentResolver()
                     .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                             values);
             takePictureIntent
-                    .putExtra(MediaStore.EXTRA_OUTPUT, Constants.mCapturedImageURI);
+                    .putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
             activity.startActivityForResult(takePictureIntent, Constants.REQUEST_IMAGE_CAPTURE);
         }
     }

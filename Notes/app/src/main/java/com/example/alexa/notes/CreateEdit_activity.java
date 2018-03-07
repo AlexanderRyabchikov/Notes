@@ -1,12 +1,12 @@
 package com.example.alexa.notes;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -45,6 +45,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     private ProgressBar bar;
     private byte[] image = null;
     private byte[] imageSmall = null;
+    private Dialog dialogImage = null;
+    DialogInputImage dialogInputImage;
 
     private GpsTask gpsTask;
     private LocationManager locationManager;
@@ -177,7 +179,11 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 }
                 break;
             case R.id.addImageButton:
-                new DialogInputImage(this, Constants.TITLE_DIALOG_IMAGE, CreateEdit_activity.this).createDialog();
+                dialogInputImage = new DialogInputImage(this,
+                        Constants.TITLE_DIALOG_IMAGE,
+                        CreateEdit_activity.this);
+                dialogInputImage.createDialog();
+                dialogImage = dialogInputImage.getDialogImage();
                 break;
             case R.id.gpsCheckedAuto:
                 /* Используется для скрытия клавиатуры по завершению ввода*/
@@ -355,7 +361,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
 
                     picturePath = cursor.getString(columnIndex);
                     cursor.close();
-                    Constants.dialogImage.dismiss();
+                    dialogImage.dismiss();
                     Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_IMAGE_SELECT);
                     break;
                 }
@@ -364,13 +370,13 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                         resultCode == RESULT_OK) {
                     String[] projection = {MediaStore.Images.Media.DATA};
                     Cursor cursor =
-                            managedQuery(Constants.mCapturedImageURI, projection, null,
+                            managedQuery(dialogInputImage.getmCapturedImageURI(), projection, null,
                                     null, null);
                     int column_index_data = cursor.getColumnIndexOrThrow(
                             MediaStore.Images.Media.DATA);
                     cursor.moveToFirst();
                     picturePath = cursor.getString(column_index_data);
-                    Constants.dialogImage.dismiss();
+                    dialogImage.dismiss();
                     Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_IMAGE_SELECT);
                 }
                 break;
