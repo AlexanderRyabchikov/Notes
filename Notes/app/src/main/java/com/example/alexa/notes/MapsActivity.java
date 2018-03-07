@@ -125,8 +125,11 @@ public class MapsActivity  extends FragmentActivity
             mMap.addMarker(new MarkerOptions()
                     .position(latLng));
 
-            Constants.longtitude = latLng.longitude;
-            Constants.lintitude = latLng.latitude;
+
+            Intent intentGetCoor = new Intent();
+            intentGetCoor.putExtra(Constants.INTENT_MAPS_WITH_COORDINATES_LAT, latLng.latitude);
+            intentGetCoor.putExtra(Constants.INTENT_MAPS_WITH_COORDINATES_LONG, latLng.longitude);
+            setResult(RESULT_OK, intentGetCoor);
             Constants.ToastMakeText(getBaseContext(), Constants.COORDINATE_SELECT);
         }
     }
@@ -153,7 +156,6 @@ public class MapsActivity  extends FragmentActivity
         return super.onKeyDown(keyCode, event);
     }
     private void sendResultWithClose(){
-        setResult(RESULT_OK);
         Intent intent = new Intent();
         intent.putExtra(Constants.INTENT_UPDATE_MAIN, true);
         setResult(RESULT_OK, intent);

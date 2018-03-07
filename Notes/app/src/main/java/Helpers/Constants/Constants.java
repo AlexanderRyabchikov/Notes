@@ -29,6 +29,8 @@ public final class Constants {
     public static final int CM_DELETE_ID = 1;
     public static final int CM_EDIT_ID = 2;
     public static final String INTENT_CREATE_NOTE = "Create_note";
+    public static final String INTENT_MAPS_WITH_COORDINATES_LONG = "maps_get_coordinate_long";
+    public static final String INTENT_MAPS_WITH_COORDINATES_LAT = "maps_get_coordinate_lat";
     public static final String INTENT_EDIT_NOTE = "edit_note";
     public static final String INTENT_PREVIEW_NOTE = "Preview_note";
     public static final String map = "googleMaps";
@@ -43,6 +45,7 @@ public final class Constants {
     public static final int HIGH_PRIORITY = 400;
     public static final int RESULT_LOAD_IMAGE = 1;
     public static final int REQUEST_IMAGE_CAPTURE = 2;
+    public static final int REQUEST_MAPS = 11;
     public static final String MESSAGE_GPS_ON = "Gsp is turned on";
     public static final String MESSAGE_GPS_OFF = "Gsp is turned off";
     public static final String GPS_ERROR = "Ошибка GSP модуля";
@@ -52,12 +55,6 @@ public final class Constants {
     public static final String FILE_NOT_SAVE = "File saved";
     public static final String FLASH_ERROR = "Flash not installed";
     /*Constants*/
-
-    /*Global variable*/
-    public static double lintitude;
-    public static double longtitude;
-    /*Global variable*/
-
 
     /*Functions*/
     public static Bitmap getImage(byte[] image) {

@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
@@ -91,7 +90,7 @@ public class PreviewNote extends Activity implements View.OnClickListener {
         }
     }
     private void sendResultWithClose(){
-        setResult(RESULT_OK);
+
         Intent intent = new Intent();
         intent.putExtra(Constants.INTENT_UPDATE_MAIN, true);
         intent.putExtra(Constants.map, true);

@@ -31,6 +31,18 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
     private Context context = null;
     private ProgressBar progressBar = null;
 
+    private double lintitude = 0;
+    private double longtitude = 0;
+
+
+    public double getLintitude() {
+        return lintitude;
+    }
+
+    public double getLongtitude() {
+        return longtitude;
+    }
+
     public void setLocationManager(LocationManager locationManager) {
         this.locationManager = locationManager;
     }
@@ -121,8 +133,8 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void result) {
         getProgressBar().setVisibility(View.INVISIBLE);
         locationManager.removeUpdates(locationListener);
-        Constants.lintitude = gpsLocation.getLatitude();
-        Constants.longtitude = gpsLocation.getLongitude();
+        lintitude = gpsLocation.getLatitude();
+        longtitude = gpsLocation.getLongitude();
         Constants.ToastMakeText(context,
                 Constants.GPS_PLACE_FOUND);
         CreateEdit_activity.saveButton.setEnabled(true);

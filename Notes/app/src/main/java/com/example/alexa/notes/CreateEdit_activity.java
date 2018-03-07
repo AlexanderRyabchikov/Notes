@@ -38,6 +38,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     private EditText editTextTitle;
     private EditText editTextContent;
     private CheckBox checkBoxAuto;
+    private double lintitude = 0;
+    private double longtitude = 0;
     private CheckBox checkBoxManual;
     public static Button saveButton;
     private RadioGroup radioGroup;
@@ -77,8 +79,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     id_edit_note = cursor.getInt(cursor.getColumnIndex(DataBase.COLUMN_ID));
                     title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
                     content = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_CONTENT));
-                    Constants.lintitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LINTITIDE));
-                    Constants.longtitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LONGTITUDE));
+                    lintitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LINTITIDE));
+                    longtitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LONGTITUDE));
                     image = cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE));
                     imageSmall = cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE_SMALL));
                     radioButtonSelectId = cursor.getInt(cursor.getColumnIndex(DataBase.COLUMN_PRIORITY));
@@ -203,8 +205,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     gpsTask.setLocationManager(locationManager);
                     gpsTask.execute();
                 }else{
-                    Constants.lintitude = 0;
-                    Constants.longtitude = 0;
+                    lintitude = 0;
+                    longtitude = 0;
                     saveButton.setEnabled(true);
                     cancelTask();
                 }
@@ -226,10 +228,10 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                         cancelTask();
                     }
                     Intent intentMaps = new Intent(this, MapsActivity.class);
-                    startActivityForResult(intentMaps, 11);
+                    startActivityForResult(intentMaps, Constants.REQUEST_MAPS);
                 }else{
-                    Constants.lintitude = 0;
-                    Constants.longtitude = 0;
+                    lintitude = 0;
+                    longtitude = 0;
                 }
                 break;
             default:
@@ -251,6 +253,11 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         String date = simpleDateFormat.format(calendar.getTime());
         String textTitle = editTextTitle.getText().toString();
         String textContent = editTextContent.getText().toString();
+        if (checkBoxAuto.isChecked())
+        {
+            longtitude = gpsTask.getLongtitude();
+            lintitude = gpsTask.getLintitude();
+        }
         if(TextUtils.isEmpty(textTitle)){
             editTextTitle.setError(Constants.ERROR_TEXT_EMPTY);
             return false;
@@ -269,8 +276,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
             dataBase.addToDB(   textTitle,
                                 textContent,
                                 Constants.RADIO_SELECT_ID,
-                                Constants.lintitude,
-                                Constants.longtitude,
+                                lintitude,
+                                longtitude,
                                 image,
                                 imageSmall,
                                 date);
@@ -279,8 +286,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                                 editTextTitle.getText().toString(),
                                 editTextContent.getText().toString(),
                                 Constants.RADIO_SELECT_ID,
-                                Constants.lintitude,
-                                Constants.longtitude,
+                                lintitude,
+                                longtitude,
                                 image,
                                 imageSmall,
                                 date);
@@ -379,6 +386,11 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     dialogImage.dismiss();
                     Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_IMAGE_SELECT);
                 }
+                break;
+            case Constants.REQUEST_MAPS:
+                Intent getMaps = getIntent();
+                lintitude = getMaps.getDoubleExtra(Constants.INTENT_MAPS_WITH_COORDINATES_LAT, 0);
+                longtitude = getMaps.getDoubleExtra(Constants.INTENT_MAPS_WITH_COORDINATES_LONG, 0);
                 break;
         }
     }
