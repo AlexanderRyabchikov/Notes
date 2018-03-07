@@ -12,7 +12,7 @@ import com.example.alexa.notes.R;
 
 import java.util.Random;
 
-import Helpers.Constants.C;
+import Helpers.Constants.Constants;
 
 /**
  * Created by alexa on 20.02.2018.
@@ -32,15 +32,15 @@ public class DialogInputImage implements View.OnClickListener {
 
     public void createDialog(){
 
-        C.dialogImage = new Dialog(context);
-        C.dialogImage.setContentView(R.layout.add_image_dialog);
-        C.dialogImage.setTitle(title);
+        Constants.dialogImage = new Dialog(context);
+        Constants.dialogImage.setContentView(R.layout.add_image_dialog);
+        Constants.dialogImage.setTitle(title);
 
-        C.dialogImage.findViewById(R.id.btnExit).setOnClickListener(this);
-        C.dialogImage.findViewById(R.id.btnChoosePath).setOnClickListener(this);
-        C.dialogImage.findViewById(R.id.btnTakePhoto).setOnClickListener(this);
+        Constants.dialogImage.findViewById(R.id.btnExit).setOnClickListener(this);
+        Constants.dialogImage.findViewById(R.id.btnChoosePath).setOnClickListener(this);
+        Constants.dialogImage.findViewById(R.id.btnTakePhoto).setOnClickListener(this);
 
-        C.dialogImage.show();
+        Constants.dialogImage.show();
 
 
     }
@@ -55,7 +55,7 @@ public class DialogInputImage implements View.OnClickListener {
                 activeTakePhoto();
                 break;
             case R.id.btnExit:
-                C.dialogImage.dismiss();
+                Constants.dialogImage.dismiss();
                 break;
         }
 
@@ -67,18 +67,18 @@ public class DialogInputImage implements View.OnClickListener {
             String fileName = "notes_" + new Random().nextInt() + ".jpg";
             ContentValues values = new ContentValues();
             values.put(MediaStore.Images.Media.TITLE, fileName);
-            C.mCapturedImageURI = context.getContentResolver()
+            Constants.mCapturedImageURI = context.getContentResolver()
                     .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                             values);
             takePictureIntent
-                    .putExtra(MediaStore.EXTRA_OUTPUT, C.mCapturedImageURI);
-            activity.startActivityForResult(takePictureIntent, C.REQUEST_IMAGE_CAPTURE);
+                    .putExtra(MediaStore.EXTRA_OUTPUT, Constants.mCapturedImageURI);
+            activity.startActivityForResult(takePictureIntent, Constants.REQUEST_IMAGE_CAPTURE);
         }
     }
 
     private void activeGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        activity.startActivityForResult(intent, C.RESULT_LOAD_IMAGE);
+        activity.startActivityForResult(intent, Constants.RESULT_LOAD_IMAGE);
     }
 }

@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
-import Helpers.Constants.C;
+import Helpers.Constants.Constants;
 import Helpers.DataBase.DataBase;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -89,7 +89,7 @@ public class MapsActivity  extends FragmentActivity
     }
 
     private void addMarkerFromDataBase() {
-        if (intentFlag.getBooleanExtra(C.map, false)) {
+        if (intentFlag.getBooleanExtra(Constants.map, false)) {
             dataBase = new DataBase(getBaseContext());
             ctrlFlag = true;
             dataBase.open_connection();
@@ -125,9 +125,9 @@ public class MapsActivity  extends FragmentActivity
             mMap.addMarker(new MarkerOptions()
                     .position(latLng));
 
-            C.longtitude = latLng.longitude;
-            C.lintitude = latLng.latitude;
-            C.ToastMakeText(getBaseContext(), C.COORDINATE_SELECT);
+            Constants.longtitude = latLng.longitude;
+            Constants.lintitude = latLng.latitude;
+            Constants.ToastMakeText(getBaseContext(), Constants.COORDINATE_SELECT);
         }
     }
 
@@ -139,7 +139,7 @@ public class MapsActivity  extends FragmentActivity
 
         long positionId = (long)marker.getAlpha();
         Intent intentPreviewNote = new Intent(this, PreviewNote.class);
-        intentPreviewNote.putExtra(C.INTENT_PREVIEW_NOTE, positionId);
+        intentPreviewNote.putExtra(Constants.INTENT_PREVIEW_NOTE, positionId);
         startActivityForResult(intentPreviewNote, 2);
         return false;
     }
@@ -155,7 +155,7 @@ public class MapsActivity  extends FragmentActivity
     private void sendResultWithClose(){
         setResult(RESULT_OK);
         Intent intent = new Intent();
-        intent.putExtra(C.INTENT_UPDATE_MAIN, true);
+        intent.putExtra(Constants.INTENT_UPDATE_MAIN, true);
         setResult(RESULT_OK, intent);
         finish();
     }

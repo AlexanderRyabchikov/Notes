@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import Helpers.Constants.C;
+import Helpers.Constants.Constants;
 import Helpers.DataBase.DataBase;
 import Helpers.CustomDialog.DialogInputFile;
 
@@ -44,7 +44,7 @@ public class PreviewNote extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_note);
-        C.setupLocale();
+        Constants.setupLocale();
         PreviewActivity_create();
 
     }
@@ -57,7 +57,7 @@ public class PreviewNote extends Activity implements View.OnClickListener {
         ImageView imageView = findViewById(R.id.imageView);
 
         intent = getIntent();
-        positionId = intent.getLongExtra(C.INTENT_PREVIEW_NOTE, -1);
+        positionId = intent.getLongExtra(Constants.INTENT_PREVIEW_NOTE, -1);
 
         dataBase = new DataBase(this);
         dataBase.open_connection();
@@ -67,7 +67,7 @@ public class PreviewNote extends Activity implements View.OnClickListener {
             do{
                 title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
                 content = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_CONTENT));
-                btm = C.getImage(cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE)));
+                btm = Constants.getImage(cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE)));
 
 
             }while(cursor.moveToNext());
@@ -93,8 +93,8 @@ public class PreviewNote extends Activity implements View.OnClickListener {
     private void sendResultWithClose(){
         setResult(RESULT_OK);
         Intent intent = new Intent();
-        intent.putExtra(C.INTENT_UPDATE_MAIN, true);
-        intent.putExtra(C.map, true);
+        intent.putExtra(Constants.INTENT_UPDATE_MAIN, true);
+        intent.putExtra(Constants.map, true);
         setResult(RESULT_OK, intent);
         dataBase.close_connection();
         stopManagingCursor(cursor);
@@ -115,27 +115,27 @@ public class PreviewNote extends Activity implements View.OnClickListener {
                                     View view,
                                     ContextMenu.ContextMenuInfo contextMenuInfo){
         super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
-        contextMenu.add(0, C.CM_EDIT_ID, 0, R.string.edit_menu);
-        contextMenu.add(0, C.CM_DELETE_ID, 0, R.string.delete_menu);
-        contextMenu.add(0, C.SAVE_TO_FILE, 0, R.string.save_to_file);
+        contextMenu.add(0, Constants.CM_EDIT_ID, 0, R.string.edit_menu);
+        contextMenu.add(0, Constants.CM_DELETE_ID, 0, R.string.delete_menu);
+        contextMenu.add(0, Constants.SAVE_TO_FILE, 0, R.string.save_to_file);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public boolean onContextItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case C.CM_DELETE_ID:
+            case Constants.CM_DELETE_ID:
                 dataBase.deleteDB(positionId);
                 cursor.requery();
-                C.ToastMakeText(getBaseContext(), C.DELETE_SUCCESS_MSG);
+                Constants.ToastMakeText(getBaseContext(), Constants.DELETE_SUCCESS_MSG);
                 sendResultWithClose();
                 break;
-            case C.CM_EDIT_ID:
+            case Constants.CM_EDIT_ID:
                 Intent intentCreateEdit = new Intent(this, CreateEdit_activity.class);
-                intentCreateEdit.putExtra(C.INTENT_CREATE_NOTE, false);
-                intentCreateEdit.putExtra(C.INTENT_EDIT_NOTE, positionId);
+                intentCreateEdit.putExtra(Constants.INTENT_CREATE_NOTE, false);
+                intentCreateEdit.putExtra(Constants.INTENT_EDIT_NOTE, positionId);
                 startActivityForResult(intentCreateEdit, 1);
                 break;
-            case C.SAVE_TO_FILE:
+            case Constants.SAVE_TO_FILE:
                 save_to_file();
                 break;
             default:
@@ -150,9 +150,9 @@ public class PreviewNote extends Activity implements View.OnClickListener {
 
         DialogInputFile dialogInputFile =
                 new DialogInputFile(this,
-                        C.TITLE_DIALOG_SAVE_FILE,
-                        C.NAME_POSITIVE_BUTTON,
-                        C.NAME_NEGATIVE_BUTTON);
+                        Constants.TITLE_DIALOG_SAVE_FILE,
+                        Constants.NAME_POSITIVE_BUTTON,
+                        Constants.NAME_NEGATIVE_BUTTON);
         dialogInputFile.createDialog();
     }
 
@@ -180,7 +180,7 @@ public class PreviewNote extends Activity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {return;}
-        boolean isUpdate = data.getBooleanExtra(C.INTENT_UPDATE_MAIN, false);
+        boolean isUpdate = data.getBooleanExtra(Constants.INTENT_UPDATE_MAIN, false);
         if (isUpdate){
             this.recreate();
         }

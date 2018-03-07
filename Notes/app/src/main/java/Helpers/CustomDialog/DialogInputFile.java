@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import Helpers.Constants.C;
+import Helpers.Constants.Constants;
 
 /**
  * Created by alexa on 11.02.2018.
@@ -94,13 +94,13 @@ public class DialogInputFile {
                 outputStream.write("\n".getBytes());
                 outputStream.write(PreviewNote.getContentPreview().getBytes());
                 outputStream.flush();
-                C.ToastMakeText(context, C.FILE_SAVE + file.getAbsolutePath());
+                Constants.ToastMakeText(context, Constants.FILE_SAVE + file.getAbsolutePath());
             } catch (IOException e) {
-                C.ToastMakeText(context, C.FILE_NOT_SAVE);
+                Constants.ToastMakeText(context, Constants.FILE_NOT_SAVE);
             }
         }
         else{
-            C.ToastMakeText(context, C.FLASH_ERROR);
+            Constants.ToastMakeText(context, Constants.FLASH_ERROR);
         }
     }
 

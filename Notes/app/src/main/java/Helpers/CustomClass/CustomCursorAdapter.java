@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.alexa.notes.R;
 
-import Helpers.Constants.C;
+import Helpers.Constants.Constants;
 import Helpers.DataBase.DataBase;
 
 /**
@@ -31,13 +31,13 @@ public class CustomCursorAdapter implements SimpleCursorAdapter.ViewBinder{
                 textView.setText(cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE)));
                 int priority_id = cursor.getColumnIndex(DataBase.COLUMN_PRIORITY);
                 switch (cursor.getInt(priority_id)){
-                    case C.LOW_PRIORITY:
+                    case Constants.LOW_PRIORITY:
                         textView.setBackgroundColor(Color.GREEN);
                         break;
-                    case C.MEDIUM_PRIORITY:
+                    case Constants.MEDIUM_PRIORITY:
                         textView.setBackgroundColor(Color.YELLOW);
                         break;
-                    case C.HIGH_PRIORITY:
+                    case Constants.HIGH_PRIORITY:
                         textView.setBackgroundColor(Color.RED);
                         break;
                     default:
@@ -47,7 +47,7 @@ public class CustomCursorAdapter implements SimpleCursorAdapter.ViewBinder{
                 break;
             case R.id.ivImg:
                 ImageView imageView = (ImageView)view;
-                Bitmap bitmap = C.getImage(cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE_SMALL)));
+                Bitmap bitmap = Constants.getImage(cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE_SMALL)));
                 if(bitmap != null) {
                     imageView.setImageBitmap(bitmap);
                 }else{

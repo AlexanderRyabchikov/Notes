@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import Helpers.Constants.C;
+import Helpers.Constants.Constants;
 import Helpers.CustomClass.CustomCursorAdapter;
 import Helpers.DataBase.DataBase;
 
@@ -37,12 +37,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         switch (view.getId()){
             case R.id.createNote:
                 Intent intentCreateEdit = new Intent(this, CreateEdit_activity.class);
-                intentCreateEdit.putExtra(C.INTENT_CREATE_NOTE, true);
+                intentCreateEdit.putExtra(Constants.INTENT_CREATE_NOTE, true);
                 startActivityForResult(intentCreateEdit, 1);
                 break;
             case R.id.runMap:
                 Intent intentMaps = new Intent(this, MapsActivity.class);
-                intentMaps.putExtra(C.map, true);
+                intentMaps.putExtra(Constants.map, true);
                 startActivityForResult(intentMaps, 10);
                 break;
             default:
@@ -54,7 +54,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data == null) {return;}
-        boolean isUpdate = data.getBooleanExtra(C.INTENT_UPDATE_MAIN, false);
+        boolean isUpdate = data.getBooleanExtra(Constants.INTENT_UPDATE_MAIN, false);
         if (isUpdate) {
             this.recreate();
         }
@@ -65,26 +65,26 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                                     View view,
                                     ContextMenu.ContextMenuInfo contextMenuInfo){
         super.onCreateContextMenu(contextMenu, view, contextMenuInfo);
-        contextMenu.add(0, C.CM_EDIT_ID, 0, R.string.edit_menu);
-        contextMenu.add(0, C.CM_DELETE_ID, 0, R.string.delete_menu);
+        contextMenu.add(0, Constants.CM_EDIT_ID, 0, R.string.edit_menu);
+        contextMenu.add(0, Constants.CM_DELETE_ID, 0, R.string.delete_menu);
     }
     public boolean onContextItemSelected(MenuItem item){
         switch (item.getItemId()){
-            case C.CM_DELETE_ID:
+            case Constants.CM_DELETE_ID:
                 AdapterView.AdapterContextMenuInfo adapterContextMenuInfo =
                         (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 dataBase.deleteDB(adapterContextMenuInfo.id);
 
                 cursor.requery();
                 this.recreate();
-                C.ToastMakeText(getBaseContext(), C.DELETE_SUCCESS_MSG);
+                Constants.ToastMakeText(getBaseContext(), Constants.DELETE_SUCCESS_MSG);
                 break;
-            case C.CM_EDIT_ID:
+            case Constants.CM_EDIT_ID:
                 AdapterView.AdapterContextMenuInfo adapterContextMenuInfoEdit =
                         (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 Intent intentCreateEdit = new Intent(this, CreateEdit_activity.class);
-                intentCreateEdit.putExtra(C.INTENT_CREATE_NOTE, false);
-                intentCreateEdit.putExtra(C.INTENT_EDIT_NOTE, adapterContextMenuInfoEdit.id);
+                intentCreateEdit.putExtra(Constants.INTENT_CREATE_NOTE, false);
+                intentCreateEdit.putExtra(Constants.INTENT_EDIT_NOTE, adapterContextMenuInfoEdit.id);
                 startActivityForResult(intentCreateEdit, 1);
                 break;
             default:
@@ -118,7 +118,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         cursor.moveToPosition(position);
         long positionId = cursor.getLong(cursor.getColumnIndex(DataBase.COLUMN_ID));
         Intent intentPreviewNote = new Intent(this, PreviewNote.class);
-        intentPreviewNote.putExtra(C.INTENT_PREVIEW_NOTE, positionId);
+        intentPreviewNote.putExtra(Constants.INTENT_PREVIEW_NOTE, positionId);
         startActivityForResult(intentPreviewNote, 2);
     }
     @Override
@@ -130,7 +130,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
     private void MainActivity_create() {
         setContentView(R.layout.activity_main);
-        C.setupLocale();
+        Constants.setupLocale();
         findViewById(R.id.createNote).setOnClickListener(this);
         findViewById(R.id.runMap).setOnClickListener(this);
         ListView listView = findViewById(R.id.lvData);

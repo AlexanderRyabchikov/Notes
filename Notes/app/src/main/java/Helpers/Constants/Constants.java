@@ -16,7 +16,7 @@ import java.util.Locale;
  * Created by alexa on 25.02.2018.
  */
 
-public final class C {
+public final class Constants {
 
     /*Constants*/
     public static final int SAVE_TO_FILE = 3;
@@ -79,7 +79,7 @@ public final class C {
         }
         final byte[][] imageCompress = new byte[1][1];
         Runnable runnable = () -> {
-            Bitmap bitmap = C.getImage(imageOriginal);
+            Bitmap bitmap = Constants.getImage(imageOriginal);
             bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);

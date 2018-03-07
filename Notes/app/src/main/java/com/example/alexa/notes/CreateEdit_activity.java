@@ -20,7 +20,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
-import Helpers.Constants.C;
+import Helpers.Constants.Constants;
 import Helpers.CustomClass.CustomTextWatcher;
 import Helpers.DataBase.DataBase;
 import Helpers.CustomDialog.DialogInputImage;
@@ -51,17 +51,17 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_activity);
-        C.setupLocale();
+        Constants.setupLocale();
         initActivity();
         EditActivity_create();
     }
 
 
     private void EditActivity_create(){
-        if(!intent.getBooleanExtra(C.INTENT_CREATE_NOTE, false)){
+        if(!intent.getBooleanExtra(Constants.INTENT_CREATE_NOTE, false)){
             // Здесь заполнение данными если был вызван для правки
             bFlagCheckCreate = false;
-            long positionId = intent.getLongExtra(C.INTENT_EDIT_NOTE, -1);
+            long positionId = intent.getLongExtra(Constants.INTENT_EDIT_NOTE, -1);
             String title;
             String content;
             int radioButtonSelectId = 0;
@@ -73,8 +73,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     id_edit_note = cursor.getInt(cursor.getColumnIndex(DataBase.COLUMN_ID));
                     title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
                     content = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_CONTENT));
-                    C.lintitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LINTITIDE));
-                    C.longtitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LONGTITUDE));
+                    Constants.lintitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LINTITIDE));
+                    Constants.longtitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LONGTITUDE));
                     image = cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE));
                     imageSmall = cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE_SMALL));
                     radioButtonSelectId = cursor.getInt(cursor.getColumnIndex(DataBase.COLUMN_PRIORITY));
@@ -98,13 +98,13 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     */
     private void setCheckedRadioButton(int radioButtonSelectId) {
         switch (radioButtonSelectId){
-            case C.LOW_PRIORITY:
+            case Constants.LOW_PRIORITY:
                 radioGroup.check(R.id.lowPriority);
                 break;
-            case C.MEDIUM_PRIORITY:
+            case Constants.MEDIUM_PRIORITY:
                 radioGroup.check(R.id.mediumPriority);
                 break;
-            case C.HIGH_PRIORITY:
+            case Constants.HIGH_PRIORITY:
                 radioGroup.check(R.id.highPriority);
                 break;
             default:
@@ -114,10 +114,10 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
 
     private void initActivity(){
         dataBase = new DataBase(this);
-        C.context = getBaseContext();
+        Constants.context = getBaseContext();
         intent = getIntent();
 
-        C.bar = findViewById(R.id.progressBar);
+        Constants.bar = findViewById(R.id.progressBar);
         editTextTitle = findViewById(R.id.editTextTitle);
         editTextContent = findViewById(R.id.editTextContent);
         radioGroup = findViewById(R.id.radioGroup);
@@ -134,7 +134,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         saveButton.setOnClickListener(this);
         findViewById(R.id.addImageButton).setOnClickListener(this);
 
-        C.locationManager =
+        Constants.locationManager =
                 (LocationManager)getSystemService(Context.LOCATION_SERVICE);
     }
 
@@ -146,16 +146,16 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         radioGroup.setOnCheckedChangeListener((radioGroup, i) -> {
                switch (radioGroup.getCheckedRadioButtonId()) {
                     case R.id.lowPriority:
-                        C.RADIO_SELECT_ID = C.LOW_PRIORITY;
+                        Constants.RADIO_SELECT_ID = Constants.LOW_PRIORITY;
                         break;
                     case R.id.mediumPriority:
-                        C.RADIO_SELECT_ID = C.MEDIUM_PRIORITY;
+                        Constants.RADIO_SELECT_ID = Constants.MEDIUM_PRIORITY;
                         break;
                     case R.id.highPriority:
-                        C.RADIO_SELECT_ID = C.HIGH_PRIORITY;
+                        Constants.RADIO_SELECT_ID = Constants.HIGH_PRIORITY;
                         break;
                     default:
-                        C.RADIO_SELECT_ID = -100;
+                        Constants.RADIO_SELECT_ID = -100;
                         break;
 
 
@@ -172,12 +172,12 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 break;
             case R.id.saveBt:
                 if(SaveToDB()){
-                    C.ToastMakeText(getBaseContext(), C.SUCCESS_MSG_DB);
+                    Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_MSG_DB);
                     cleanAllForm();
                 }
                 break;
             case R.id.addImageButton:
-                new DialogInputImage(this, C.TITLE_DIALOG_IMAGE, CreateEdit_activity.this).createDialog();
+                new DialogInputImage(this, Constants.TITLE_DIALOG_IMAGE, CreateEdit_activity.this).createDialog();
                 break;
             case R.id.gpsCheckedAuto:
                 /* Используется для скрытия клавиатуры по завершению ввода*/
@@ -194,8 +194,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     gpsTask = new GpsTask();
                     gpsTask.execute();
                 }else{
-                    C.lintitude = 0;
-                    C.longtitude = 0;
+                    Constants.lintitude = 0;
+                    Constants.longtitude = 0;
                     saveButton.setEnabled(true);
                     cancelTask();
                 }
@@ -209,7 +209,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                         (CreateEdit_activity.this.getCurrentFocus().getWindowToken(), 0);
 
                 if (checkBoxManual.isChecked()){
-                    C.bar.setVisibility(View.INVISIBLE);
+                    Constants.bar.setVisibility(View.INVISIBLE);
                     saveButton.setEnabled(true);
                     checkBoxAuto.setChecked(false);
                     checkBoxAuto.setSelected(false);
@@ -219,8 +219,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     Intent intentMaps = new Intent(this, MapsActivity.class);
                     startActivityForResult(intentMaps, 11);
                 }else{
-                    C.lintitude = 0;
-                    C.longtitude = 0;
+                    Constants.lintitude = 0;
+                    Constants.longtitude = 0;
                 }
                 break;
             default:
@@ -232,7 +232,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         if(!gpsTask.isCancelled()) {
             gpsTask.cancel(false);
         }
-        C.bar.setVisibility(View.INVISIBLE);
+        Constants.bar.setVisibility(View.INVISIBLE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -244,25 +244,25 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         String textTitle = editTextTitle.getText().toString();
         String textContent = editTextContent.getText().toString();
         if(TextUtils.isEmpty(textTitle)){
-            editTextTitle.setError(C.ERROR_TEXT_EMPTY);
+            editTextTitle.setError(Constants.ERROR_TEXT_EMPTY);
             return false;
         }
         if (TextUtils.isEmpty(textContent)){
-            editTextContent.setError(C.ERROR_TEXT_EMPTY);
+            editTextContent.setError(Constants.ERROR_TEXT_EMPTY);
             return false;
         }
         if (picturePath != null) {
             if ((image = saveImage(picturePath)) != null) {
-                imageSmall = C.convertToSmallImage(image, C.SIZE_IMAGE_PREVIEW);
+                imageSmall = Constants.convertToSmallImage(image, Constants.SIZE_IMAGE_PREVIEW);
             }
         }
         dataBase.open_connection();
         if (bFlagCheckCreate){
             dataBase.addToDB(   textTitle,
                                 textContent,
-                                C.RADIO_SELECT_ID,
-                                C.lintitude,
-                                C.longtitude,
+                                Constants.RADIO_SELECT_ID,
+                                Constants.lintitude,
+                                Constants.longtitude,
                                 image,
                                 imageSmall,
                                 date);
@@ -270,9 +270,9 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
             dataBase.updateDB(  id_edit_note,
                                 editTextTitle.getText().toString(),
                                 editTextContent.getText().toString(),
-                                C.RADIO_SELECT_ID,
-                                C.lintitude,
-                                C.longtitude,
+                                Constants.RADIO_SELECT_ID,
+                                Constants.lintitude,
+                                Constants.longtitude,
                                 image,
                                 imageSmall,
                                 date);
@@ -294,7 +294,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
 
 
         radioGroup.clearCheck();
-        C.RADIO_SELECT_ID = -100;
+        Constants.RADIO_SELECT_ID = -100;
     }
 
     @Override
@@ -308,7 +308,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     private void sendResultWithClose(){
         setResult(RESULT_OK);
         Intent intent = new Intent();
-        intent.putExtra(C.INTENT_UPDATE_MAIN, true);
+        intent.putExtra(Constants.INTENT_UPDATE_MAIN, true);
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -337,7 +337,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case C.RESULT_LOAD_IMAGE:
+            case Constants.RESULT_LOAD_IMAGE:
                 if (resultCode == RESULT_OK && null != data) {
                     Uri selectedImage = data.getData();
                     String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -354,23 +354,23 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
 
                     picturePath = cursor.getString(columnIndex);
                     cursor.close();
-                    C.dialogImage.dismiss();
-                    C.ToastMakeText(getBaseContext(), C.SUCCESS_IMAGE_SELECT);
+                    Constants.dialogImage.dismiss();
+                    Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_IMAGE_SELECT);
                     break;
                 }
-            case C.REQUEST_IMAGE_CAPTURE:
-                if (requestCode == C.REQUEST_IMAGE_CAPTURE &&
+            case Constants.REQUEST_IMAGE_CAPTURE:
+                if (requestCode == Constants.REQUEST_IMAGE_CAPTURE &&
                         resultCode == RESULT_OK) {
                     String[] projection = {MediaStore.Images.Media.DATA};
                     Cursor cursor =
-                            managedQuery(C.mCapturedImageURI, projection, null,
+                            managedQuery(Constants.mCapturedImageURI, projection, null,
                                     null, null);
                     int column_index_data = cursor.getColumnIndexOrThrow(
                             MediaStore.Images.Media.DATA);
                     cursor.moveToFirst();
                     picturePath = cursor.getString(column_index_data);
-                    C.dialogImage.dismiss();
-                    C.ToastMakeText(getBaseContext(), C.SUCCESS_IMAGE_SELECT);
+                    Constants.dialogImage.dismiss();
+                    Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_IMAGE_SELECT);
                 }
                 break;
         }

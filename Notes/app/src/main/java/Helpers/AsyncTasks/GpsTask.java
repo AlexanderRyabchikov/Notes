@@ -14,7 +14,7 @@ import com.example.alexa.notes.CreateEdit_activity;
 
 import java.util.concurrent.TimeUnit;
 
-import Helpers.Constants.C;
+import Helpers.Constants.Constants;
 
 /**
  * Created by alexander on 14.02.18.
@@ -28,7 +28,7 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPreExecute() {
-        C.bar.setVisibility(View.VISIBLE);
+        Constants.bar.setVisibility(View.VISIBLE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -42,29 +42,29 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
 
             @Override
             public void onProviderEnabled(String s) {
-                Toast.makeText(C.context, C.MESSAGE_GPS_ON, Toast.LENGTH_SHORT).show();
+                Toast.makeText(Constants.context, Constants.MESSAGE_GPS_ON, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onProviderDisabled(String s) {
                 Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                C.context.startActivity(intent);
-                Toast.makeText(C.context, C.MESSAGE_GPS_OFF,
+                Constants.context.startActivity(intent);
+                Toast.makeText(Constants.context, Constants.MESSAGE_GPS_OFF,
                         Toast.LENGTH_SHORT).show();
             }
         };
 
         try {
-            if (C.locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
-                C.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
+            if (Constants.locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
+                Constants.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
             }
-            if (C.locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
-                C.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
+            if (Constants.locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
+                Constants.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
             }
         } catch (SecurityException e) {
-            Toast.makeText(C.context,
-                    C.GPS_ERROR,
+            Toast.makeText(Constants.context,
+                    Constants.GPS_ERROR,
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -89,8 +89,8 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
             targetLocation.setLatitude(0.0d);
             targetLocation.setLongitude(0.0d);
             gpsLocation = targetLocation;
-            Toast.makeText(C.context,
-                    C.GPS_PLACE_NOT_FOUND,
+            Toast.makeText(Constants.context,
+                    Constants.GPS_PLACE_NOT_FOUND,
                     Toast.LENGTH_SHORT).show();
         }
         return null;
@@ -98,12 +98,12 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        C.bar.setVisibility(View.INVISIBLE);
-        C.locationManager.removeUpdates(locationListener);
-        C.lintitude = gpsLocation.getLatitude();
-        C.longtitude = gpsLocation.getLongitude();
-        C.ToastMakeText(C.context,
-                C.GPS_PLACE_FOUND);
+        Constants.bar.setVisibility(View.INVISIBLE);
+        Constants.locationManager.removeUpdates(locationListener);
+        Constants.lintitude = gpsLocation.getLatitude();
+        Constants.longtitude = gpsLocation.getLongitude();
+        Constants.ToastMakeText(Constants.context,
+                Constants.GPS_PLACE_FOUND);
         CreateEdit_activity.saveButton.setEnabled(true);
     }
 
