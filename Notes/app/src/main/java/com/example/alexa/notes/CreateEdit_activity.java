@@ -8,8 +8,6 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -18,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 
 import Helpers.Constants.Constants;
@@ -43,10 +42,13 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     public static Button saveButton;
     private RadioGroup radioGroup;
     private String picturePath = null;
+    private ProgressBar bar;
     private byte[] image = null;
     private byte[] imageSmall = null;
 
     private GpsTask gpsTask;
+    private LocationManager locationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,10 +116,9 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
 
     private void initActivity(){
         dataBase = new DataBase(this);
-        Constants.context = getBaseContext();
         intent = getIntent();
 
-        Constants.bar = findViewById(R.id.progressBar);
+        bar = findViewById(R.id.progressBar);
         editTextTitle = findViewById(R.id.editTextTitle);
         editTextContent = findViewById(R.id.editTextContent);
         radioGroup = findViewById(R.id.radioGroup);
@@ -134,7 +135,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         saveButton.setOnClickListener(this);
         findViewById(R.id.addImageButton).setOnClickListener(this);
 
-        Constants.locationManager =
+        locationManager =
                 (LocationManager)getSystemService(Context.LOCATION_SERVICE);
     }
 
@@ -163,7 +164,6 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
             });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -192,6 +192,9 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     checkBoxManual.setChecked(false);
                     checkBoxManual.setSelected(false);
                     gpsTask = new GpsTask();
+                    gpsTask.setContext(this);
+                    gpsTask.setProgressBar(bar);
+                    gpsTask.setLocationManager(locationManager);
                     gpsTask.execute();
                 }else{
                     Constants.lintitude = 0;
@@ -209,7 +212,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                         (CreateEdit_activity.this.getCurrentFocus().getWindowToken(), 0);
 
                 if (checkBoxManual.isChecked()){
-                    Constants.bar.setVisibility(View.INVISIBLE);
+                    bar.setVisibility(View.INVISIBLE);
                     saveButton.setEnabled(true);
                     checkBoxAuto.setChecked(false);
                     checkBoxAuto.setSelected(false);
@@ -232,10 +235,9 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         if(!gpsTask.isCancelled()) {
             gpsTask.cancel(false);
         }
-        Constants.bar.setVisibility(View.INVISIBLE);
+        bar.setVisibility(View.INVISIBLE);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private boolean SaveToDB(){
 
         Calendar calendar = Calendar.getInstance();
@@ -313,7 +315,6 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         finish();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private byte[] saveImage(String path) {
         if (TextUtils.isEmpty(path)){
             return null;

@@ -1,5 +1,6 @@
 package Helpers.AsyncTasks;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -8,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.alexa.notes.CreateEdit_activity;
@@ -24,11 +26,30 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
 
 
     private LocationListener locationListener;
+    private LocationManager locationManager;
     private Location gpsLocation = null;
+    private Context context = null;
+    private ProgressBar progressBar = null;
+
+    public void setLocationManager(LocationManager locationManager) {
+        this.locationManager = locationManager;
+    }
+
+    public ProgressBar getProgressBar() {
+        return progressBar;
+    }
+
+    public void setProgressBar(ProgressBar progressBar) {
+        this.progressBar = progressBar;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
 
     @Override
     protected void onPreExecute() {
-        Constants.bar.setVisibility(View.VISIBLE);
+        getProgressBar().setVisibility(View.VISIBLE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -42,28 +63,28 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
 
             @Override
             public void onProviderEnabled(String s) {
-                Toast.makeText(Constants.context, Constants.MESSAGE_GPS_ON, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, Constants.MESSAGE_GPS_ON, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onProviderDisabled(String s) {
                 Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                Constants.context.startActivity(intent);
-                Toast.makeText(Constants.context, Constants.MESSAGE_GPS_OFF,
+                context.startActivity(intent);
+                Toast.makeText(context, Constants.MESSAGE_GPS_OFF,
                         Toast.LENGTH_SHORT).show();
             }
         };
 
         try {
-            if (Constants.locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
-                Constants.locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
+            if (locationManager.getAllProviders().contains(LocationManager.NETWORK_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 0, locationListener);
             }
-            if (Constants.locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
-                Constants.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
+            if (locationManager.getAllProviders().contains(LocationManager.GPS_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
             }
         } catch (SecurityException e) {
-            Toast.makeText(Constants.context,
+            Toast.makeText(context,
                     Constants.GPS_ERROR,
                     Toast.LENGTH_SHORT).show();
         }
@@ -89,7 +110,7 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
             targetLocation.setLatitude(0.0d);
             targetLocation.setLongitude(0.0d);
             gpsLocation = targetLocation;
-            Toast.makeText(Constants.context,
+            Toast.makeText(context,
                     Constants.GPS_PLACE_NOT_FOUND,
                     Toast.LENGTH_SHORT).show();
         }
@@ -98,11 +119,11 @@ public class GpsTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        Constants.bar.setVisibility(View.INVISIBLE);
-        Constants.locationManager.removeUpdates(locationListener);
+        getProgressBar().setVisibility(View.INVISIBLE);
+        locationManager.removeUpdates(locationListener);
         Constants.lintitude = gpsLocation.getLatitude();
         Constants.longtitude = gpsLocation.getLongitude();
-        Constants.ToastMakeText(Constants.context,
+        Constants.ToastMakeText(context,
                 Constants.GPS_PLACE_FOUND);
         CreateEdit_activity.saveButton.setEnabled(true);
     }

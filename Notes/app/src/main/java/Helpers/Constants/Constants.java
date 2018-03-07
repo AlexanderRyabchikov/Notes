@@ -55,9 +55,6 @@ public final class Constants {
     /*Constants*/
 
     /*Global variable*/
-    public static Context context;
-    public static ProgressBar bar;
-    public static LocationManager locationManager;
     public static double lintitude;
     public static double longtitude;
     public static Dialog dialogImage;
