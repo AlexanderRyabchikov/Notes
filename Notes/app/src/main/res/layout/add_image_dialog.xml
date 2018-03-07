@@ -9,6 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
+        style="@style/ButtonStyle"
         android:width="200dp"
         android:text="From Gallery"/>
 
@@ -18,12 +19,14 @@
         android:layout_below="@id/btnChoosePath"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/ButtonStyle"
         android:layout_marginBottom="20dp"
         android:width="200dp"
         android:text="Take Photo"/>
 
     <Button
         android:id="@+id/btnExit"
+        style="@style/ButtonStyle"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/btnTakePhoto"
         android:layout_width="wrap_content"

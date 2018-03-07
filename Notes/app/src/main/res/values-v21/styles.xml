@@ -1,2 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+
+    <style name="HabraTheme" parent="android:Theme.Material.NoActionBar">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="ButtonStyle" parent="android:Theme.Material">
+        <item name="android:textColor">@color/textColor</item>
+
+    </style>
+    <style name="RadioButtonLowPriority" parent="android:Theme.Material">
+        <item name="android:textColor">@color/textColorLowPriority</item>
+    </style>
+
+    <style name="RadioButtonMediumPriority" parent="android:Theme.Material">
+        <item name="android:textColor">@color/textColorMediumPriority</item>
+    </style>
+
+    <style name="RadioButtonHighPriority" parent="android:Theme.Material">
+        <item name="android:textColor">@color/textColorHighPriority</item>
+    </style>
+    <style name="CheckBoxStyle" parent="android:Theme.Material">
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+</resources>

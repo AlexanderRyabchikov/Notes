@@ -16,7 +16,7 @@
             android:width="48dip" />
 
         <gradient
-            android:centerColor="@color/colorPrimary"
+            android:centerColor="@color/textColor"
             android:centerY="0.50"
             android:endColor="@color/colorPrimaryDark"
             android:startColor="@color/colorAccent"
