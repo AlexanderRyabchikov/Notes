@@ -2,10 +2,8 @@ package com.example.alexa.notes;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.os.Bundle;
@@ -19,11 +17,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 
+import Helpers.AsyncTasks.Gps;
 import Helpers.Constants.Constants;
 import Helpers.CustomClass.CustomTextWatcher;
 import Helpers.DataBase.DataBase;
 import Helpers.CustomDialog.DialogInputImage;
-import Helpers.AsyncTasks.GpsTask;
 
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
@@ -49,10 +47,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     private byte[] image = null;
     private byte[] imageSmall = null;
     private Dialog dialogImage = null;
-    DialogInputImage dialogInputImage;
-
-    private GpsTask gpsTask;
-    private LocationManager locationManager;
+    private DialogInputImage dialogInputImage;
+    private Gps gpsLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,9 +135,6 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         findViewById(R.id.cancelBt).setOnClickListener(this);
         saveButton.setOnClickListener(this);
         findViewById(R.id.addImageButton).setOnClickListener(this);
-
-        locationManager =
-                (LocationManager)getSystemService(Context.LOCATION_SERVICE);
     }
 
     /**
@@ -198,16 +191,14 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     saveButton.setEnabled(false);
                     checkBoxManual.setChecked(false);
                     checkBoxManual.setSelected(false);
-                    gpsTask = new GpsTask();
-                    gpsTask.setContext(this);
-                    gpsTask.setProgressBar(bar);
-                    gpsTask.setLocationManager(locationManager);
-                    gpsTask.execute();
+                    gpsLocation = new Gps(this, bar, saveButton);
+                    gpsLocation.findLocation();
+
                 }else{
                     lintitude = 0;
                     longtitude = 0;
-                    saveButton.setEnabled(true);
-                    cancelTask();
+                    gpsLocation.cancelFindLocation();
+                    gpsLocation = null;
                 }
 
                 break;
@@ -223,8 +214,9 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     saveButton.setEnabled(true);
                     checkBoxAuto.setChecked(false);
                     checkBoxAuto.setSelected(false);
-                    if (gpsTask != null){
-                        cancelTask();
+                    if (gpsLocation != null){
+                        gpsLocation.cancelFindLocation();
+                        gpsLocation = null;
                     }
                     Intent intentMaps = new Intent(this, MapsActivity.class);
                     startActivityForResult(intentMaps, Constants.REQUEST_MAPS);
@@ -238,13 +230,6 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         }
     }
 
-    private void cancelTask(){
-        if(!gpsTask.isCancelled()) {
-            gpsTask.cancel(false);
-        }
-        bar.setVisibility(View.INVISIBLE);
-    }
-
     private boolean SaveToDB(){
 
         Calendar calendar = Calendar.getInstance();
@@ -254,8 +239,10 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         String textContent = editTextContent.getText().toString();
         if (checkBoxAuto.isChecked())
         {
-            longtitude = gpsTask.getLongtitude();
-            lintitude = gpsTask.getLintitude();
+            if (gpsLocation != null){
+                longtitude = gpsLocation.getLongtitude();
+                lintitude = gpsLocation.getLatitude();
+            }
         }
         if(TextUtils.isEmpty(textTitle)){
             editTextTitle.setError(Constants.ERROR_TEXT_EMPTY);
@@ -309,6 +296,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         imageSmall = null;
         longtitude = 0;
         lintitude = 0;
+        picturePath = null;
 
         radioGroup.clearCheck();
         Constants.RADIO_SELECT_ID = -100;
