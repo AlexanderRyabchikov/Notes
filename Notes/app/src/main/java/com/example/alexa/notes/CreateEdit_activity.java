@@ -305,7 +305,10 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         checkBoxManual.setSelected(false);
         checkBoxAuto.setChecked(false);
         checkBoxAuto.setSelected(false);
-
+        image = null;
+        imageSmall = null;
+        longtitude = 0;
+        lintitude = 0;
 
         radioGroup.clearCheck();
         Constants.RADIO_SELECT_ID = -100;
