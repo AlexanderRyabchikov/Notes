@@ -26,11 +26,10 @@ public class MapsActivity  extends FragmentActivity
     private DataBase dataBase;
     private int id_note;
     private String title;
-    private double lintitude;
-    private double longtitude;
     private Intent intentFlag;
     private boolean ctrlFlag = false;
-
+    private double latitude;
+    private double longitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,11 +99,11 @@ public class MapsActivity  extends FragmentActivity
                     do {
                         id_note = cursor.getInt(cursor.getColumnIndex(DataBase.COLUMN_ID));
                         title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
-                        lintitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LINTITIDE));
-                        longtitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LONGTITUDE));
+                        latitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LINTITIDE));
+                        longitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LONGTITUDE));
                         mMap.addMarker(new MarkerOptions()
                                 .title(title)
-                                .position(new LatLng(lintitude, longtitude))
+                                .position(new LatLng(latitude, longitude))
                                 .alpha(id_note));
 
 
@@ -124,12 +123,8 @@ public class MapsActivity  extends FragmentActivity
             mMap.clear();
             mMap.addMarker(new MarkerOptions()
                     .position(latLng));
-
-
-            Intent intentGetCoor = new Intent();
-            intentGetCoor.putExtra(Constants.INTENT_MAPS_WITH_COORDINATES_LAT, latLng.latitude);
-            intentGetCoor.putExtra(Constants.INTENT_MAPS_WITH_COORDINATES_LONG, latLng.longitude);
-            setResult(RESULT_OK, intentGetCoor);
+            latitude = latLng.latitude;
+            longitude = latLng.longitude;
             Constants.ToastMakeText(getBaseContext(), Constants.COORDINATE_SELECT);
         }
     }
@@ -158,6 +153,8 @@ public class MapsActivity  extends FragmentActivity
     private void sendResultWithClose(){
         Intent intent = new Intent();
         intent.putExtra(Constants.INTENT_UPDATE_MAIN, true);
+        intent.putExtra(Constants.INTENT_MAPS_WITH_COORDINATES_LAT, latitude);
+        intent.putExtra(Constants.INTENT_MAPS_WITH_COORDINATES_LONG, longitude);
         setResult(RESULT_OK, intent);
         finish();
     }

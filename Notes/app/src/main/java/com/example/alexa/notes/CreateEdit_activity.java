@@ -43,6 +43,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     private CheckBox checkBoxManual;
     public static Button saveButton;
     private RadioGroup radioGroup;
+    private InputMethodManager inputMethodManager;
     private String picturePath = null;
     private ProgressBar bar;
     private byte[] image = null;
@@ -162,8 +163,6 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     default:
                         Constants.RADIO_SELECT_ID = -100;
                         break;
-
-
                 }
             });
     }
@@ -189,7 +188,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 break;
             case R.id.gpsCheckedAuto:
                 /* Используется для скрытия клавиатуры по завершению ввода*/
-                InputMethodManager inputMethodManager = (InputMethodManager)
+                inputMethodManager = (InputMethodManager)
                         CreateEdit_activity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
 
                 inputMethodManager.hideSoftInputFromWindow
@@ -388,9 +387,9 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 }
                 break;
             case Constants.REQUEST_MAPS:
-                Intent getMaps = getIntent();
-                lintitude = getMaps.getDoubleExtra(Constants.INTENT_MAPS_WITH_COORDINATES_LAT, 0);
-                longtitude = getMaps.getDoubleExtra(Constants.INTENT_MAPS_WITH_COORDINATES_LONG, 0);
+                Bundle bundle = data.getExtras();
+                lintitude = bundle.getDouble(Constants.INTENT_MAPS_WITH_COORDINATES_LAT);
+                longtitude = bundle.getDouble(Constants.INTENT_MAPS_WITH_COORDINATES_LONG);
                 break;
         }
     }
