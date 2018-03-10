@@ -1,98 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <LinearLayout
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="310dp"
+        tools:ignore="MissingConstraints">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayPreView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:id="@+id/linearLayoutButton">
-            <Button
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/TextContentPreview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/backBt"
-                android:text="@string/backBt"
-                style="@style/ButtonStyle"
-                android:textAlignment="center"
-                android:layout_gravity="top"/>
-        </LinearLayout>
+                android:layout_below="@+id/linearLayoutTextTitle"
+                android:layout_margin="4dp"
+                android:orientation="vertical"
+                tools:ignore="NotSibling">
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutTextTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/TextPreView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:textAlignment="center"
+                        android:textSize="25sp" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_below="@+id/TextPreView"
+                        android:background="@drawable/separator"
+                        tools:ignore="NotSibling" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/TextContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="start"
+                    android:lines="6"
+                    android:maxLength="256"
+                    android:maxLines="9"
+                    android:minLines="3"
+                    android:scrollbars="vertical"
+                    android:textAlignment="viewStart"
+                    android:textSize="25sp" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/viewLineAfterTextContent"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/TextContentPreview"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/separator" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/viewLineAfterTextContent">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/linearLayoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/view2"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/view2"
+            android:orientation="horizontal">
+
+        </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="@drawable/separator"
             android:layout_below="@+id/linearLayoutButton"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp" />
-        <RelativeLayout
-            android:layout_width="match_parent"
+            android:background="@drawable/separator"
+            android:id="@+id/view2" />
+
+        <ImageButton
+            android:id="@+id/backBt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/relativeLayPreView"
-            android:layout_below="@+id/linearLayoutButton">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_margin="4dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/linearLayoutTextTitle">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:background="@drawable/border_edit_text"
-                    android:layout_height="wrap_content"
-                    android:textSize="25sp"
-                    android:id="@+id/TextPreView"
-                    android:textAlignment="center" />
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@drawable/separator"
-                android:layout_below="@+id/linearLayoutTextTitle"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/TextContentPreview"
-                android:layout_margin="4dp"
-                android:layout_below="@+id/linearLayoutTextTitle">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="viewStart"
-                    android:background="@drawable/border_edit_text"
-                    android:id="@+id/TextContent"
-                    android:lines="6"
-                    android:maxLength="256"
-                    android:textSize="25sp"
-                    android:minLines="3"
-                    android:maxLines="9"
-                    android:scrollbars="vertical"
-                    android:gravity="start" />
-            </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:id="@+id/viewLineAfterTextContent"
-                android:layout_height="2dp"
-                android:background="@drawable/separator"
-                android:layout_below="@+id/TextContentPreview"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_below="@+id/viewLineAfterTextContent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/imageView"
-                    />
-            </LinearLayout>
-        </RelativeLayout>
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="top"
+            android:layout_marginBottom="27dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            android:background="@null"
+            android:src="@drawable/navigation_button_back"
+            android:text="@string/backBt"
+            android:textAlignment="center" />
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

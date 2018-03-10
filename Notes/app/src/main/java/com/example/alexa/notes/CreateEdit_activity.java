@@ -137,6 +137,14 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         findViewById(R.id.addImageButton).setOnClickListener(this);
     }
 
+    private void hideBoard(){
+        inputMethodManager = (InputMethodManager)
+                CreateEdit_activity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+
+        inputMethodManager.hideSoftInputFromWindow
+                (CreateEdit_activity.this.getCurrentFocus().getWindowToken(), 0);
+    }
+
     /**
     *  Метод для получения Ид выбранного приоритета
     *  в блоке radioGroup
@@ -164,6 +172,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.cancelBt:
+                hideBoard();
                 sendResultWithClose();
                 break;
             case R.id.saveBt:
@@ -181,11 +190,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 break;
             case R.id.gpsCheckedAuto:
                 /* Используется для скрытия клавиатуры по завершению ввода*/
-                inputMethodManager = (InputMethodManager)
-                        CreateEdit_activity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-
-                inputMethodManager.hideSoftInputFromWindow
-                        (CreateEdit_activity.this.getCurrentFocus().getWindowToken(), 0);
+                hideBoard();
 
                 if (checkBoxAuto.isChecked()){
                     saveButton.setEnabled(false);
@@ -203,11 +208,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
 
                 break;
             case R.id.gpsCheckedMaps:
-                inputMethodManager = (InputMethodManager)
-                        CreateEdit_activity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-
-                inputMethodManager.hideSoftInputFromWindow
-                        (CreateEdit_activity.this.getCurrentFocus().getWindowToken(), 0);
+                hideBoard();
 
                 if (checkBoxManual.isChecked()){
                     bar.setVisibility(View.INVISIBLE);

@@ -10,6 +10,8 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -24,7 +26,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
 
     private DataBase dataBase;
     private Cursor cursor;
-
+    private static Animation imageButtonAnim = null;
     @SuppressLint({"WrongConstant", "ResourceAsColor"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +38,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     public void onClick(View view){
         switch (view.getId()){
             case R.id.createNote:
+                view.startAnimation(imageButtonAnim);
                 Intent intentCreateEdit = new Intent(this, CreateEdit_activity.class);
                 intentCreateEdit.putExtra(Constants.INTENT_CREATE_NOTE, true);
                 startActivityForResult(intentCreateEdit, 1);
                 break;
             case R.id.runMap:
+                view.startAnimation(imageButtonAnim);
                 Intent intentMaps = new Intent(this, MapsActivity.class);
                 intentMaps.putExtra(Constants.map, true);
                 startActivityForResult(intentMaps, 10);
@@ -135,7 +139,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         findViewById(R.id.runMap).setOnClickListener(this);
         ListView listView = findViewById(R.id.lvData);
         listView.setOnItemClickListener(this);
-
+        imageButtonAnim = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
         dataBase = new DataBase(this);
         dataBase.open_connection();
 
