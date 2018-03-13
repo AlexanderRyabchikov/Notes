@@ -10,10 +10,13 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 
@@ -37,9 +40,10 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     private EditText editTextContent;
     private CheckBox checkBoxAuto;
     private double lintitude = 0;
+    private static Animation imageButtonAnim = null;
     private double longtitude = 0;
     private CheckBox checkBoxManual;
-    public static Button saveButton;
+    public static ImageButton saveButton;
     private RadioGroup radioGroup;
     private InputMethodManager inputMethodManager;
     private String picturePath = null;
@@ -119,6 +123,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         dataBase = new DataBase(this);
         intent = getIntent();
 
+        imageButtonAnim = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
         bar = findViewById(R.id.progressBar);
         editTextTitle = findViewById(R.id.editTextTitle);
         editTextContent = findViewById(R.id.editTextContent);
@@ -172,10 +177,12 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.cancelBt:
+                view.startAnimation(imageButtonAnim);
                 hideBoard();
                 sendResultWithClose();
                 break;
             case R.id.saveBt:
+                view.startAnimation(imageButtonAnim);
                 if(SaveToDB()){
                     Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_MSG_DB);
                     cleanAllForm();

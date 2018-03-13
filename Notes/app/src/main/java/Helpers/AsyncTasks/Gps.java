@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import Helpers.Constants.Constants;
 
@@ -21,12 +22,12 @@ public class Gps {
     private LocationManager locationManager;
     private Context context = null;
     private ProgressBar progressBar = null;
-    private Button button = null;
+    private ImageButton button = null;
     private boolean checkStateGps = false;
     private double latitude = 0;
     private double longtitude = 0;
 
-    public Gps(Context context, ProgressBar progressBar, Button saveButton){
+    public Gps(Context context, ProgressBar progressBar, ImageButton saveButton){
         locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
         this.progressBar = progressBar;
         this.button = saveButton;
