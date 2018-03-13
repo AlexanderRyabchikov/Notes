@@ -7,11 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import Helpers.Interfaces.IDataBaseApi;
+
 /**
  * Created by alexa on 07.02.2018.
  */
 
-public class DataBase {
+public class DataBase implements IDataBaseApi{
     private final static String DB_NAME = "NotesDB";
     private final static String DB_TABLE = "Notes";
     private final static int DB_VERSION = 1;

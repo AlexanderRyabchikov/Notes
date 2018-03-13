@@ -25,6 +25,7 @@ import Helpers.Constants.Constants;
 import Helpers.CustomClass.CustomTextWatcher;
 import Helpers.DataBase.DataBase;
 import Helpers.CustomDialog.DialogInputImage;
+import Helpers.Interfaces.IDataBaseApi;
 
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
@@ -33,7 +34,7 @@ import java.util.Calendar;
 public class CreateEdit_activity extends Activity implements View.OnClickListener {
 
     private Intent intent;
-    private DataBase dataBase;
+    private IDataBaseApi dataBase;
     private boolean bFlagCheckCreate = true;
     private int id_edit_note = -1;
     private EditText editTextTitle;

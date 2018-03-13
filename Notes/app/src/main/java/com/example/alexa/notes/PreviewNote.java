@@ -18,10 +18,11 @@ import android.widget.TextView;
 import Helpers.Constants.Constants;
 import Helpers.DataBase.DataBase;
 import Helpers.CustomDialog.DialogInputFile;
+import Helpers.Interfaces.IDataBaseApi;
 
 public class PreviewNote extends Activity implements View.OnClickListener {
 
-    private DataBase dataBase;
+    private IDataBaseApi dataBase;
     private Intent intent;
     private Cursor cursor;
 

@@ -8,6 +8,8 @@ import android.view.KeyEvent;
 
 import Helpers.Constants.Constants;
 import Helpers.DataBase.DataBase;
+import Helpers.Interfaces.IDataBaseApi;
+
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -23,7 +25,7 @@ public class MapsActivity  extends FragmentActivity
 
     private GoogleMap mMap;
     private Cursor cursor;
-    private DataBase dataBase;
+    private IDataBaseApi dataBase;
     private int id_note;
     private String title;
     private Intent intentFlag;

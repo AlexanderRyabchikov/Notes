@@ -21,10 +21,11 @@ import android.widget.TextView;
 import Helpers.Constants.Constants;
 import Helpers.CustomClass.CustomCursorAdapter;
 import Helpers.DataBase.DataBase;
+import Helpers.Interfaces.IDataBaseApi;
 
 public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-    private DataBase dataBase;
+    private IDataBaseApi dataBase;
     private Cursor cursor;
     private static Animation imageButtonAnim = null;
     @SuppressLint({"WrongConstant", "ResourceAsColor"})
