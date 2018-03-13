@@ -141,15 +141,6 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         saveButton.setOnClickListener(this);
         findViewById(R.id.addImageButton).setOnClickListener(this);
     }
-
-    private void hideBoard(){
-        inputMethodManager = (InputMethodManager)
-                CreateEdit_activity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-
-        inputMethodManager.hideSoftInputFromWindow
-                (CreateEdit_activity.this.getCurrentFocus().getWindowToken(), 0);
-    }
-
     /**
     *  Метод для получения Ид выбранного приоритета
     *  в блоке radioGroup
@@ -178,7 +169,6 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         switch (view.getId()){
             case R.id.cancelBt:
                 view.startAnimation(imageButtonAnim);
-                hideBoard();
                 if (gpsLocation != null) {
                     gpsLocation.cancelFindLocation();
                     gpsLocation = null;
@@ -201,8 +191,6 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 dialogImage = dialogInputImage.getDialogImage();
                 break;
             case R.id.gpsCheckedAuto:
-                /* Используется для скрытия клавиатуры по завершению ввода*/
-                hideBoard();
 
                 if (checkBoxAuto.isChecked()){
                     saveButton.setVisibility(View.INVISIBLE);
@@ -220,7 +208,6 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
 
                 break;
             case R.id.gpsCheckedMaps:
-                hideBoard();
 
                 if (checkBoxManual.isChecked()){
                     bar.setVisibility(View.INVISIBLE);

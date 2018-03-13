@@ -40,6 +40,10 @@
                     android:textAlignment="center"
                     android:background="@drawable/border_edit_text"
                     android:hint="@string/edit_text_title" />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorAccent" />
                 <ImageButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
