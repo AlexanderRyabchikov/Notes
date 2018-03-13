@@ -36,14 +36,14 @@ public class Gps {
 
     public void findLocation(){
         progressBar.setVisibility(View.VISIBLE);
-        button.setEnabled(false);
+        button.setVisibility(View.INVISIBLE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 latitude = location.getLatitude();
                 longtitude = location.getLongitude();
                 progressBar.setVisibility(View.INVISIBLE);
-                button.setEnabled(true);
+                button.setVisibility(View.VISIBLE);
                 locationManager.removeUpdates(locationListener);
                 locationManager = null;
                 checkStateGps = true;
@@ -92,7 +92,7 @@ public class Gps {
 
     public void cancelFindLocation(){
         progressBar.setVisibility(View.INVISIBLE);
-        button.setEnabled(true);
+        button.setVisibility(View.VISIBLE);
         if(!checkStateGps) {
             locationManager.removeUpdates(locationListener);
             locationManager = null;

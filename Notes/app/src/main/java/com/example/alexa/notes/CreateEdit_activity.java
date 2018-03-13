@@ -179,6 +179,10 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
             case R.id.cancelBt:
                 view.startAnimation(imageButtonAnim);
                 hideBoard();
+                if (gpsLocation != null) {
+                    gpsLocation.cancelFindLocation();
+                    gpsLocation = null;
+                }
                 sendResultWithClose();
                 break;
             case R.id.saveBt:
@@ -189,6 +193,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 }
                 break;
             case R.id.addImageButton:
+                view.startAnimation(imageButtonAnim);
                 dialogInputImage = new DialogInputImage(this,
                         Constants.TITLE_DIALOG_IMAGE,
                         CreateEdit_activity.this);
@@ -200,7 +205,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 hideBoard();
 
                 if (checkBoxAuto.isChecked()){
-                    saveButton.setEnabled(false);
+                    saveButton.setVisibility(View.INVISIBLE);
                     checkBoxManual.setChecked(false);
                     checkBoxManual.setSelected(false);
                     gpsLocation = new Gps(this, bar, saveButton);
@@ -219,7 +224,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
 
                 if (checkBoxManual.isChecked()){
                     bar.setVisibility(View.INVISIBLE);
-                    saveButton.setEnabled(true);
+                    saveButton.setVisibility(View.VISIBLE);
                     checkBoxAuto.setChecked(false);
                     checkBoxAuto.setSelected(false);
                     if (gpsLocation != null){
