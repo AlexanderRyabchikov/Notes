@@ -1,4 +1,4 @@
-package Helpers.Interfaces;
+package helpers.interfaces;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
@@ -8,7 +8,7 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
-import Helpers.DataBase.Notes;
+import helpers.data_base.Notes;
 
 /**
  * Created by alexa on 13.03.2018.

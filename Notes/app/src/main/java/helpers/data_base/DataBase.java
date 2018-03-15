@@ -1,4 +1,4 @@
-package Helpers.DataBase;
+package helpers.data_base;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import Helpers.Interfaces.IDataBaseApi;
+import helpers.interfaces.IDataBaseApi;
 
 /**
  * Created by alexa on 07.02.2018.

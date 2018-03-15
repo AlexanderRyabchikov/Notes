@@ -1,4 +1,4 @@
-package Helpers.CustomClass;
+package helpers.custom_class;
 
 import android.text.Editable;
 import android.text.TextWatcher;

@@ -12,20 +12,19 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 
-import Helpers.AsyncTasks.Gps;
-import Helpers.Constants.Constants;
-import Helpers.CustomClass.CustomTextWatcher;
-import Helpers.DataBase.DataBase;
-import Helpers.CustomDialog.DialogInputImage;
-import Helpers.Interfaces.IDataBaseApi;
+import helpers.async_tasks.Gps;
+import helpers.constants.Constants;
+import helpers.custom_class.CustomTextWatcher;
+import helpers.custom_dialog.DialogInputImage;
+import helpers.data_base.Notes;
+import helpers.data_base.RoomDB;
+import helpers.interfaces.IDataBaseApi;
 
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
@@ -46,7 +45,6 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     private CheckBox checkBoxManual;
     public static ImageButton saveButton;
     private RadioGroup radioGroup;
-    private InputMethodManager inputMethodManager;
     private String picturePath = null;
     private ProgressBar bar;
     private byte[] image = null;
@@ -74,26 +72,21 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
             String content;
             int radioButtonSelectId = 0;
             dataBase.open_connection();
-            Cursor cursor = dataBase.getEntry(positionId);
+            Notes notes = dataBase.getEntry(positionId);
 
-            if (cursor.moveToFirst()){
-                do{
-                    id_edit_note = cursor.getInt(cursor.getColumnIndex(DataBase.COLUMN_ID));
-                    title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
-                    content = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_CONTENT));
-                    lintitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LINTITIDE));
-                    longtitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LONGTITUDE));
-                    image = cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE));
-                    imageSmall = cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE_SMALL));
-                    radioButtonSelectId = cursor.getInt(cursor.getColumnIndex(DataBase.COLUMN_PRIORITY));
-                }while(cursor.moveToNext());
-
+            if(notes != null){
+                id_edit_note = notes._id;
+                title = notes.titleDB;
+                content = notes.contentDB;
+                lintitude = notes.latitude;
+                longtitude = notes.longtitude;
+                image = notes.image;
+                imageSmall = notes.imageSmall;
+                radioButtonSelectId = notes.priority;
                 editTextTitle.setText(title);
                 editTextContent.setText(content);
                 setCheckedRadioButton(radioButtonSelectId);
             }
-            stopManagingCursor(cursor);
-            cursor.close();
             dataBase.close_connection();
 
         }
@@ -121,7 +114,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     }
 
     private void initActivity(){
-        dataBase = new DataBase(this);
+        dataBase = new RoomDB();
         intent = getIntent();
 
         imageButtonAnim = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
@@ -181,6 +174,9 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 if(SaveToDB()){
                     Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_MSG_DB);
                     cleanAllForm();
+                    if(!bFlagCheckCreate){
+                        sendResultWithClose();
+                    }
                 }
                 break;
             case R.id.addImageButton:

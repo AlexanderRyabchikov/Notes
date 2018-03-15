@@ -1,9 +1,9 @@
-package Helpers.DataBase;
+package helpers.data_base;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.RoomDatabase;
 
-import Helpers.Interfaces.IRoomInterface;
+import helpers.interfaces.IRoomInterface;
 
 /**
  * Created by alexa on 13.03.2018.

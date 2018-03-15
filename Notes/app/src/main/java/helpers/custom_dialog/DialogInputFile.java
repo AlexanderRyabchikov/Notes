@@ -1,4 +1,4 @@
-package Helpers.CustomDialog;
+package helpers.custom_dialog;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import Helpers.Constants.Constants;
+import helpers.constants.Constants;
 
 /**
  * Created by alexa on 11.02.2018.

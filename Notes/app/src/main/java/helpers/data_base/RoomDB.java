@@ -1,9 +1,9 @@
-package Helpers.DataBase;
+package helpers.data_base;
 
 import java.util.List;
 
-import Helpers.Interfaces.IDataBaseApi;
-import Helpers.Interfaces.IRoomInterface;
+import helpers.interfaces.IDataBaseApi;
+import helpers.interfaces.IRoomInterface;
 
 /**
  * Created by alexa on 13.03.2018.
@@ -12,7 +12,6 @@ import Helpers.Interfaces.IRoomInterface;
 public class RoomDB implements IDataBaseApi {
     IRoomInterface iRoomInterface;
     NotesDataBase notesDataBase;
-    public RoomDB(){}
     @Override
     public void open_connection() {
         notesDataBase = AppDataBaseSingleton.getInstance().getDataBase();

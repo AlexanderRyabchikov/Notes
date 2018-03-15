@@ -1,4 +1,4 @@
-package Helpers.DataBase;
+package helpers.data_base;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;

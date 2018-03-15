@@ -1,4 +1,4 @@
-package Helpers.DataBase;
+package helpers.data_base;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;

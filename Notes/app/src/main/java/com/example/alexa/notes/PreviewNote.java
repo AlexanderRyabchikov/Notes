@@ -2,7 +2,6 @@ package com.example.alexa.notes;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -14,17 +13,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import Helpers.Constants.Constants;
-import Helpers.DataBase.DataBase;
-import Helpers.CustomDialog.DialogInputFile;
-import Helpers.Interfaces.IDataBaseApi;
+import helpers.constants.Constants;
+import helpers.custom_dialog.DialogInputFile;
+import helpers.data_base.Notes;
+import helpers.data_base.RoomDB;
+import helpers.interfaces.IDataBaseApi;
 
 public class PreviewNote extends Activity implements View.OnClickListener {
 
     private IDataBaseApi dataBase;
-    private Intent intent;
-    private Cursor cursor;
 
     public static String getTitlePreview() {
         return title;
@@ -35,7 +32,6 @@ public class PreviewNote extends Activity implements View.OnClickListener {
     }
 
     private static String title;
-    private static Bitmap btm;
     private static String content;
     private long positionId;
 
@@ -56,23 +52,14 @@ public class PreviewNote extends Activity implements View.OnClickListener {
         TextView textViewContent = findViewById(R.id.TextContent);
         ImageView imageView = findViewById(R.id.imageView);
 
-        intent = getIntent();
-        positionId = intent.getLongExtra(Constants.INTENT_PREVIEW_NOTE, -1);
+        positionId = getIntent().getLongExtra(Constants.INTENT_PREVIEW_NOTE, -1);
 
-        dataBase = new DataBase(this);
+        dataBase = new RoomDB();
         dataBase.open_connection();
-        cursor = dataBase.getEntry(positionId);
-
-        if (cursor.moveToFirst()){
-            do{
-                title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
-                content = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_CONTENT));
-                btm = Constants.getImage(cursor.getBlob(cursor.getColumnIndex(DataBase.COLUMN_IMAGE)));
-
-
-            }while(cursor.moveToNext());
-        }
-
+        Notes notes = dataBase.getEntry(positionId);
+        title = notes.titleDB;
+        content = notes.contentDB;
+        Bitmap btm = Constants.getImage(notes.image);
         textViewTitle.setText(title);
         textViewContent.setText(content);
         if(btm != null) {
@@ -97,8 +84,6 @@ public class PreviewNote extends Activity implements View.OnClickListener {
         intent.putExtra(Constants.map, true);
         setResult(RESULT_OK, intent);
         dataBase.close_connection();
-        stopManagingCursor(cursor);
-        cursor.close();
         finish();
     }
 
@@ -125,7 +110,6 @@ public class PreviewNote extends Activity implements View.OnClickListener {
         switch (item.getItemId()){
             case Constants.CM_DELETE_ID:
                 dataBase.deleteDB(positionId);
-                cursor.requery();
                 Constants.ToastMakeText(getBaseContext(), Constants.DELETE_SUCCESS_MSG);
                 sendResultWithClose();
                 break;
@@ -159,16 +143,12 @@ public class PreviewNote extends Activity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopManagingCursor(cursor);
-        cursor.close();
         dataBase.close_connection();
     }
 
     @Override
     protected void onStop(){
         super.onStop();
-        stopManagingCursor(cursor);
-        cursor.close();
         dataBase.close_connection();
     }
 
