@@ -21,7 +21,7 @@ public interface IRoomInterface {
     @Delete
     void delete(Notes notes);
 
-    @Query("SELECT * FROM Notes ORDER BY date")
+    @Query("SELECT * FROM Notes ORDER BY date DESC")
     List<Notes> getAllNotes();
 
 
