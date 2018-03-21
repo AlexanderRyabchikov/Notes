@@ -243,11 +243,10 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 lintitude = gpsLocation.getLatitude();
             }
         }
-        if(TextUtils.isEmpty(textTitle)){
+        if(TextUtils.isEmpty(textTitle.trim())){
             editTextTitle.setError(Constants.ERROR_TEXT_EMPTY);
             return false;
-        }
-        if (TextUtils.isEmpty(textContent)){
+        }else if (TextUtils.isEmpty(textContent.trim())){
             editTextContent.setError(Constants.ERROR_TEXT_EMPTY);
             return false;
         }
