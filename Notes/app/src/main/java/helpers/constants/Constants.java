@@ -27,6 +27,7 @@ public final class Constants {
     public static final String INTENT_CREATE_NOTE = "Create_note";
     public static final String INTENT_MAPS_WITH_COORDINATES_LONG = "maps_get_coordinate_long";
     public static final String INTENT_MAPS_WITH_COORDINATES_LAT = "maps_get_coordinate_lat";
+    public static final String INTENT_MAPS_CHEKCBOX_FLAG = "maps_checkbox_flag";
     public static final String INTENT_EDIT_NOTE = "edit_note";
     public static final String INTENT_PREVIEW_NOTE = "Preview_note";
     public static final String map = "googleMaps";

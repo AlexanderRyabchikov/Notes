@@ -1,5 +1,6 @@
 package com.example.alexa.notes;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class MapsActivity  extends FragmentActivity
     private boolean ctrlFlag = false;
     private double latitude;
     private double longitude;
+    private boolean flagCheckBox = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +116,7 @@ public class MapsActivity  extends FragmentActivity
                     .position(latLng));
             latitude = latLng.latitude;
             longitude = latLng.longitude;
+            flagCheckBox = true;
             Constants.ToastMakeText(getBaseContext(), Constants.COORDINATE_SELECT);
         }
     }
@@ -123,11 +126,12 @@ public class MapsActivity  extends FragmentActivity
      */
     @Override
     public boolean onMarkerClick(Marker marker) {
-
-        long positionId = (long)marker.getAlpha();
-        Intent intentPreviewNote = new Intent(this, PreviewNote.class);
-        intentPreviewNote.putExtra(Constants.INTENT_PREVIEW_NOTE, positionId);
-        startActivityForResult(intentPreviewNote, 2);
+        if(ctrlFlag) {
+            long positionId = (long) marker.getAlpha();
+            Intent intentPreviewNote = new Intent(this, PreviewNote.class);
+            intentPreviewNote.putExtra(Constants.INTENT_PREVIEW_NOTE, positionId);
+            startActivityForResult(intentPreviewNote, 2);
+        }
         return false;
     }
 
@@ -142,6 +146,7 @@ public class MapsActivity  extends FragmentActivity
     private void sendResultWithClose(){
         Intent intent = new Intent();
         intent.putExtra(Constants.INTENT_UPDATE_MAIN, true);
+        intent.putExtra(Constants.INTENT_MAPS_CHEKCBOX_FLAG, flagCheckBox);
         intent.putExtra(Constants.INTENT_MAPS_WITH_COORDINATES_LAT, latitude);
         intent.putExtra(Constants.INTENT_MAPS_WITH_COORDINATES_LONG, longitude);
         setResult(RESULT_OK, intent);

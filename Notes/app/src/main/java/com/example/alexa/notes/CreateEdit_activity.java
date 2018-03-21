@@ -173,9 +173,10 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 view.startAnimation(imageButtonAnim);
                 if(SaveToDB()){
                     Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_MSG_DB);
-                    cleanAllForm();
-                    if(!bFlagCheckCreate){
+                    if(!bFlagCheckCreate) {
                         sendResultWithClose();
+                    } else{
+                        cleanAllForm();
                     }
                 }
                 break;
@@ -217,6 +218,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     }
                     Intent intentMaps = new Intent(this, MapsActivity.class);
                     startActivityForResult(intentMaps, Constants.REQUEST_MAPS);
+                    checkBoxManual.setChecked(false);
                 }else{
                     lintitude = 0;
                     longtitude = 0;
@@ -376,6 +378,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 break;
             case Constants.REQUEST_MAPS:
                 Bundle bundle = data.getExtras();
+                checkBoxManual.setChecked(!bundle.getBoolean(Constants.INTENT_MAPS_CHEKCBOX_FLAG) ? false : true);
                 lintitude = bundle.getDouble(Constants.INTENT_MAPS_WITH_COORDINATES_LAT);
                 longtitude = bundle.getDouble(Constants.INTENT_MAPS_WITH_COORDINATES_LONG);
                 break;

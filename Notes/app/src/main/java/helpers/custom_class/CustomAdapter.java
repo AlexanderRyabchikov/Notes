@@ -45,7 +45,7 @@ public class CustomAdapter extends BaseAdapter{
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return notes.get(position)._id;
     }
 
     @Override
