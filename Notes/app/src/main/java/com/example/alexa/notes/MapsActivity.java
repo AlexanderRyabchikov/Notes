@@ -30,8 +30,8 @@ public class MapsActivity  extends FragmentActivity
     private IDataBaseApi dataBase;
     private Intent intentFlag;
     private boolean ctrlFlag = false;
-    private double latitude;
-    private double longitude;
+    private double latitude = 0xFFFF ;
+    private double longitude = 0xFFFF;
     private boolean flagCheckBox = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +81,9 @@ public class MapsActivity  extends FragmentActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
         addMarkerFromDataBase();
@@ -95,10 +98,12 @@ public class MapsActivity  extends FragmentActivity
             List<Notes> notes = dataBase.getEntries();
             if(!notes.isEmpty()){
                 for(Notes item : notes){
-                    mMap.addMarker(new MarkerOptions()
-                            .title(item.titleDB)
-                            .position(new LatLng(item.latitude, item.longtitude))
-                            .alpha(item._id));
+                    if (item.latitude != 0xFFFF || item.longtitude != 0xFFFF) {
+                        mMap.addMarker(new MarkerOptions()
+                                .title(item.titleDB)
+                                .position(new LatLng(item.latitude, item.longtitude))
+                                .alpha(item._id));
+                    }
                 }
             }
         }
@@ -122,7 +127,7 @@ public class MapsActivity  extends FragmentActivity
     }
 
     /**
-    * Переход к по маркеру к просмотру записки
+    * Переход по маркеру к просмотру записки
      */
     @Override
     public boolean onMarkerClick(Marker marker) {

@@ -39,9 +39,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     private EditText editTextTitle;
     private EditText editTextContent;
     private CheckBox checkBoxAuto;
-    private double lintitude = 0;
-    private static Animation imageButtonAnim = null;
-    private double longtitude = 0;
+    private double lintitude = 0xFFFF;
+    private double longtitude = 0xFFFF;
     private CheckBox checkBoxManual;
     public static ImageButton saveButton;
     private RadioGroup radioGroup;
@@ -116,8 +115,6 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     private void initActivity(){
         dataBase = new RoomDB();
         intent = getIntent();
-
-        imageButtonAnim = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
         bar = findViewById(R.id.progressBar);
         editTextTitle = findViewById(R.id.editTextTitle);
         editTextContent = findViewById(R.id.editTextContent);
@@ -162,7 +159,6 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.cancelBt:
-                view.startAnimation(imageButtonAnim);
                 if (gpsLocation != null) {
                     gpsLocation.cancelFindLocation();
                     gpsLocation = null;
@@ -170,7 +166,6 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 sendResultWithClose();
                 break;
             case R.id.saveBt:
-                view.startAnimation(imageButtonAnim);
                 if(SaveToDB()){
                     Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_MSG_DB);
                     if(!bFlagCheckCreate) {
@@ -181,7 +176,6 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 }
                 break;
             case R.id.addImageButton:
-                view.startAnimation(imageButtonAnim);
                 dialogInputImage = new DialogInputImage(this,
                         Constants.TITLE_DIALOG_IMAGE,
                         CreateEdit_activity.this);
@@ -198,8 +192,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     gpsLocation.findLocation();
 
                 }else{
-                    lintitude = 0;
-                    longtitude = 0;
+                    lintitude = 0xFFFF;
+                    longtitude = 0xFFFF;
                     gpsLocation.cancelFindLocation();
                     gpsLocation = null;
                 }
@@ -220,8 +214,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     startActivityForResult(intentMaps, Constants.REQUEST_MAPS);
                     checkBoxManual.setChecked(false);
                 }else{
-                    lintitude = 0;
-                    longtitude = 0;
+                    lintitude = 0xFFFF;
+                    longtitude = 0xFFFF;
                 }
                 break;
             default:
@@ -245,9 +239,19 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         }
         if(TextUtils.isEmpty(textTitle.trim())){
             editTextTitle.setError(Constants.ERROR_TEXT_EMPTY);
+            if (TextUtils.isEmpty(textContent.trim())){
+                editTextContent.setError(Constants.ERROR_TEXT_EMPTY);
+                return false;
+            }
             return false;
-        }else if (TextUtils.isEmpty(textContent.trim())){
+        }
+        if (TextUtils.isEmpty(textContent.trim())){
             editTextContent.setError(Constants.ERROR_TEXT_EMPTY);
+            if(TextUtils.isEmpty(textTitle.trim())){
+                editTextTitle.setError(Constants.ERROR_TEXT_EMPTY);
+
+                return false;
+            }
             return false;
         }
         if (picturePath != null) {
@@ -257,8 +261,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         }
         dataBase.open_connection();
         if (bFlagCheckCreate){
-            dataBase.addToDB(   textTitle,
-                                textContent,
+            dataBase.addToDB(   textTitle.trim(),
+                                textContent.trim(),
                                 Constants.RADIO_SELECT_ID,
                                 lintitude,
                                 longtitude,
@@ -267,8 +271,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                                 date);
         }else{
             dataBase.updateDB(  id_edit_note,
-                                editTextTitle.getText().toString(),
-                                editTextContent.getText().toString(),
+                                editTextTitle.getText().toString().trim(),
+                                editTextContent.getText().toString().trim(),
                                 Constants.RADIO_SELECT_ID,
                                 lintitude,
                                 longtitude,
@@ -292,8 +296,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
         checkBoxAuto.setSelected(false);
         image = null;
         imageSmall = null;
-        longtitude = 0;
-        lintitude = 0;
+        longtitude = 0xFFFF;
+        lintitude = 0xFFFF;
         picturePath = null;
 
         radioGroup.clearCheck();
@@ -380,6 +384,9 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 checkBoxManual.setChecked(!bundle.getBoolean(Constants.INTENT_MAPS_CHEKCBOX_FLAG) ? false : true);
                 lintitude = bundle.getDouble(Constants.INTENT_MAPS_WITH_COORDINATES_LAT);
                 longtitude = bundle.getDouble(Constants.INTENT_MAPS_WITH_COORDINATES_LONG);
+                if (lintitude == 0xFFFF || longtitude == 0xFFFF){
+                    checkBoxManual.setChecked(false);
+                }
                 break;
         }
     }

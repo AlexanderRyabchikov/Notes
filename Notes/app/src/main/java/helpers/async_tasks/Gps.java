@@ -23,8 +23,8 @@ public class Gps {
     private ProgressBar progressBar = null;
     private ImageButton button = null;
     private boolean checkStateGps = false;
-    private double latitude = 0;
-    private double longtitude = 0;
+    private double latitude = 0xFFFF;
+    private double longtitude = 0xFFFF;
 
     public Gps(Context context, ProgressBar progressBar, ImageButton saveButton){
         locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
