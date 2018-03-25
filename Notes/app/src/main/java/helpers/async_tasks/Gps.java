@@ -1,4 +1,4 @@
-package Helpers.AsyncTasks;
+package helpers.async_tasks;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,10 +8,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import Helpers.Constants.Constants;
+import helpers.constants.Constants;
 
 /**
  * Created by alexa on 08.03.2018.
@@ -24,8 +23,8 @@ public class Gps {
     private ProgressBar progressBar = null;
     private ImageButton button = null;
     private boolean checkStateGps = false;
-    private double latitude = 0;
-    private double longtitude = 0;
+    private double latitude = 0xFFFF;
+    private double longtitude = 0xFFFF;
 
     public Gps(Context context, ProgressBar progressBar, ImageButton saveButton){
         locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);

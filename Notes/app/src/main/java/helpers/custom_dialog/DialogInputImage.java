@@ -1,4 +1,4 @@
-package Helpers.CustomDialog;
+package helpers.custom_dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -13,7 +13,7 @@ import com.example.alexa.notes.R;
 
 import java.util.Random;
 
-import Helpers.Constants.Constants;
+import helpers.constants.Constants;
 
 /**
  * Created by alexa on 20.02.2018.

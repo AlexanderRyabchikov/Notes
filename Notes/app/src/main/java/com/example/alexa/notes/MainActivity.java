@@ -2,8 +2,8 @@ package com.example.alexa.notes;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -15,19 +15,20 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import Helpers.Constants.Constants;
-import Helpers.CustomClass.CustomCursorAdapter;
-import Helpers.DataBase.DataBase;
-import Helpers.Interfaces.IDataBaseApi;
+import java.util.List;
+
+import helpers.constants.Constants;
+import helpers.custom_class.CustomAdapter;
+import helpers.data_base.Notes;
+import helpers.data_base.RoomDB;
+import helpers.interfaces.IDataBaseApi;
 
 public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private IDataBaseApi dataBase;
-    private Cursor cursor;
-    private static Animation imageButtonAnim = null;
+    private List<Notes>notes;
     @SuppressLint({"WrongConstant", "ResourceAsColor"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +40,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     public void onClick(View view){
         switch (view.getId()){
             case R.id.createNote:
-                view.startAnimation(imageButtonAnim);
                 Intent intentCreateEdit = new Intent(this, CreateEdit_activity.class);
                 intentCreateEdit.putExtra(Constants.INTENT_CREATE_NOTE, true);
                 startActivityForResult(intentCreateEdit, 1);
                 break;
             case R.id.runMap:
-                view.startAnimation(imageButtonAnim);
                 Intent intentMaps = new Intent(this, MapsActivity.class);
                 intentMaps.putExtra(Constants.map, true);
                 startActivityForResult(intentMaps, 10);
@@ -79,8 +78,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
                 AdapterView.AdapterContextMenuInfo adapterContextMenuInfo =
                         (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
                 dataBase.deleteDB(adapterContextMenuInfo.id);
-
-                cursor.requery();
                 this.recreate();
                 Constants.ToastMakeText(getBaseContext(), Constants.DELETE_SUCCESS_MSG);
                 break;
@@ -103,16 +100,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopManagingCursor(cursor);
-        cursor.close();
         dataBase.close_connection();
     }
 
     @Override
     protected void onStop(){
         super.onStop();
-        stopManagingCursor(cursor);
-        cursor.close();
         dataBase.close_connection();
     }
 
@@ -120,8 +113,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
 
         view.setEnabled(false);
-        cursor.moveToPosition(position);
-        long positionId = cursor.getLong(cursor.getColumnIndex(DataBase.COLUMN_ID));
+        long positionId = notes.get(position)._id;
         Intent intentPreviewNote = new Intent(this, PreviewNote.class);
         intentPreviewNote.putExtra(Constants.INTENT_PREVIEW_NOTE, positionId);
         startActivityForResult(intentPreviewNote, 2);
@@ -140,12 +132,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
         findViewById(R.id.runMap).setOnClickListener(this);
         ListView listView = findViewById(R.id.lvData);
         listView.setOnItemClickListener(this);
-        imageButtonAnim = AnimationUtils.loadAnimation(this, R.anim.anim_alpha);
-        dataBase = new DataBase(this);
+        dataBase = new RoomDB();
         dataBase.open_connection();
 
-        cursor = dataBase.getEntries();
-        if (cursor.getCount() <= 0) {
+        notes = dataBase.getEntries();
+        if(notes.isEmpty()){
             RelativeLayout relativeLayout = findViewById(R.id.relativeLayMain);
             TextView textView = new TextView(this);
             textView.setText(R.string.text_not_found_entry);
@@ -154,18 +145,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             textView.setLayoutParams(relativeLayout.getLayoutParams());
             relativeLayout.addView(textView);
         } else {
-            startManagingCursor(cursor);
-            String[] from = new String[]{DataBase.COLUMN_IMAGE, DataBase.COLUMN_TITLE};
-            int[] to = new int[]{R.id.ivImg, R.id.tvText};
-            SimpleCursorAdapter simpleCursorAdapter = new SimpleCursorAdapter(this,
-                    R.layout.item_list_notes,
-                    cursor,
-                    from,
-                    to);
-            simpleCursorAdapter.setViewBinder(new CustomCursorAdapter());
-
-
-            listView.setAdapter(simpleCursorAdapter);
+            CustomAdapter customAdapter = new CustomAdapter(this, notes);
+            customAdapter.notifyDataSetChanged();
+            listView.setAdapter(customAdapter);
             registerForContextMenu(listView);
         }
     }

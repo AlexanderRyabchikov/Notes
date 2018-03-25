@@ -1,14 +1,15 @@
 package com.example.alexa.notes;
 
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
-import Helpers.Constants.Constants;
-import Helpers.DataBase.DataBase;
-import Helpers.Interfaces.IDataBaseApi;
+import helpers.constants.Constants;
+import helpers.data_base.Notes;
+import helpers.data_base.RoomDB;
+import helpers.interfaces.IDataBaseApi;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -17,6 +18,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 
 public class MapsActivity  extends FragmentActivity
                     implements  OnMapReadyCallback,
@@ -24,14 +27,12 @@ public class MapsActivity  extends FragmentActivity
                                 GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
-    private Cursor cursor;
     private IDataBaseApi dataBase;
-    private int id_note;
-    private String title;
     private Intent intentFlag;
     private boolean ctrlFlag = false;
-    private double latitude;
-    private double longitude;
+    private double latitude = 0xFFFF ;
+    private double longitude = 0xFFFF;
+    private boolean flagCheckBox = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +57,6 @@ public class MapsActivity  extends FragmentActivity
     protected void onDestroy() {
         super.onDestroy();
         if (ctrlFlag) {
-            stopManagingCursor(cursor);
-            cursor.close();
             dataBase.close_connection();
         }
     }
@@ -66,8 +65,6 @@ public class MapsActivity  extends FragmentActivity
     protected void onStop(){
         super.onStop();
         if(ctrlFlag) {
-            stopManagingCursor(cursor);
-            cursor.close();
             dataBase.close_connection();
         }
     }
@@ -84,6 +81,9 @@ public class MapsActivity  extends FragmentActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.setOnMapClickListener(this);
         mMap.setOnMarkerClickListener(this);
         addMarkerFromDataBase();
@@ -91,25 +91,19 @@ public class MapsActivity  extends FragmentActivity
 
     private void addMarkerFromDataBase() {
         if (intentFlag.getBooleanExtra(Constants.map, false)) {
-            dataBase = new DataBase(getBaseContext());
+            dataBase = new RoomDB();
             ctrlFlag = true;
             dataBase.open_connection();
 
-            cursor = dataBase.getEntries();
-            if (cursor.getCount() >= 0) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        id_note = cursor.getInt(cursor.getColumnIndex(DataBase.COLUMN_ID));
-                        title = cursor.getString(cursor.getColumnIndex(DataBase.COLUMN_TITLE));
-                        latitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LINTITIDE));
-                        longitude = cursor.getDouble(cursor.getColumnIndex(DataBase.COLUMN_LONGTITUDE));
+            List<Notes> notes = dataBase.getEntries();
+            if(!notes.isEmpty()){
+                for(Notes item : notes){
+                    if (item.latitude != 0xFFFF || item.longtitude != 0xFFFF) {
                         mMap.addMarker(new MarkerOptions()
-                                .title(title)
-                                .position(new LatLng(latitude, longitude))
-                                .alpha(id_note));
-
-
-                    } while (cursor.moveToNext());
+                                .title(item.titleDB)
+                                .position(new LatLng(item.latitude, item.longtitude))
+                                .alpha(item._id));
+                    }
                 }
             }
         }
@@ -127,20 +121,22 @@ public class MapsActivity  extends FragmentActivity
                     .position(latLng));
             latitude = latLng.latitude;
             longitude = latLng.longitude;
+            flagCheckBox = true;
             Constants.ToastMakeText(getBaseContext(), Constants.COORDINATE_SELECT);
         }
     }
 
     /**
-    * Переход к по маркеру к просмотру записки
+    * Переход по маркеру к просмотру записки
      */
     @Override
     public boolean onMarkerClick(Marker marker) {
-
-        long positionId = (long)marker.getAlpha();
-        Intent intentPreviewNote = new Intent(this, PreviewNote.class);
-        intentPreviewNote.putExtra(Constants.INTENT_PREVIEW_NOTE, positionId);
-        startActivityForResult(intentPreviewNote, 2);
+        if(ctrlFlag) {
+            long positionId = (long) marker.getAlpha();
+            Intent intentPreviewNote = new Intent(this, PreviewNote.class);
+            intentPreviewNote.putExtra(Constants.INTENT_PREVIEW_NOTE, positionId);
+            startActivityForResult(intentPreviewNote, 2);
+        }
         return false;
     }
 
@@ -155,6 +151,7 @@ public class MapsActivity  extends FragmentActivity
     private void sendResultWithClose(){
         Intent intent = new Intent();
         intent.putExtra(Constants.INTENT_UPDATE_MAIN, true);
+        intent.putExtra(Constants.INTENT_MAPS_CHEKCBOX_FLAG, flagCheckBox);
         intent.putExtra(Constants.INTENT_MAPS_WITH_COORDINATES_LAT, latitude);
         intent.putExtra(Constants.INTENT_MAPS_WITH_COORDINATES_LONG, longitude);
         setResult(RESULT_OK, intent);

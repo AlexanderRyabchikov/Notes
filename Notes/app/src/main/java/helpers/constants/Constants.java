@@ -1,12 +1,8 @@
-package Helpers.Constants;
+package helpers.constants;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.LocationManager;
-import android.net.Uri;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -31,6 +27,7 @@ public final class Constants {
     public static final String INTENT_CREATE_NOTE = "Create_note";
     public static final String INTENT_MAPS_WITH_COORDINATES_LONG = "maps_get_coordinate_long";
     public static final String INTENT_MAPS_WITH_COORDINATES_LAT = "maps_get_coordinate_lat";
+    public static final String INTENT_MAPS_CHEKCBOX_FLAG = "maps_checkbox_flag";
     public static final String INTENT_EDIT_NOTE = "edit_note";
     public static final String INTENT_PREVIEW_NOTE = "Preview_note";
     public static final String map = "googleMaps";
@@ -49,7 +46,6 @@ public final class Constants {
     public static final String MESSAGE_GPS_ON = "Gsp is turned on";
     public static final String MESSAGE_GPS_OFF = "Gsp is turned off";
     public static final String GPS_ERROR = "Ошибка GSP модуля";
-    public static final String GPS_PLACE_NOT_FOUND = "Не могу определить местонахождение";
     public static final String GPS_PLACE_FOUND = "Координаты определены";
     public static final String FILE_SAVE = "File saved";
     public static final String FILE_NOT_SAVE = "File saved";
