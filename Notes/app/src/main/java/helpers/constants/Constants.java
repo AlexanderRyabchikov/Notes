@@ -50,6 +50,9 @@ public final class Constants {
     public static final String FILE_SAVE = "File saved";
     public static final String FILE_NOT_SAVE = "File saved";
     public static final String FLASH_ERROR = "Flash not installed";
+    public static final int PERMISSION_REQUEST_CAMERA = 1001;
+    public static final int PERMISSION_REQUEST_WRITE_STORAGE = 1002;
+    public static final int PERMISSION_REQUEST_READ_STORAGE = 1003;
     /*Constants*/
 
     /*Functions*/
