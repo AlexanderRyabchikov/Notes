@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="HabraTheme" parent="android:Theme.Material.NoActionBar">
+    <style name="HabraTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:textColor">@color/textColor</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>

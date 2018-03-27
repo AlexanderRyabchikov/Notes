@@ -1,17 +1,20 @@
 package com.example.alexa.notes;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -25,7 +28,9 @@ import helpers.data_base.Notes;
 import helpers.data_base.RoomDB;
 import helpers.interfaces.IDataBaseApi;
 
-public class MainActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class MainActivity extends Activity implements View.OnClickListener,
+        AdapterView.OnItemClickListener,
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
     private IDataBaseApi dataBase;
     private List<Notes>notes;
@@ -33,6 +38,14 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.CAMERA,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Constants.PERMISSION_REQUEST_CAMERA);
+            }
+        }
         MainActivity_create();
 
     }
@@ -159,5 +172,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Adap
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case Constants.PERMISSION_REQUEST_CAMERA:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                }
+                break;
+        }
     }
 }

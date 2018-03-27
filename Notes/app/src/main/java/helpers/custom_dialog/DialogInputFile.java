@@ -2,9 +2,7 @@ package helpers.custom_dialog;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
 import android.os.Environment;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -40,7 +38,6 @@ public class DialogInputFile {
         this.namePositiveButton = namePositiveButton;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void createDialog(){
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
@@ -77,7 +74,6 @@ public class DialogInputFile {
         alertDialog.show();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void saveToFile(String fileName) {
         if(isExternalStorageWritable()){
             String root = Environment.getExternalStorageDirectory().toString();
