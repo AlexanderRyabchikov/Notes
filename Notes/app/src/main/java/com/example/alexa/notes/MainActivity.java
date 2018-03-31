@@ -34,6 +34,8 @@ public class MainActivity extends Activity implements View.OnClickListener,
 
     private IDataBaseApi dataBase;
     private List<Notes>notes;
+    CustomAdapter customAdapter;
+    ListView listView;
     @SuppressLint({"WrongConstant", "ResourceAsColor"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +92,14 @@ public class MainActivity extends Activity implements View.OnClickListener,
             case Constants.CM_DELETE_ID:
                 AdapterView.AdapterContextMenuInfo adapterContextMenuInfo =
                         (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+                customAdapter.remove(adapterContextMenuInfo.position);
+                customAdapter.notifyDataSetChanged();
                 dataBase.deleteDB(adapterContextMenuInfo.id);
-                this.recreate();
                 Constants.ToastMakeText(getBaseContext(), Constants.DELETE_SUCCESS_MSG);
+                if(customAdapter.isEmpty()){
+                    messageEmptyNotes();
+                }
                 break;
             case Constants.CM_EDIT_ID:
                 AdapterView.AdapterContextMenuInfo adapterContextMenuInfoEdit =
@@ -143,26 +150,29 @@ public class MainActivity extends Activity implements View.OnClickListener,
         Constants.setupLocale();
         findViewById(R.id.createNote).setOnClickListener(this);
         findViewById(R.id.runMap).setOnClickListener(this);
-        ListView listView = findViewById(R.id.lvData);
+        listView = findViewById(R.id.lvData);
         listView.setOnItemClickListener(this);
         dataBase = new RoomDB();
         dataBase.open_connection();
 
         notes = dataBase.getEntries();
         if(notes.isEmpty()){
-            RelativeLayout relativeLayout = findViewById(R.id.relativeLayMain);
-            TextView textView = new TextView(this);
-            textView.setText(R.string.text_not_found_entry);
-            textView.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-            textView.setTextSize(20);
-            textView.setLayoutParams(relativeLayout.getLayoutParams());
-            relativeLayout.addView(textView);
+            messageEmptyNotes();
         } else {
-            CustomAdapter customAdapter = new CustomAdapter(this, notes);
-            customAdapter.notifyDataSetChanged();
+            customAdapter = new CustomAdapter(this, notes);
             listView.setAdapter(customAdapter);
             registerForContextMenu(listView);
         }
+    }
+
+    private void messageEmptyNotes() {
+        RelativeLayout relativeLayout = findViewById(R.id.relativeLayMain);
+        TextView textView = new TextView(this);
+        textView.setText(R.string.text_not_found_entry);
+        textView.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+        textView.setTextSize(20);
+        textView.setLayoutParams(relativeLayout.getLayoutParams());
+        relativeLayout.addView(textView);
     }
 
     @Override
