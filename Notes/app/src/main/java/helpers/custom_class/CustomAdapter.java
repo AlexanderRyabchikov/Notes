@@ -86,4 +86,8 @@ public class CustomAdapter extends BaseAdapter{
         return getItem(position);
     }
 
+    public void remove(long position){
+        notes.remove(getItem((int) position));
+    }
+
 }
