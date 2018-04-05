@@ -75,8 +75,12 @@ public class CustomAdapter extends BaseAdapter{
         ImageView imageView = view.findViewById(R.id.ivImg);
         Bitmap bitmap = Constants.getImage(item.imageSmall);
         if(bitmap != null){
+            imageView.getLayoutParams().height = (int) context.getResources().getDimension(R.dimen.imageview_height);
+            imageView.getLayoutParams().width = (int) context.getResources().getDimension(R.dimen.imageview_width);
             imageView.setImageBitmap(bitmap);
         }else{
+            imageView.getLayoutParams().height = 0;
+            imageView.getLayoutParams().width = 0;
             imageView.setImageBitmap(null);
         }
         return view;
