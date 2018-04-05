@@ -90,13 +90,13 @@ public class DialogInputFile {
                 outputStream.write("\n".getBytes());
                 outputStream.write(PreviewNote.getContentPreview().getBytes());
                 outputStream.flush();
-                Constants.ToastMakeText(context, Constants.FILE_SAVE + file.getAbsolutePath());
+                Constants.ToastMakeText(context, Constants.FILE_SAVE + file.getAbsolutePath(), Constants.TYPE_MESSAGE_NON);
             } catch (IOException e) {
-                Constants.ToastMakeText(context, Constants.FILE_NOT_SAVE);
+                Constants.ToastMakeText(context, Constants.FILE_NOT_SAVE, Constants.TYPE_MESSAGE_ERROR);
             }
         }
         else{
-            Constants.ToastMakeText(context, Constants.FLASH_ERROR);
+            Constants.ToastMakeText(context, Constants.FLASH_ERROR, Constants.TYPE_MESSAGE_ERROR);
         }
     }
 

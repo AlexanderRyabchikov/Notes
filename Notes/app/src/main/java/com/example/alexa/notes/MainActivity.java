@@ -96,7 +96,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
                 customAdapter.remove(adapterContextMenuInfo.position);
                 customAdapter.notifyDataSetChanged();
                 dataBase.deleteDB(adapterContextMenuInfo.id);
-                Constants.ToastMakeText(getBaseContext(), Constants.DELETE_SUCCESS_MSG);
+                Constants.ToastMakeText(getBaseContext(), Constants.DELETE_SUCCESS_MSG, Constants.TYPE_MESSAGE_SUCCESS);
                 if(customAdapter.isEmpty()){
                     messageEmptyNotes();
                 }
@@ -182,15 +182,5 @@ public class MainActivity extends Activity implements View.OnClickListener,
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case Constants.PERMISSION_REQUEST_CAMERA:
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                }
-                break;
-        }
     }
 }

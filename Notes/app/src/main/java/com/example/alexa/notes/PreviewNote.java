@@ -110,7 +110,7 @@ public class PreviewNote extends Activity implements View.OnClickListener {
         switch (item.getItemId()){
             case Constants.CM_DELETE_ID:
                 dataBase.deleteDB(positionId);
-                Constants.ToastMakeText(getBaseContext(), Constants.DELETE_SUCCESS_MSG);
+                Constants.ToastMakeText(getBaseContext(), Constants.DELETE_SUCCESS_MSG, Constants.TYPE_MESSAGE_SUCCESS);
                 sendResultWithClose();
                 break;
             case Constants.CM_EDIT_ID:

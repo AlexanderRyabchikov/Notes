@@ -4,9 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.widget.Toast;
-
 import java.io.ByteArrayOutputStream;
 import java.util.Locale;
+
+import es.dmoral.toasty.Toasty;
 
 /**
  * Created by alexa on 25.02.2018.
@@ -43,6 +44,10 @@ public final class Constants {
     public static final int RESULT_LOAD_IMAGE = 1;
     public static final int REQUEST_IMAGE_CAPTURE = 2;
     public static final int REQUEST_MAPS = 11;
+    public static final int TYPE_MESSAGE_SUCCESS = 0;
+    public static final int TYPE_MESSAGE_ERROR = -1;
+    public static final int TYPE_MESSAGE_INFO = -2;
+    public static final int TYPE_MESSAGE_NON = -10;
     public static final String MESSAGE_GPS_ON = "Gsp is turned on";
     public static final String MESSAGE_GPS_OFF = "Gsp is turned off";
     public static final String GPS_ERROR = "Ошибка GSP модуля";
@@ -51,8 +56,6 @@ public final class Constants {
     public static final String FILE_NOT_SAVE = "File saved";
     public static final String FLASH_ERROR = "Flash not installed";
     public static final int PERMISSION_REQUEST_CAMERA = 1001;
-    public static final int PERMISSION_REQUEST_WRITE_STORAGE = 1002;
-    public static final int PERMISSION_REQUEST_READ_STORAGE = 1003;
     /*Constants*/
 
     /*Functions*/
@@ -85,8 +88,21 @@ public final class Constants {
         return imageCompress[0];
     }
 
-    public static void ToastMakeText(Context context, String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    public static void ToastMakeText(Context context, String msg, int typeMessage) {
+        switch (typeMessage){
+            case TYPE_MESSAGE_SUCCESS:
+                Toasty.success(context, msg, Toast.LENGTH_SHORT, true).show();
+            break;
+            case TYPE_MESSAGE_ERROR:
+                Toasty.error(context, msg, Toast.LENGTH_SHORT, true).show();
+            break;
+            case TYPE_MESSAGE_INFO:
+                Toasty.info(context, msg, Toast.LENGTH_SHORT, true).show();
+                break;
+            default:
+                break;
+        }
+
     }
 
     public static void setupLocale() {

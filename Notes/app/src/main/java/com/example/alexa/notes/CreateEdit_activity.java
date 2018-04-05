@@ -5,18 +5,20 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+
+import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import helpers.async_tasks.Gps;
 import helpers.constants.Constants;
@@ -25,10 +27,6 @@ import helpers.custom_dialog.DialogInputImage;
 import helpers.data_base.Notes;
 import helpers.data_base.RoomDB;
 import helpers.interfaces.IDataBaseApi;
-
-import java.io.FileInputStream;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public class CreateEdit_activity extends Activity implements View.OnClickListener {
 
@@ -167,7 +165,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                 break;
             case R.id.saveBt:
                 if(SaveToDB()){
-                    Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_MSG_DB);
+                    Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_MSG_DB, Constants.TYPE_MESSAGE_SUCCESS);
                     if(!bFlagCheckCreate) {
                         sendResultWithClose();
                     } else{
@@ -361,7 +359,7 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     picturePath = cursor.getString(columnIndex);
                     cursor.close();
                     dialogImage.dismiss();
-                    Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_IMAGE_SELECT);
+                    Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_IMAGE_SELECT, Constants.TYPE_MESSAGE_SUCCESS);
                     break;
                 }
             case Constants.REQUEST_IMAGE_CAPTURE:
@@ -376,12 +374,13 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
                     cursor.moveToFirst();
                     picturePath = cursor.getString(column_index_data);
                     dialogImage.dismiss();
-                    Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_IMAGE_SELECT);
+                    Constants.ToastMakeText(getBaseContext(), Constants.SUCCESS_IMAGE_SELECT, Constants.TYPE_MESSAGE_SUCCESS);
                 }
                 break;
             case Constants.REQUEST_MAPS:
                 Bundle bundle = data.getExtras();
-                checkBoxManual.setChecked(!bundle.getBoolean(Constants.INTENT_MAPS_CHEKCBOX_FLAG) ? false : true);
+                assert bundle != null;
+                checkBoxManual.setChecked(!bundle.getBoolean(Constants.INTENT_MAPS_CHEKCBOX_FLAG));
                 lintitude = bundle.getDouble(Constants.INTENT_MAPS_WITH_COORDINATES_LAT);
                 longtitude = bundle.getDouble(Constants.INTENT_MAPS_WITH_COORDINATES_LONG);
                 if (lintitude == 0xFFFF || longtitude == 0xFFFF){

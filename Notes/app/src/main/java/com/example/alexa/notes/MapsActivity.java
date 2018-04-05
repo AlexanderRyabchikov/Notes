@@ -122,7 +122,7 @@ public class MapsActivity  extends FragmentActivity
             latitude = latLng.latitude;
             longitude = latLng.longitude;
             flagCheckBox = true;
-            Constants.ToastMakeText(getBaseContext(), Constants.COORDINATE_SELECT);
+            Constants.ToastMakeText(getBaseContext(), Constants.COORDINATE_SELECT, Constants.TYPE_MESSAGE_INFO);
         }
     }
 

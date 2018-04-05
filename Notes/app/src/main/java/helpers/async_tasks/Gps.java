@@ -47,7 +47,7 @@ public class Gps {
                 locationManager = null;
                 checkStateGps = true;
                 Constants.ToastMakeText(context,
-                        Constants.GPS_PLACE_FOUND);
+                        Constants.GPS_PLACE_FOUND, Constants.TYPE_MESSAGE_INFO);
             }
 
             @Override
@@ -57,7 +57,7 @@ public class Gps {
 
             @Override
             public void onProviderEnabled(String provider) {
-                Constants.ToastMakeText(context, Constants.MESSAGE_GPS_ON);
+                Constants.ToastMakeText(context, Constants.MESSAGE_GPS_ON, Constants.TYPE_MESSAGE_INFO);
             }
 
             @Override
@@ -65,7 +65,7 @@ public class Gps {
                 Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-                Constants.ToastMakeText(context, Constants.MESSAGE_GPS_OFF);
+                Constants.ToastMakeText(context, Constants.MESSAGE_GPS_OFF, Constants.TYPE_MESSAGE_ERROR);
             }
         };
 
@@ -77,7 +77,7 @@ public class Gps {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
             }
         } catch (SecurityException e) {
-            Constants.ToastMakeText(context, Constants.GPS_ERROR);
+            Constants.ToastMakeText(context, Constants.GPS_ERROR, Constants.TYPE_MESSAGE_ERROR);
         }
     }
 
