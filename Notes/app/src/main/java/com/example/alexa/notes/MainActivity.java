@@ -2,7 +2,6 @@ package com.example.alexa.notes;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -10,9 +9,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +24,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import helpers.constants.Constants;
@@ -28,7 +33,7 @@ import helpers.data_base.Notes;
 import helpers.data_base.RoomDB;
 import helpers.interfaces.IDataBaseApi;
 
-public class MainActivity extends Activity implements View.OnClickListener,
+public class MainActivity extends AppCompatActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener,
         ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -50,6 +55,37 @@ public class MainActivity extends Activity implements View.OnClickListener,
         }
         MainActivity_create();
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.item_search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                List<Notes> notes_temp = new ArrayList<>();
+                for(Notes note : notes){
+                    if (note.titleDB.toLowerCase().contains(newText.toLowerCase())){
+                        notes_temp.add(note);
+                    }
+                }
+                CustomAdapter adapter = new CustomAdapter(getApplicationContext(), notes_temp);
+                listView.setAdapter(adapter);
+
+
+                return true;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
     @Override
     public void onClick(View view){

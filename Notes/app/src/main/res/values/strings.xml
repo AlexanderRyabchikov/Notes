@@ -20,4 +20,5 @@
     <string name="add_image">Добавить изображение</string>
     <string name="add_image_btn">Добавить изображение</string>
     <string name="hint_text">Enter your text here</string>
+    <string name="search">Поиск</string>
 </resources>
