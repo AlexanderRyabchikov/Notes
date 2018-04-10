@@ -1,11 +1,12 @@
 package com.example.alexa.notes;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -19,7 +20,7 @@ import helpers.data_base.Notes;
 import helpers.data_base.RoomDB;
 import helpers.interfaces.IDataBaseApi;
 
-public class PreviewNote extends Activity implements View.OnClickListener {
+public class PreviewNote extends AppCompatActivity implements View.OnClickListener {
 
     private IDataBaseApi dataBase;
 
@@ -40,6 +41,8 @@ public class PreviewNote extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preview_note);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.preview_action_bar);
         Constants.setupLocale();
         PreviewActivity_create();
 

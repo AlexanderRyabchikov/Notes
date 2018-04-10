@@ -45,6 +45,8 @@ public class DialogInputImage implements View.OnClickListener {
     public void createDialog(){
 
         dialogImage = new Dialog(context);
+        dialogImage.setCancelable(false);
+        dialogImage.setCanceledOnTouchOutside(false);
         dialogImage.setContentView(R.layout.add_image_dialog);
         dialogImage.setTitle(title);
 

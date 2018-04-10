@@ -1,12 +1,13 @@
 package com.example.alexa.notes;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -28,7 +29,7 @@ import helpers.data_base.Notes;
 import helpers.data_base.RoomDB;
 import helpers.interfaces.IDataBaseApi;
 
-public class CreateEdit_activity extends Activity implements View.OnClickListener {
+public class CreateEdit_activity extends AppCompatActivity implements View.OnClickListener {
 
     private Intent intent;
     private IDataBaseApi dataBase;
@@ -54,6 +55,8 @@ public class CreateEdit_activity extends Activity implements View.OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_edit_activity);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.create_action_bar);
         Constants.setupLocale();
         initActivity();
         EditActivity_create();

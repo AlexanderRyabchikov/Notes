@@ -47,23 +47,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:background="@null"
                 android:src="@drawable/create_notes"
                 android:text="@string/bt_create_note"
-                android:textAlignment="center" />
-
-            <ImageButton
-                android:id="@+id/runMap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:background="@null"
-                android:src="@drawable/rsz_google_map_alt"
-                android:text="@string/runMap"
                 android:textAlignment="center" />
         </RelativeLayout>
     </RelativeLayout>
