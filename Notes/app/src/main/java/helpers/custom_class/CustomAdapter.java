@@ -56,20 +56,21 @@ public class CustomAdapter extends BaseAdapter{
             view = layoutInflater.inflate(R.layout.item_list_notes, parent, false);
         }
         Notes item = getNotes(position);
+        View viewLine = view.findViewById(R.id.viewItemBinder);
         TextView textTitle = view.findViewById(R.id.tvText);
         textTitle.setText(item.titleDB);
         switch (item.priority){
             case Constants.LOW_PRIORITY:
-                textTitle.setBackgroundColor(Color.GREEN);
+                viewLine.setBackgroundResource(R.drawable.separator_low_priority);
                 break;
             case Constants.MEDIUM_PRIORITY:
-                textTitle.setBackgroundColor(Color.YELLOW);
+                viewLine.setBackgroundResource(R.drawable.separator_medium_priority);
                 break;
             case Constants.HIGH_PRIORITY:
-                textTitle.setBackgroundColor(Color.RED);
+                viewLine.setBackgroundResource(R.drawable.separator_high_priority);
                 break;
             default:
-                textTitle.setBackgroundResource(R.drawable.border_edit_text);
+                viewLine.setBackgroundResource(R.drawable.separator);
                 break;
         }
         ImageView imageView = view.findViewById(R.id.ivImg);

@@ -21,14 +21,6 @@
             android:layout_height="match_parent"
             android:id="@+id/linnearLayoutListNotes"
             android:orientation="vertical">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:id="@+id/ViewLine"
-                android:background="@drawable/separator"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                tools:ignore="UnknownId" />
             <ListView
                 android:id="@+id/lvData"
                 android:layout_width="match_parent"
